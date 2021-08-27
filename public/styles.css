@@ -1,0 +1,78 @@
+.card {
+  height: calc(75vh);
+  width: 80%;
+  margin: 40px auto 50px;
+  padding: 0px;
+}
+.grid {
+  margin: 0px;
+  padding: 0px;
+}
+.row {
+  height: 75vh;
+}
+#cardLeft {
+  background-color: rgb(47, 221, 221);
+}
+.text1 {
+  padding-top: 20px;
+  text-align: center;
+  color: antiquewhite;
+  font-family: cursive;
+  font-size: 40px;
+}
+.text2 {
+  padding-top: 10px;
+  color: antiquewhite;
+  font-family: cursive;
+  font-size: 25px;
+  text-align: center;
+}
+.text3 {
+  padding-top: 40px;
+  color: antiquewhite;
+  font-family: cursive;
+  font-size: 45px;
+  text-align: center;
+}
+.text4 {
+  padding-top: 20px;
+  text-align: center;
+  color: rgb(68, 66, 64);
+  font-family: cursive;
+  font-size: 40px;
+}
+.text5 {
+  padding-top: 10px;
+  text-align: center;
+  color: rgb(68, 66, 64);
+  font-family: cursive;
+  font-size: 20px;
+  width: 90%;
+  margin: auto;
+}
+#adminIcon {
+  font-size: 100px;
+}
+#btn {
+  background-color: aqua;
+  align-items: center;
+}
+#dashboard{
+
+  height: 100vh;
+}
+
+#voteStart{
+  margin: auto;
+  font-size: 30px;
+  font-weight: 800;
+  font-family: cursive;
+}
+
+#couponForm{
+  margin: auto;
+  font-size: 20px;
+  font-weight: 800;
+  font-family: cursive;
+}

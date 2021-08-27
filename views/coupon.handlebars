@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="container p-3 text-center">
+        <h2>Coupons</h2>
+    </div>
+
+    <div class="row" style="width: 40%; margin:0px auto">
+        <table class=" table table-bordered">
+            <thead class="thead-dark">
+                <th scope="col">Coupons</th>
+            </thead>
+            <tbody>
+                {{#each coupons}}
+                <tr>
+                    <td>{{this.codes}}</td>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>

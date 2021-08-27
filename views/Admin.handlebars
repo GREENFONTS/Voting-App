@@ -1,0 +1,34 @@
+<div>
+    <div class="card">
+            <div class="grid">
+                <div class="row">
+                    <div class="col-md-7" id="cardLeft">
+                        <h3 class="text1">ANGLICAN CHAPEL OF LIGHT </h3>
+                        <h3 class="text1">FUTO</h3>
+                        <h3 class="text2">Welcomes you to</h3>
+                        <h3 class="text3">ACOL FUTO CHOIR </h3>
+                        <h3 class="text3">ELECTION </h3>
+                    </div>
+                    <div class="col-md-5">
+                        <h3 class="text4">Admin SignIn</h3>
+                        <h3 class="text4">
+                            <i class="fa fa-user" aria-hidden="true" id="adminIcon"></i>
+                        </h3>
+                        {{> error}}
+                        <form action="/admin" method="POST"  class="p-2 mt-3">
+                        <div class="form-group">
+                            <input type='email' name="Email" class="form-control" placeholder="Enter your email" required='true'/>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" name="password" class="form-control" placeholder="Enter password"  required='true'/>
+                        </div>
+                            <button class="btn btn=block" type="submit" id="btn">Submit</button>
+                        
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>>
