@@ -39,12 +39,14 @@ router.get('/', (req, res) => {
 })
 router.get("/admin", (req, res) => {
   res.render("Admin", {
-      action: "SignIn"
+    action: "SignIn",
+    route: "/admin"
     })
 })
 router.get("/admin/register", (req, res) => {
   res.render("Admin", {
-    action : "SignUp"
+    action: "SignUp",
+    route: "/admin/register"
   });
 });
 
@@ -234,31 +236,16 @@ router.post('/admin', (req, res) => {
   }
 })
 //registeradmin
-router.post("/admin/register", (req, res) => {
-  try {
-    async function registerAdminPost() {
+router.post("/admin/register", async (req, res) => {
       const { Email, password } = req.body;
 
        await prisma.admin.create({
-        where: {
+        data:{
           email: Email,
           password: password,
           id : uuidv4()
         },
       });
-
-      
-    }
-    registerAdminPost(req, res)
-      .catch((err) => {
-        throw err;
-      })
-      .finally(async () => {
-        await prisma.$disconnect();
-      });
-  } catch (err) {
-    console.log(err);
-  }
   res.redirect('/admin')
 });
 
