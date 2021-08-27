@@ -38,8 +38,15 @@ router.get('/', (req, res) => {
   res.render('voting')
 })
 router.get("/admin", (req, res) => {
-    res.render("Admin")
+  res.render("Admin", {
+      action: "SignIn"
+    })
 })
+router.get("/admin/register", (req, res) => {
+  res.render("Admin", {
+    action : "SignUp"
+  });
+});
 
 router.get('/dashboard', ensureAuthenticated,  async (req, res) => {
   let Nominees = await prisma.nominee.findMany();
@@ -226,6 +233,35 @@ router.post('/admin', (req, res) => {
     console.log(err)
   }
 })
+//registeradmin
+router.post("/admin/register", (req, res) => {
+  try {
+    async function registerAdminPost() {
+      const { Email, password } = req.body;
+
+       await prisma.admin.create({
+        where: {
+          email: Email,
+          password: password,
+          id : uuidv4()
+        },
+      });
+
+      
+    }
+    registerAdminPost(req, res)
+      .catch((err) => {
+        throw err;
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
+  } catch (err) {
+    console.log(err);
+  }
+  res.redirect('/admin')
+});
+
 
 //add admin
 router.post("/registerAdmin", (req, res) => {
