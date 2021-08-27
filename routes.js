@@ -52,7 +52,7 @@ router.get("/admin/register", (req, res) => {
 
 router.get('/dashboard', ensureAuthenticated,  async (req, res) => {
   let Nominees = await prisma.nominee.findMany();
-  res.render("dashBoard", {
+  res.render("dashboard", {
     Nominees,
     posts
   });
