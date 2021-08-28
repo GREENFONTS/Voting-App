@@ -2,14 +2,15 @@ const {PrismaClient} = require("@prisma/client")
 const express = require("express");
 const prisma = new PrismaClient();
 const router = express.Router();
-let multer = require("multer");
+const upload = require("./config/multer");
+const cloudinary = require('./config/cloudinary')
 const { v4: uuidv4 } = require("uuid");
 const jwt = require('jsonwebtoken');
 const { ensureAuthenticated } = require('./config/auth');
 const { nanoid } = require("nanoid");
 const LocalStorage = require("node-localstorage").LocalStorage;
 localStorage = new LocalStorage("./scratch");
-const fs = require('fs')
+const fs = require('fs');
 
 let posts = ["Chairman", "ChairLady", "Secretary", "Asst. Secretary", "Financial Secretary",
   "Treasurer", "PRO", "Welfare 1", "Welfare 2", "Librarian", "Librarian 2", "Cross Bearer2",
@@ -21,17 +22,6 @@ function increaseCount() {
 let Results = []
 
 let error = []
-// image upload
-let storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public");
-  },
-  filename: function (req, file, cb) {
-    cb(null, uuidv4() + '-' + file.originalname);
-  },
-});
-
-let upload = multer({ storage: storage });
 
 //GET routes
 router.get('/', (req, res) => {
@@ -169,14 +159,35 @@ router.get("/Logout", ensureAuthenticated, (req, res) => {
 });
 
 router.get('/getCoupon', async (req, res) => {
-  let code = nanoid(10)
-  await prisma.coupons.create({
-    data: {
-      codes: code,
-      used: false
-    }
-  })
+  for (i = 1; i <= 5; i++) {
+    let code = nanoid(10)
+    await prisma.coupons.create({
+      data: {
+        codes: code,
+        used: false
+      }
+    })
+  }
   res.redirect('/dashboard')
+})
+
+router.get('/clearVotes', async (req, res) => {
+  try {
+    let Nominees = await prisma.admin.findMany();
+    Nominees.forEach(nominee => {
+      await prisma.admin.update({
+        where: {
+          name: nominee.name
+        },
+        data: {
+          votes: 0
+        }
+      })
+    })
+  }
+  catch (err) {
+    console.log(err)
+  }
 })
 
 //POST routes
@@ -300,27 +311,26 @@ router.post("/registerAdmin", (req, res) => {
   res.redirect('/dashboard')
 });
 
-router.post("/add", upload.single('avatar'), (req, res) => {
-  async function adminPost() {
-    let image = `${req.file.filename}`
+router.post("/add", upload.single('avatar'), async (req, res) => {
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path)
     const { Name, Post } = req.body;
     let checkNominee = await prisma.nominee.findFirst({
       where: {
-        name : Name,
-        post : Post
+        name: Name,
+        post: Post
       }
-    })
+    });
     if (checkNominee) {
       console.log("nominee exists")
       error.push({ msg: "Nominee already exists" })
-      // popupS.window("Nominee already exists");
     }
-    else{
+    else {
       await prisma.nominee.create({
         data: {
           name: Name,
           post: Post,
-          image: image,
+          image: result.secure_url,
           id: uuidv4(),
           votes: 0
         },
@@ -328,14 +338,9 @@ router.post("/add", upload.single('avatar'), (req, res) => {
     }
   }
   
-  adminPost(req, res)
-    .catch((err) => {
+  catch(err) {
       throw err;
-    })
-    .finally(async () => {
-      await prisma.$disconnect();
-    });
-
+    }
   res.redirect("/dashboard");
 });
 
@@ -427,7 +432,7 @@ router.post("/deleteAll",  (req, res) => {
     })
     .finally(async () => await prisma.$disconnect());
 
-    res.redirect("/dashboard");    
+    res.render("dashboard");    
 });
 
 router.post('/checkCoupon', ensureAuthenticated, async (req, res) => {
