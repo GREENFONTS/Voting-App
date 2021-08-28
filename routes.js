@@ -173,22 +173,23 @@ router.get('/getCoupon', async (req, res) => {
 
 router.get('/clearVotes', async (req, res) => {
   try {
-    let Nominees = await prisma.admin.findMany();
-    Nominees.forEach(async (nominee) =>  {
-      await prisma.admin.update({
+    console.log("reached")
+    let Nominees = await prisma.nominee.findMany({});
+    for (i = 0; i <= Nominees.length; i++){
+      await prisma.nominee.update({
         where: {
-          name: nominee.name
+          id: Nominees[i].id
         },
         data: {
           votes: 0
         }
       })
-    })
+    }
   }
   catch (err) {
     console.log(err)
   }
-  res.redirect('/dashboard')
+  res.redirect('/Results')
 })
 
 //POST routes
