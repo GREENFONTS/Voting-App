@@ -7,18 +7,13 @@ const cloudinary = require('./config/cloudinary')
 const { v4: uuidv4 } = require("uuid");
 const jwt = require('jsonwebtoken');
 const { ensureAuthenticated } = require('./config/auth');
+const { couponAuthenticated } = require('./config/coupon');
 const { nanoid } = require("nanoid");
-const LocalStorage = require("node-localstorage").LocalStorage;
-localStorage = new LocalStorage("./scratch");
 const fs = require('fs');
 
 let posts = ["Chairman", "ChairLady", "Secretary", "Asst. Secretary", "Financial Secretary",
   "Treasurer", "PRO", "Welfare 1", "Welfare 2", "Librarian", "Librarian 2", "Cross Bearer2",
   "Provost", "Curator 1", "Curator 2"]
-let count = 0;
-function increaseCount() {
-  count += 1
-}
 let Results = []
 
 let error = []
@@ -53,26 +48,26 @@ router.get('/voting', (req, res) => {
   res.render('voting')
 })
 
-router.get('/votingPosts', ensureAuthenticated, async (req, res) => {
+router.get('/votingPosts', couponAuthenticated, async (req, res) => {
   let nominees = await prisma.nominee.findMany({
     where: {
-      post: posts[count]
+      post: "Chairman"
     }
   })
   res.render('chairman', {
     Nominees: nominees,
-    post: posts[count],
-    nextPost: posts[count + 1]
+    post: 'Chairman',
+    nextPost: 'ChairLady'
   })
-  increaseCount()
 })
 
-router.get('/votingPosts/:nextPost/:id', ensureAuthenticated, async (req, res) => {
-  let nominee = await prisma.nominee.findUnique({
+router.get('/votingPosts/:nextPost/:id', couponAuthenticated, async (req, res) => {
+  const nominee = await prisma.nominee.findUnique({
     where: {
       id: req.params.id
     }
-  })
+  });
+  
   let vote = nominee.votes + 1
   await prisma.nominee.update({
     where: {
@@ -84,29 +79,26 @@ router.get('/votingPosts/:nextPost/:id', ensureAuthenticated, async (req, res) =
   })
   let nominees = await prisma.nominee.findMany({
     where: {
-      post: posts[count],
+      postNo: parseInt(nominee.postNo + 1),
     },
   });
 
-  let newCount = count + 1
-  if (newCount < posts.length) {
+  if ((nominee.postNo + 1) < posts.length) {
     res.render("posts", {
       Nominees: nominees,
-      post: posts[count],
-      nextPost: posts[newCount],
+      post: posts[nominee.postNo],
+      nextPost: posts[nominee.postNo + 1],
     });
   }
   else {
     res.render("lastVote", {
       Nominees: nominees,
-      post: posts[count]
+      post: posts[nominee.postNo]
     });
   }
-  
-  increaseCount()
 })
 
-router.get('/votingPosts/:id', ensureAuthenticated, async (req, res) => {
+router.get('/votingPosts/:id', couponAuthenticated, async (req, res) => {
   let nominee = await prisma.nominee.findUnique({
     where: {
       id: req.params.id,
@@ -137,28 +129,33 @@ router.get('/Results', ensureAuthenticated, async (req, res) => {
       if (nominee.post == posts[i]) {
         Results[i]["Nominees"].push(nominee)
       }
-      })
+    })
   }
   res.render('results', {
     Results
   });
-})
+});
 
 // get coupons
 router.get("/coupons", ensureAuthenticated, async (req, res) => {
-  let coupons = await prisma.coupons.findMany();
+  let coupons = await prisma.coupons.findMany({
+    where: {
+      used: false
+    }
+  });
   res.render('coupon', {
     coupons
   })
 })
 
 //admin logout
-router.get("/Logout", ensureAuthenticated, (req, res) => {
-  localStorage.clear();
-  res.redirect("/admin");
+router.get("/Logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/admin");
+  })
 });
 
-router.get('/getCoupon', async (req, res) => {
+router.get('/getCoupon', ensureAuthenticated, async (req, res) => {
   for (i = 1; i <= 5; i++) {
     let code = nanoid(10)
     await prisma.coupons.create({
@@ -171,7 +168,7 @@ router.get('/getCoupon', async (req, res) => {
   res.redirect('/dashboard')
 })
 
-router.get('/clearVotes', async (req, res) => {
+router.get('/clearVotes', ensureAuthenticated, async (req, res) => {
   try {
     console.log("reached")
     let Nominees = await prisma.nominee.findMany({});
@@ -203,9 +200,8 @@ router.post('/admin', (req, res) => {
         where: {
           email: Email
         }
-      })
-
-      if (!user == null) {
+      });
+      if (user == null) {
         error.push({
           msg: "Admin not found"
         });
@@ -233,9 +229,10 @@ router.post('/admin', (req, res) => {
           {
             expiresIn: "2h"
           }
-        );
-        localStorage.setItem('Token', token)
-        res.redirect("/dashboard");
+        )
+        let session = req.session;
+        session.token = token;
+        res.redirect('/dashboard')
       }
     }
     adminPost(req, res)
@@ -264,7 +261,7 @@ router.post("/admin/register", async (req, res) => {
 
 
 //add admin
-router.post("/registerAdmin", (req, res) => {
+router.post("/registerAdmin", ensureAuthenticated, (req, res) => {
   try {
     async function addAdminPost() {
       const { Email, password, superPassword } = req.body;
@@ -314,7 +311,6 @@ router.post("/registerAdmin", (req, res) => {
 });
 
 router.post("/add", upload.single('avatar'), async (req, res) => {
-  try {
     const result = await cloudinary.uploader.upload(req.file.path)
     const { Name, Post } = req.body;
     let checkNominee = await prisma.nominee.findFirst({
@@ -332,21 +328,20 @@ router.post("/add", upload.single('avatar'), async (req, res) => {
         data: {
           name: Name,
           post: Post,
+          image: image,
           image: result.secure_url,
           id: uuidv4(),
-          votes: 0
+          votes: 0,
+          postNo: posts.indexOf(Post) + 1,
         },
       });
+       res.redirect("/dashboard");
     }
-  }
-  
-  catch(err) {
-      throw err;
-    }
-  res.redirect("/dashboard");
+
+ 
 });
 
-router.post('/update', (req, res) => {
+router.post('/update', ensureAuthenticated, (req, res) => {
   async function updatePost() {
     const { currentName, newName, currentPost, newPost } = req.body;
      await prisma.nominee.updateMany({
@@ -370,7 +365,7 @@ router.post('/update', (req, res) => {
   res.redirect("/dashboard");
 });
 
-router.post('/delete', (req, res) => {
+router.post('/delete', ensureAuthenticated, (req, res) => {
   async function deletePost() {
     const { Name, Post } = req.body;
     let nominee = await prisma.nominee.findFirst({
@@ -405,7 +400,7 @@ router.post('/delete', (req, res) => {
   res.redirect('/dashboard')
 });
 
-router.post("/deleteAll",  (req, res) => {
+router.post("/deleteAll", ensureAuthenticated,  (req, res) => {
   console.log(req.body)
   async function deleteAll() {
     const { Password } = req.body;
@@ -437,7 +432,7 @@ router.post("/deleteAll",  (req, res) => {
     res.render("dashboard");    
 });
 
-router.post('/checkCoupon', ensureAuthenticated, async (req, res) => {
+router.post('/checkCoupon',  async (req, res) => {
   let success = []
   let error = []
   const { code } = req.body;
@@ -448,7 +443,6 @@ router.post('/checkCoupon', ensureAuthenticated, async (req, res) => {
   });
 
   if (!recievedCode) {
-
     error.push({ msg: "Invalid Code" });
 
     res.render("voting", {
@@ -470,7 +464,17 @@ router.post('/checkCoupon', ensureAuthenticated, async (req, res) => {
       data: {
         used: true
       }
-    })
+    });
+     const token = jwt.sign(
+       { user_id: code },
+       process.env.TOKEN_KEY,
+       {
+         expiresIn: "2h",
+       }
+     );
+     let session = req.session;
+     session.coupon = token;
+     res.redirect("/dashboard");
     res.redirect('/votingPosts')
   }
 

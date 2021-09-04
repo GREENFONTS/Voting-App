@@ -19,6 +19,7 @@ model Nominee {
   image String
   votes Int
   id    String @id
+  postNo Int
 }
 
 model Coupons {

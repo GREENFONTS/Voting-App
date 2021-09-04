@@ -29,6 +29,9 @@
                         <a href="/getCoupon"><button class="btn text-light" style="font-size: 20px">Generate Codes</button></a>
                     </li>
                     <li class="nav-item" role="presentation" style="padding: 2px;">
+                        <a href="/coupons"><button class="btn text-light" style="font-size: 20px">Show Codes</button></a>
+                    </li>
+                    <li class="nav-item" role="presentation" style="padding: 2px;">
                         <a href="/voting"><button class="btn text-light"style="font-size: 20px">Start Election</button></a>
                     </li>
                     <li class="nav-item" role="presentation" style="padding: 2px;">
@@ -205,7 +208,7 @@
         <div class="container" style="padding-top: 120px;" >
             {{#each Nominees}}
             <div class="card d-inline-block m-3" style="width: 20rem; height:50vh">
-                <img class="card-img top" src="{{this.image}}" style="width:20rem; height:40vh" alt="Nominee Image">
+                <img class="card-img top" src="/{{this.image}}" style="width:20rem; height:40vh" alt="Nominee Image">
                 <div class="card-body p-2">
                     <p class="card-text p-0 m-0"><b>Name:</b> {{this.name}}</p>
                     <p class="card-text p-0 m-0"><b>Post:</b> {{this.post}}</p>
