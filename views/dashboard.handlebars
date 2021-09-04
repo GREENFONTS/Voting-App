@@ -171,8 +171,11 @@
                                 required="true" />
                         </div>
                         <div class="form-group">
-                            <input class="form-control" name="Post" type="text" placeholder="Enter Nominee Post"
-                                required="true" />
+                            <select multiple class="form-select" name="Post" required="true">
+                                {{#each posts}}
+                                <option>{{this}}</option>
+                                {{/each}}
+                            </select>
                         </div>
     
                         <button type="submit" class="btn btn-primary btn-block">Delete Nominee</button>
@@ -208,7 +211,7 @@
         <div class="container" style="padding-top: 120px;" >
             {{#each Nominees}}
             <div class="card d-inline-block m-3" style="width: 20rem; height:50vh">
-                <img class="card-img top" src="/{{this.image}}" style="width:20rem; height:40vh" alt="Nominee Image">
+                <img class="card-img top" src="{{this.image}}" style="width:20rem; height:40vh" alt="Nominee Image">
                 <div class="card-body p-2">
                     <p class="card-text p-0 m-0"><b>Name:</b> {{this.name}}</p>
                     <p class="card-text p-0 m-0"><b>Post:</b> {{this.post}}</p>

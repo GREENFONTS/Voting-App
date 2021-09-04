@@ -170,9 +170,8 @@ router.get('/getCoupon', ensureAuthenticated, async (req, res) => {
 
 router.get('/clearVotes', ensureAuthenticated, async (req, res) => {
   try {
-    console.log("reached")
     let Nominees = await prisma.nominee.findMany({});
-    for (i = 0; i <= Nominees.length; i++){
+    for (i = 0; i < Nominees.length; i++){
       await prisma.nominee.update({
         where: {
           id: Nominees[i].id
@@ -328,7 +327,6 @@ router.post("/add", upload.single('avatar'), async (req, res) => {
         data: {
           name: Name,
           post: Post,
-          image: image,
           image: result.secure_url,
           id: uuidv4(),
           votes: 0,
@@ -355,9 +353,7 @@ router.post('/update', ensureAuthenticated, (req, res) => {
       }
     });
   }
-  console.log(req.body)
-
-  updatePost(req, res)
+   updatePost(req, res)
     .catch((err) => {
     throw err
     })
@@ -374,15 +370,7 @@ router.post('/delete', ensureAuthenticated, (req, res) => {
         post: Post,
       },
     });
-    try {
-      fs.unlink(`./public/${nominee.image}`, (err) => {
-        if (err) throw err;
-        console.log();
-      })
-    }
-    catch (err) {
-      console.log(err)
-    }
+   
     await prisma.nominee.deleteMany({
       where: {
         name: Name,
@@ -409,15 +397,7 @@ router.post("/deleteAll", ensureAuthenticated,  (req, res) => {
       {
         password: Password
       }
-    })
-    let Nominees = await prisma.nominee.findMany();
-    console.log(Nominees)
-    Nominees.forEach(nominee => {
-      fs.unlink(`./public/${nominee.image}`, (err) => {
-        if (err) throw err;
-        console.log()
-      })
-    })
+    });
     if (admin) {
       await prisma.nominee.deleteMany({})
     }
@@ -474,7 +454,6 @@ router.post('/checkCoupon',  async (req, res) => {
      );
      let session = req.session;
      session.coupon = token;
-     res.redirect("/dashboard");
     res.redirect('/votingPosts')
   }
 
