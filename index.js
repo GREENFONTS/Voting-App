@@ -25,7 +25,7 @@ app.use(
   })
 );
 
-app.use("/admin", require("./routes/admin"));
+app.use("/", require("./routes/admin"));
 app.use("/voting", require("./routes/voting"));
 
 app.use(express.static("public"));

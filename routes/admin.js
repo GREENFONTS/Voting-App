@@ -19,7 +19,7 @@ let error = []
 router.get("/", (req, res) => {
   res.render("Admin", {
     action: "SignIn",
-    route: "/admin/"
+    route: "/"
     })
 })
 
@@ -27,7 +27,7 @@ router.get("/", (req, res) => {
 router.get("/register", (req, res) => {
   res.render("Admin", {
     action: "SignUp",
-    route: "/admin/register"
+    route: "/register"
   });
 });
 
@@ -98,7 +98,7 @@ router.get("/createCoupons", ensureAuthenticated, async (req, res) => {
       },
     });
   }
-  res.redirect("/admin/dashboard")
+  res.redirect("/dashboard")
 });
 
 // get coupons
@@ -147,7 +147,7 @@ router.get("/resetVotes", ensureAuthenticated, async (req, res) => {
 //admin logout
 router.get("/Logout", (req, res) => {
   req.session.destroy(() => {
-    res.redirect("/admin");
+    res.redirect("/");
   })
 });
 
@@ -199,7 +199,7 @@ router.post('/', (req, res) => {
         let session = req.session;
         session.token = token;
         session.user = user.email
-        res.redirect('/admin/dashboard')
+        res.redirect('/dashboard')
       }
     }
     adminPost(req, res)
@@ -252,7 +252,7 @@ router.post("/register", (req, res) => {
   } catch (err) {
     console.log(err);
   }
-  res.redirect('/admin/')
+  res.redirect('/')
 });
 
 //add office positions
@@ -269,7 +269,7 @@ router.post("/position", async (req, res) => {
   
   if (req.session.user == undefined) {
     req.session.destroy(() => {
-      res.redirect('/admin')
+      res.redirect('/')
     })
   }
   else {
@@ -280,7 +280,7 @@ router.post("/position", async (req, res) => {
       }
     })
   }
-  res.redirect('/admin/dashboard')
+  res.redirect('/dashboard')
 })
 
 //add  nominee
@@ -316,7 +316,7 @@ router.post("/add", upload.single('avatar'), async (req, res) => {
         },
       });
          }
-  res.redirect("/admin/dashboard");
+  res.redirect("/dashboard");
 
  
 });
@@ -342,7 +342,7 @@ router.post('/update', ensureAuthenticated, (req, res) => {
     throw err
     })
   .finally( async () => await prisma.$disconnect())
-  res.redirect("/admin/dashboard");
+  res.redirect("/dashboard");
 });
 
 //delete nominee
@@ -365,7 +365,7 @@ router.post('/delete', ensureAuthenticated, (req, res) => {
     })
     .finally(async () => await prisma.$disconnect());
 
-  res.redirect('/admin/dashboard')
+  res.redirect('/dashboard')
 });
 
 //delete all nominees

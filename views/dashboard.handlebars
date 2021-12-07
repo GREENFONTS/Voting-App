@@ -26,19 +26,19 @@
                     <button class="btn text-light" data-toggle="modal" data-target="#deleteAllModal" style="font-size: 20px"> Delete all</button>
                     </li>
                     <li class="nav-item" role="presentation" style="padding: 2px;">
-                        <a href="/admin/createCoupons"><button class="btn text-light" style="font-size: 20px">Generate Codes</button></a>
+                        <a href="/createCoupons"><button class="btn text-light" style="font-size: 20px">Generate Codes</button></a>
                     </li>
                     <li class="nav-item" role="presentation" style="padding: 2px;">
-                        <a href="/admin/coupons"><button class="btn text-light" style="font-size: 20px">Show Codes</button></a>
+                        <a href="/coupons"><button class="btn text-light" style="font-size: 20px">Show Codes</button></a>
                     </li>
                     <li class="nav-item" role="presentation" style="padding: 2px;">
                         <a href="/voting/"><button class="btn text-light"style="font-size: 20px">Start Election</button></a>
                     </li>
                     <li class="nav-item" role="presentation" style="padding: 2px;">
-                        <a href="/admin/Results"><button class="btn text-light" style="font-size: 20px">End Election</button></a>
+                        <a href="/Results"><button class="btn text-light" style="font-size: 20px">End Election</button></a>
                     </li>
                     <li class="nav-item" role="presentation" style="padding: 2px;">
-                            <a href="/admin/logout"><button class="btn text-light" style="font-size: 20px">Logout</button></a>
+                            <a href="/logout"><button class="btn text-light" style="font-size: 20px">Logout</button></a>
 
                     </li>
                 </ul>
@@ -56,7 +56,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/admin/position" method="POST">
+                <form action="/position" method="POST">
                     <div class="form-group">
                         <input class="form-control" name="Name" type="text" placeholder="Enter Position Title"
                             required="true" />
@@ -79,7 +79,7 @@
                        </button>
                     </div>
                     <div class="modal-body">
-                        <form action="/admin/add" method="POST" enctype="multipart/form-data">
+                        <form action="/add" method="POST" enctype="multipart/form-data">
                             <div class="form-group">
                                 <input class="form-control" name="Name" type="text" placeholder="Enter Nominee Name" required="true" />
                             </div>
@@ -112,7 +112,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/admin/update" method="POST">
+                    <form action="/update" method="POST">
                         <div class="form-group">
                             <input class="form-control" name="currentName" type="text" placeholder="Enter Current Nominee Name" required="true" />
                         </div>
@@ -153,7 +153,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/admin/delete" method="POST"> 
+                    <form action="/delete" method="POST"> 
                         <div class="form-group">
                             <input class="form-control" name="Name" type="text" placeholder="Enter Nominee Name"
                                 required="true" />
@@ -185,7 +185,7 @@
                 </div>
                 <div class="modal-body">
                     <p>This will delete all Nomiees</p>
-                    <form action="/admin/deleteAll" method="POST">
+                    <form action="/deleteAll" method="POST">
                         <div class="form-group">
                             <input class="form-control" name="Password" type="password" placeholder="Enter Admin password" required="true" />
                         </div>
@@ -209,7 +209,7 @@
                     </div>
                     <div class="modal-body">
                         <p>This will reset all votes </p>
-                        <form action="/admin/resetVotes" method="POST">
+                        <form action="/resetVotes" method="POST">
                             <div class="form-group">
                                 <input class="form-control" name="password" type="password" placeholder="Enter Admin password"
                                     required="true" />
