@@ -8,11 +8,11 @@
   },
   "engines": {
     "node": ">=12"
-},
+  },
   "author": "Acol",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^2.30.3",
+    "@prisma/client": "^3.6.0",
     "body-parser": "^1.19.0",
     "cloudinary": "^1.26.3",
     "dotenv": "^10.0.0",
@@ -27,6 +27,6 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.12",
-    "prisma": "^2.30.3"
+    "prisma": "^3.6.0"
   }
 }

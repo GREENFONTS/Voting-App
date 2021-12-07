@@ -13,6 +13,11 @@ model admin {
   id       String
 }
 
+model position {
+  name String @unique @id
+  user String
+}
+
 model Nominee {
   name  String
   post  String
@@ -20,9 +25,11 @@ model Nominee {
   votes Int
   id    String @id
   postNo Int
+  user String
 }
 
 model Coupons {
   codes String  @id
   used  Boolean
+  user String
 }
