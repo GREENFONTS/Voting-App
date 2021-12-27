@@ -10,18 +10,24 @@
                         <h3 class="text3">ELECTION </h3>
                     </div>
                     <div class="col-md-5">
-                        <h3 class="text4">Admin {{action}}</h3>
+                        <h3 class="text4">User {{action}}</h3>
                         <h3 class="text4">
                             <i class="fa fa-user" aria-hidden="true" id="adminIcon"></i>
                         </h3>
                         {{> error}}
                         <form action={{route}} method="POST"   class="p-2 mt-3">
                         <div class="form-group">
-                            <input type='email' name="Email" class="form-control" placeholder="Enter your email" required='true'/>
+                            <input type='email' name="email" class="form-control" placeholder="Enter your email" value="{{email}}" required='true'/>
                         </div>
+                      
                         <div class="form-group">
-                            <input type="password" name="password" class="form-control" placeholder="Enter password"  required='true'/>
+                            <input type="password" name="password" class="form-control" placeholder="Enter password" value="{{password}}" required='true'/>
                         </div>
+                          {{#if register}}
+                        <div class="form-group">
+                            <input type="password" name="password2" class="form-control" placeholder="Re-enter password"  required='true'/>
+                        </div>
+                        {{/if}}
                             <button class="btn btn=block" type="submit" id="btn">Submit</button>
                         
                         </form>

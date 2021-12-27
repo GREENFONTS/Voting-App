@@ -1,56 +1,115 @@
-const {PrismaClient} = require("@prisma/client")
 const express = require("express");
+const {PrismaClient} = require("@prisma/client");
 const prisma = new PrismaClient();
 const router = express.Router();
 const upload = require("../config/multer");
-const cloudinary = require('../config/cloudinary')
-const { v4: uuidv4 } = require("uuid");
-const jwt = require('jsonwebtoken');
 const { ensureAuthenticated } = require('../config/auth');
 const { nanoid } = require("nanoid");
+const { dashBoard, userLogin, userRegister, addPositions, addNominee } = require('../functions');
 
 let Results = []
 
-let error = []
+
 
 //GET routes
-
 //admin login page
 router.get("/", (req, res) => {
   res.render("Admin", {
     action: "SignIn",
-    route: "/"
+    route: "/",
+    register : null
     })
 })
+
+router.post('/', (req, res) => {
+  const { email, password } = req.body;
+  try {    
+    userLogin(req, res, email, password)
+      .catch(err => { throw err })
+      .finally(async () => {
+        await prisma.$disconnect()
+      })
+  }
+  catch (err) {
+    console.log(err)
+  }
+});
+
 
 //admin register page
 router.get("/register", (req, res) => {
   res.render("Admin", {
     action: "SignUp",
-    route: "/register"
+    route: "/register",
+    register: true
   });
 });
 
+router.post("/register", (req, res) => {
+  const { email, password, password2} = req.body;
+  try {   
+    userRegister(req, res, email, password, password2)
+      .catch((err) => {
+        throw err;
+      })
+      .finally(async () => {
+        await prisma.$disconnect();
+      });
+  } catch (err) {
+    console.log(err);
+  }  
+});
+
+
 //admin dashboard
-router.get('/dashboard', ensureAuthenticated, async (req, res) => {
-  let posts = []
-  let Nominees = await prisma.nominee.findMany({
-    where: {
-      user: req.session.user
-    }
-  });
-  let positions = await prisma.position.findMany({
-    where: {
-      user: req.session.user
-    }
-  });
-  positions.forEach((position) => {
-    posts.push(position.name);
-  });
-  res.render("dashboard", {
-    Nominees,
-    posts,
-  });
+router.get('/dashboard', ensureAuthenticated, (req, res) => {
+  try{
+    dashBoard(req, res)
+    .catch((err) => {
+      throw err
+    })
+    .finally(async () => {
+     await prisma.$disconnect()
+    })
+  }
+  catch (err) {
+    throw err
+  }  
+});
+
+
+//add office positions
+router.post("/position", ensureAuthenticated, async (req, res) => {
+  const { Name } = req.body
+  try{
+    addPositions(req, res, Name)
+    .catch((err) => {
+      throw err
+    })
+    .finally(async () => {
+     await prisma.$disconnect()
+    })
+  }
+  catch (err) {
+    throw err
+  }  
+})
+
+
+//add  nominee
+router.post("/add", upload.single('avatar'), async (req, res) => {
+  const { Name, Post } = req.body;
+  try{
+    addNominee(req, res, Name, Post)
+    .catch((err) => {
+      throw err
+    })
+    .finally(() => 
+    prisma.$disconnect())
+  }
+  catch(err) {
+    throw err
+  } 
 });
 
 
@@ -155,171 +214,13 @@ router.get("/Logout", (req, res) => {
 
 //POST routes
 
-//admin login
-router.post('/', (req, res) => {
-  try {
-    async function adminPost() {
-   
-      const { Email, password } = req.body;
-    
-      let user = await prisma.admin.findUnique({
-        where: {
-          email: Email
-        }
-      });
-      if (user == null) {
-        error.push({
-          msg: "Admin not found"
-        });
-        res.render('Admin', {
-          error,
-          Email, password
-        });
-        error = []
-      }
-      else if (user.password != password) {
-        error.push({
-          msg: "password is Incorrect"
-        });
-        res.render('Admin', {
-          error,
-          Email, password
-        });
-        error = []
-      }
-      
-      else {
-        const token = jwt.sign(
-          { user_id: user.id, Email },
-          process.env.TOKEN_KEY,
-          {
-            expiresIn: "2h"
-          }
-        )
-        let session = req.session;
-        session.token = token;
-        session.user = user.email
-        res.redirect('/dashboard')
-      }
-    }
-    adminPost(req, res)
-      .catch(err => { throw err })
-      .finally(async () => {
-        await prisma.$disconnect()
-      })
-  }
-  catch (err) {
-    console.log(err)
-  }
-})
 
-//register admin
-router.post("/register", (req, res) => {
-  try {
-    async function addAdminPost() {
-      const { Email, password} = req.body;
 
-      let user = await prisma.admin.findFirst({
-        where: {
-          email: Email,
-          password: password
-        },
-      });
 
-      if (user != null) {
-        error.push({
-          msg: "Admin already exists found",
-        })
-        
-      }
-      else {
-        await prisma.admin.create({
-          data: {
-            email: Email,
-            password: password,
-            id: uuidv4()
-          }
-        })
-      }
-    }
-    addAdminPost(req, res)
-      .catch((err) => {
-        throw err;
-      })
-      .finally(async () => {
-        await prisma.$disconnect();
-      });
-  } catch (err) {
-    console.log(err);
-  }
-  res.redirect('/')
-});
 
-//add office positions
-router.post("/position", async (req, res) => {
-   const position = await prisma.position.findFirst({
-    where: {
-      name: req.body.Name,
-      user: req.session.user       
-    }
-  })
-  if (position != null) {
-    error.push({ msg: "Nominee already exists" });
-  }
-  
-  if (req.session.user == undefined) {
-    req.session.destroy(() => {
-      res.redirect('/')
-    })
-  }
-  else {
-    await prisma.position.create({
-      data: {
-        name: req.body.Name,
-        user: req.session.user
-      }
-    })
-  }
-  res.redirect('/dashboard')
-})
 
-//add  nominee
-router.post("/add", upload.single('avatar'), async (req, res) => {
-  let posts = [];
-  let positions = await prisma.position.findMany();
-  positions.forEach((position) => {
-    posts.push(position.name);
-  });
-    const result = await cloudinary.uploader.upload(req.file.path)
-    const { Name, Post } = req.body;
-    let checkNominee = await prisma.nominee.findFirst({
-      where: {
-        name: Name,
-        post: Post,
-        user: req.session.user
-      }
-    });
-    if (checkNominee) {
-      console.log("nominee exists")
-      error.push({ msg: "Nominee already exists" })
-    }
-    else {
-      await prisma.nominee.create({
-        data: {
-          name: Name,
-          post: Post,
-          user: req.session.user,
-          image: result.secure_url,
-          id: uuidv4(),
-          votes: 0,
-          postNo: posts.indexOf(Post) + 1,
-        },
-      });
-         }
-  res.redirect("/dashboard");
 
- 
-});
+
 
 //update nominee
 router.post('/update', ensureAuthenticated, (req, res) => {
