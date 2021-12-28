@@ -4,11 +4,9 @@ const prisma = new PrismaClient();
 const router = express.Router();
 const upload = require("../config/multer");
 const { ensureAuthenticated } = require('../config/auth');
-const { nanoid } = require("nanoid");
-const { dashBoard, userLogin, userRegister, addPositions, addNominee } = require('../functions');
+const { dashBoard, userLogin, userRegister, addPositions, addNominee, updateNominee, deleteNominee, deleteAllNominees, generateCoupons, getCoupons, getResults, resetVotes } = require('../functions');
 
 let Results = []
-
 
 
 //GET routes
@@ -113,94 +111,114 @@ router.post("/add", upload.single('avatar'), async (req, res) => {
 });
 
 
-//election results
-router.get('/Results', ensureAuthenticated, async (req, res) => {
-  let posts = [];
-  let positions = await prisma.position.findMany({
-    where: {
-      user: req.session.user
-    }
-  });
-  positions.forEach((position) => {
-    posts.push(position.name);
-  });
-  Results = []
-  let Nominees = await prisma.nominee.findMany({
-    where: {
-      user: req.session.user
-    }
-  })
-  for (let i = 0; i < posts.length; i++) {
-    Results[i] = {}
-    Results[i].Category = posts[i]
-    Results[i].Nominees = []
-    Nominees.forEach(nominee => {
-      if (nominee.post == posts[i]) {
-        Results[i]["Nominees"].push(nominee)
-      }
+//update nominee
+router.post('/update', ensureAuthenticated, (req, res) => {
+  const { currentName, newName, currentPost, newPost } = req.body;
+  try{
+   updateNominee(req, res, currentName, newName, currentPost, newPost)
+    .catch((err) => {
+    throw err
     })
+  .finally( async () => await prisma.$disconnect())
   }
-  res.render('results', {
-    Results
-  });
+  catch (err) {
+    throw err
+  }
 });
 
-//create coupons
-router.get("/createCoupons", ensureAuthenticated, async (req, res) => {
-  for (i = 1; i <= 5; i++) {
-    let code = nanoid(10);
-    await prisma.coupons.create({
-      data: {
-        codes: code,
-        used: false,
-        user: req.session.user
-      },
-    });
+
+//delete nominee
+router.post('/delete', ensureAuthenticated, (req, res) => {
+  const { Name, Post } = req.body;
+  try{
+  deleteNominee(req, res, Name, Post)
+    .catch((err) => {
+      throw err;
+    })
+    .finally(async () => await prisma.$disconnect());
   }
-  res.redirect("/dashboard")
+  catch (err){
+    throw err
+  } 
 });
+
+
+//delete all nominees
+router.post("/deleteAll", ensureAuthenticated,  (req, res) => {
+  const { password } = req.body;
+  try{
+    deleteAllNominees(req, res, password)
+    .catch((err) => {
+      throw err;
+    })
+    .finally(async () => await prisma.$disconnect());
+  }
+  catch(err) {
+    throw err
+  }
+});
+
+
+//create coupons
+router.post("/generateCoupons", ensureAuthenticated, async (req, res) => {
+  const { number} = req.body;
+  try{
+    generateCoupons(req, res, number)
+    .catch((err) => {throw err
+    })
+    .finally(() => {
+      prisma.$disconnect()
+    })
+  }
+  catch(err){
+    throw err
+  }
+});
+
+//election results
+router.get('/Results', ensureAuthenticated, async (req, res) => {
+  try{
+    getResults(req, res)
+    .catch((err) => {throw err
+    })
+    .finally(() => {
+      prisma.$disconnect()
+    })
+  }
+  catch(err){
+    throw err
+  }
+  
+});
+
+
 
 // get coupons
 router.get("/coupons", ensureAuthenticated, async (req, res) => {
-  let coupons = await prisma.coupons.findMany({
-    where: {
-      used: false,
-      user: req.session.user
+  try{
+    getCoupons(req, res)
+      .catch((err) => {
+        throw err;
+      })
+      .finally(async () => await prisma.$disconnect());
     }
-  });
-  res.render('coupon', {
-    coupons
-  })
+    catch (err){
+      throw err
+    } 
 })
 
 //reset votes data
-router.get("/resetVotes", ensureAuthenticated, async (req, res) => {
+router.post("/resetVotes", ensureAuthenticated, async (req, res) => {
+  const { password } = req.body;
   try {
-    let admin = await prisma.admin.findUnique({
-      where: {
-        email: req.session.user
-      }
+    resetVotes(req, res, password)
+    .catch((err) => {
+      throw err;
     })
-    if (admin == null | undefined) {
-      res.redirect('/')
-    }
-    let Nominees = await prisma.nominee.findMany({});
-    if (admin.password == req.body.password) {
-      for (i = 0; i < Nominees.length; i++) {
-        await prisma.nominee.update({
-          where: {
-            id: Nominees[i].id,
-          },
-          data: {
-            votes: 0,
-          },
-        });
-      }
-    }
+    .finally(async () => await prisma.$disconnect());
   } catch (err) {
     console.log(err);
-  }
-  res.redirect("/Results");
+  }  
 });
 
 //admin logout
@@ -222,77 +240,10 @@ router.get("/Logout", (req, res) => {
 
 
 
-//update nominee
-router.post('/update', ensureAuthenticated, (req, res) => {
-  async function updatePost() {
-    const { currentName, newName, currentPost, newPost } = req.body;
-     await prisma.nominee.updateMany({
-        where: {
-        name: currentName,
-        post: currentPost,
-        user: req.session.user
-      },
-      data: {
-        name: newName,
-        post: newPost
-      }
-    });
-  }
-   updatePost(req, res)
-    .catch((err) => {
-    throw err
-    })
-  .finally( async () => await prisma.$disconnect())
-  res.redirect("/dashboard");
-});
 
-//delete nominee
-router.post('/delete', ensureAuthenticated, (req, res) => {
-  async function deletePost() {
-    const { Name, Post } = req.body;
-   
-    await prisma.nominee.deleteMany({
-      where: {
-        name: Name,
-        post: Post,
-        user: req.session.user
-      }
-    })
-  }
 
-  deletePost(req, res)
-    .catch((err) => {
-      throw err;
-    })
-    .finally(async () => await prisma.$disconnect());
 
-  res.redirect('/dashboard')
-});
 
-//delete all nominees
-router.post("/deleteAll", ensureAuthenticated,  (req, res) => {
-  async function deleteAll() {
-    const { Password } = req.body;
-    let admin = await prisma.admin.findFirst({
-      where:
-      {
-        email: req.session.user,
-        password: Password
-      }
-    });
-    if (admin) {
-      await prisma.nominee.deleteMany({})
-    }
-  }
-
-  deleteAll(req, res)
-    .catch((err) => {
-      throw err;
-    })
-    .finally(async () => await prisma.$disconnect());
-
-    res.render("dashboard");    
-});
 
 
 module.exports = router;

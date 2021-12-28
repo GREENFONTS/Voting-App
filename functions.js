@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require("uuid");
 const upload = require("./config/multer");
 const cloudinary = require('./config/cloudinary');
+const { nanoid } = require("nanoid");
 
 module.exports = {
 
@@ -58,6 +59,13 @@ module.exports = {
 //user login
   userLogin : async (req, res, email , password) => {   
     let error = []    
+    let options = {
+      action: "SignIn",
+      route: "/",
+      register: false,
+      error,
+      email, password
+    }
       let user = await prisma.admin.findUnique({
         where: {
           email: email
@@ -67,20 +75,14 @@ module.exports = {
         error.push({
           msg: "User not found"
         });
-        res.render('Admin', {
-          error,
-          email, password
-        });
+        res.render('Admin', options);
         error = []
       }
       else if (user.password != password) {
         error.push({
           msg: "password is Incorrect"
         });
-        res.render('Admin', {
-          error,
-          email, password
-        });
+        res.render('Admin', options);
         error = []
       }
       
@@ -150,6 +152,7 @@ module.exports = {
       res.redirect('/dashboard')
     },
 
+    //add nominees
     addNominee : async (req, res, Name, Post ) => {
       let posts = [];
       let positions = await prisma.position.findMany();
@@ -186,6 +189,147 @@ module.exports = {
  
     },
 
+    //update nominee
+    updateNominee : async (req, res, currentName, newName, currentPost, newPost ) => {      
+       await prisma.nominee.updateMany({
+          where: {
+          name: currentName,
+          post: currentPost,
+          user: req.session.user
+        },
+        data: {
+          name: newName,
+          post: newPost
+        }
+      });
+      res.redirect("/dashboard");
+    },
+
+    //delete nominee
+    deleteNominee : async (req, res, Name, Post) => {       
+      await prisma.nominee.deleteMany({
+        where: {
+          name: Name,
+          post: Post,
+          user: req.session.user
+        }
+      })
+      res.redirect('/dashboard')
+    },
+  
+    //delete all nominees
+    deleteAllNominees : async (req, res, password) => {
+      let admin = await prisma.admin.findFirst({
+        where:
+        {
+          email: req.session.user,
+        }
+      });
+      if (admin.password == password) {
+        await prisma.nominee.deleteMany({})
+        res.redirect('/dashboard')
+      }
+      else{
+        res.send({msg : "password Incorrect"})
+      }      
+    },
 
   
+    //generate coupons
+    generateCoupons : async (req, res, number) => {
+      for (i = 1; i <= parseInt(number); i++) {
+        let code = nanoid(10);
+        await prisma.coupons.create({
+          data: {
+            codes: code,
+            used: false,
+            user: req.session.user
+          },
+        });
+      }
+      res.redirect("/dashboard")
+    },
+
+
+    //get coupons
+    getCoupons : async (req, res) => {
+      let coupons = await prisma.coupons.findMany({
+        where: {
+          used: false,
+          user: req.session.user
+        }
+      });
+      res.render('dashboard', {
+        coupons
+      })
+    },
+
+
+    //get Results
+    getResults : async (req, res) => {
+    let posts = []
+    let Results = [];
+    let positions = await prisma.position.findMany({
+      where: {
+        user: req.session.user
+      }
+    });
+    if (positions != null){
+      positions.forEach((position) => {
+        posts.push(position.name);
+      });
+    }   
+    
+    let Nominees = await prisma.nominee.findMany({
+      where: {
+        user: req.session.user
+      }
+    })
+    for (let i = 0; i < posts.length; i++) {
+      Results[i] = {}
+      Results[i].Category = posts[i]
+      Results[i].Nominees = []
+      if(Nominees != null){
+      Nominees.forEach(nominee => {
+        if (nominee.post == posts[i]) {
+          Results[i]["Nominees"].push(nominee)
+        }
+      })
+    }
+    }
+    res.render('dashboard', {
+      Results
+    });
+  },
+
+
+  //reset election votes
+  resetVotes : async (req, res, password) => {
+    let admin = await prisma.admin.findUnique({
+      where: {
+        email: req.session.user
+      }
+    });
+    let Nominees = await prisma.nominee.findMany({
+      where: {
+        user: admin.email
+      }
+    });
+    if (admin.password != password) {
+      res.send({msg : "password Incorrect"})
+    }
+    else {
+      for (i = 0; i < Nominees.length; i++) {
+        await prisma.nominee.update({
+          where: {
+            id: Nominees[i].id,
+          },
+          data: {
+            votes: 0,
+          },
+        });
+      }
+      res.redirect("/dashboard");
+    }
+  }
 }
