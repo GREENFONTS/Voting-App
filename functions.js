@@ -59,46 +59,47 @@ module.exports = {
 //user login
   userLogin : async (req, res, email , password) => {   
     let error = []    
-    let options = {
-      action: "SignIn",
-      route: "/",
-      register: false,
-      error,
-      email, password
-    }
-      let user = await prisma.admin.findUnique({
-        where: {
-          email: email
-        }
-      });
-      if (user == null) {
-        error.push({
-          msg: "User not found"
-        });
-        res.render('Admin', options);
-        error = []
-      }
-      else if (user.password != password) {
-        error.push({
-          msg: "password is Incorrect"
-        });
-        res.render('Admin', options);
-        error = []
-      }
+    // let options = {
+    //   action: "SignIn",
+    //   route: "/",
+    //   register: false,
+    //   error,
+    //   email, password
+    // }
+    //   let user = await prisma.admin.findUnique({
+    //     where: {
+    //       email: email
+    //     }
+    //   });
+    //   if (user == null) {
+    //     error.push({
+    //       msg: "User not found"
+    //     });
+    //     res.render('Admin', options);
+    //     error = []
+    //   }
+    //   else if (user.password != password) {
+    //     error.push({
+    //       msg: "password is Incorrect"
+    //     });
+    //     res.render('Admin', options);
+    //     error = []
+    //   }
       
-      else {
-        const token = jwt.sign(
-          { user_id: user.id, email },
-          process.env.TOKEN_KEY,
-          {
-            expiresIn: "2h"
-          }
-        )
-        let session = req.session;
-        session.token = token;
-        session.user = user.email
-        res.redirect('/dashboard')
-      }
+    //   else {
+    //     const token = jwt.sign(
+    //       { user_id: user.id, email },
+    //       process.env.TOKEN_KEY,
+    //       {
+    //         expiresIn: "2h"
+    //       }
+    //     )
+    //     let session = req.session;
+    //     session.token = token;
+    //     session.user = user.email
+    //     res.redirect('/dashboard')
+    res.send('success')
+      // }
     },
 
     //admin Dashboard

@@ -6,8 +6,6 @@ const upload = require("../config/multer");
 const { ensureAuthenticated } = require('../config/auth');
 const { dashBoard, userLogin, userRegister, addPositions, addNominee, updateNominee, deleteNominee, deleteAllNominees, generateCoupons, getCoupons, getResults, resetVotes } = require('../functions');
 
-let Results = []
-
 
 //GET routes
 //admin login page
@@ -227,23 +225,5 @@ router.get("/Logout", (req, res) => {
     res.redirect("/");
   })
 });
-
-
-
-//POST routes
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "engines": {
     "node": ">=12"
@@ -23,9 +23,12 @@
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.3",
     "nanoid": "^3.1.25",
+    "request-promise": "^4.2.6",
+    "supertest": "^6.1.6",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "jest": "^27.4.5",
     "nodemon": "^2.0.12",
     "prisma": "^3.6.0"
   }
