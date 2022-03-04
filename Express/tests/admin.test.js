@@ -3,7 +3,7 @@ const app = express();
 const {PrismaClient} = require("@prisma/client");
 const prisma = new PrismaClient();
 const request = require('supertest')
-const router = require('../routes/admin');
+const router = require('../../routes/admin');
 
 
 app.use(express.urlencoded({ extended: false}))

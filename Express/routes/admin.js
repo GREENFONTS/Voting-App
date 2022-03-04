@@ -2,8 +2,8 @@ const express = require("express");
 const {PrismaClient} = require("@prisma/client");
 const prisma = new PrismaClient();
 const router = express.Router();
-const upload = require("../config/multer");
-const { ensureAuthenticated } = require('../config/auth');
+const upload = require("../Express/config/multer");
+const { ensureAuthenticated } = require('../Express/config/auth');
 const { dashBoard, userLogin, userRegister, addPositions, addNominee, updateNominee, deleteNominee, deleteAllNominees, generateCoupons, getCoupons, getResults, resetVotes } = require('../functions');
 
 
