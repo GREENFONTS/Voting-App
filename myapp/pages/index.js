@@ -1,26 +1,14 @@
 import { Component } from 'react';
 import Link from "next/link";
-import { Box, Flex, HStack, Icon, LinkBox, Text, VStack, Button, useDisclosure, useMediaQuery, Image, Center} from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
-import { RiYoutubeFill } from 'react-icons/ri';
-import { BiGitBranch, BiMoon } from 'react-icons/bi';
-import { ImSun } from 'react-icons/im';
-import { useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { Box,Text,Button,  useMediaQuery, Image, Center} from '@chakra-ui/react';
+import { useColorModeValue } from '@chakra-ui/react';
 import Bounce from 'react-reveal/Bounce';
-
-
 
 export default function Home() {
   const [isLargerThan900] = useMediaQuery('(min-width: 900px)')
-    const [isLargerThan500] = useMediaQuery('(min-width: 500px)')
-    const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
-    const { toggleColorMode } = useColorMode();
+    const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
     const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody')
     const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
-    const logoColor = useColorModeValue('red.500', 'red.500');
-    const textColor = useColorModeValue('themeLight.logo', 'themeDark.logo');
-    const icon = useColorModeValue(BiMoon, ImSun)
-    const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -35,7 +23,7 @@ export default function Home() {
          </Bounce>
          </Box>
 
-         <Box w={{md: '50%'}} h={{ base: '200px', md: '250px', lg: '450px' }}>
+         <Box w={{base: '100%', md: '50%'}} h={{ base: '200px', md: '250px', lg: '450px' }}>
            <Center h={{ base: '200px', md: '250px', lg: '450px' }}>
              <Box>
              <Box align='center' fontSize='20px'>
@@ -46,7 +34,7 @@ export default function Home() {
             <Box>
               <Center>
                 <Button bgColor='blue.300'>
-                <Link  href='/login'  _hover={{ transform: 'scale(1.05)', cursor: "pointer" }} fontWeight='500' fontSize={{ base: '12px', md: '14px', lg: '16px' }} >Let's get Started </Link>
+                <Link  href='/login'  _hover={{ transform: 'scale(1.05)', cursor: "pointer" }} fontWeight='500' fontSize={{ base: '12px', md: '14px', lg: '16px' }} >Get Started </Link>
                 </Button>
              
               </Center>
@@ -60,21 +48,22 @@ export default function Home() {
         
       
       </Center>}
-    <Box align='center' mt={5}>
-    <Box height={{ base: '270px', md: '350px' }} w='95%' borderLeft='2px' borderBottom='2px' borderRight='1px'borderTop='0.5px' borderColor='gray.200' boxShadow='base'
-          display={{ md: 'flex'}} px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} >
-
-         <Box w={{base: '100%', md: '50%'}} h={{ base: '200px', md: '250px', lg: '450px' }}>
+    {isLesserThan900 && <Box align='center' mt={5}>
+    <Box height={{ base: '70vh', md: '70vh' }} w='95%' borderLeft='2px' borderBottom='2px' borderRight='1px'borderTop='0.5px' borderColor='gray.200' boxShadow='base'
+           px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} align='center'>
+              <Box display="block" mb='10'>
          <Bounce left>         
-         <Image src='/images/votingbg.png' alt='Topic' h={{ base: '200px', md: '250px', lg: '450px' }}  width='100%' />         
+         <Image src='/images/votingbg.png' alt='Topic' h={{ base: '50vh', md: '50vh', lg: '470px' }}  width='100%' />         
          </Bounce>
          </Box>
 
-         <Box w={{md: '50%'}} h={{ base: '200px', md: '250px', lg: '450px' }}>
-
-         </Box>
+         <Box align='center' mt='4'>
+         <Button padding='7' fontSize='25px' bgColor={iconColor}>
+              <Link mt={2} href='/login' isExternal _focus={{ outline: 'none' }}   _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}>Get Started</Link>
+                    </Button>
+            </Box>
       </Box>
-    </Box>
+    </Box> }
       
 
       

@@ -11,7 +11,7 @@ import DrawerComponent from './Drawer';
 
 const Header = () => {
 
-    const [isLargerThan700] = useMediaQuery('(min-width: 700px)')
+    const [isLargerThan900] = useMediaQuery('(min-width: 1100px)')
     const [isLargerThan500] = useMediaQuery('(min-width: 500px)')
     const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
     const { toggleColorMode } = useColorMode();
@@ -46,8 +46,8 @@ const Header = () => {
                         <Icon as={BiGitBranch} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
                         </Link>}
                     <Icon as={icon} onClick={toggleColorMode} mx={10} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
-                    {isLargerThan700 && <Button>
-                        <Link mt={2} href='/login' isExternal _focus={{ outline: 'none' }} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}>Get Started</Link>
+                    {isLargerThan900 && <Button bgColor={iconColor}>
+                        <Link mt={2} href='/login' isExternal _focus={{ outline: 'none' }}  _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}>Get Started</Link>
                     </Button>}
                     
                 </Flex>
