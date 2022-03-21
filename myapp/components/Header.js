@@ -14,7 +14,7 @@ const Header = () => {
     const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
     const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
     const { toggleColorMode } = useColorMode();
-    const bgColor = useColorModeValue('white', 'dark')
+    const bgColor = useColorModeValue('#e8e8e8', 'gray.800')
     const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
     const textColor = useColorModeValue('themeLight.logo', 'themeDark.logo');
     const icon = useColorModeValue(BiMoon, ImSun)
@@ -26,9 +26,9 @@ const Header = () => {
                 <LinkBox>
                     <HStack _hover={{ cursor: "pointer" }}>
                         <Link href='/' _focus={{ outline: 'none' }}>
-                               <Icon as={FaVoteYea} w={{ base: '18px', md: '20px', lg: '35px' }} h={{ base: '18px', md: '20px', lg: '35px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}/> 
+                               <Icon as={FaVoteYea} w={{ base: '27px', md: '30px', lg: '35px' }} h={{ base: '18px', md: '20px', lg: '35px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}/> 
                            </Link>
-                        <Text fontWeight="bold"  fontSize={{ base: '14px', md: '16px', lg: '20px' }} fontFamily="cursive" color={textColor}>easy-vote</Text>
+                        <Text fontWeight='700' fontSize={{ base: '17px', md: '18px', lg: '20px' }} fontFamily="cursive" color={textColor}>easy-vote</Text>
 
                     </HStack>
                 </LinkBox>

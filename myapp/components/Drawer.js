@@ -74,16 +74,16 @@ const DrawerComponent = (props) => {
                         <Text >Godwill Onyewuchi Humphrey</Text>
                         <Flex align="center" justify="center" paddingRight='10px'>
                             <Box paddingRight='10px' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-                                <Link href='https://github.com/GREENFONTS' isExternal _focus={{ outline: 'none' }}><Icon as={VscGithub} color={bgGithub} /></Link>
+                                <a href='https://github.com/GREENFONTS' target='_blank' _focus={{ outline: 'none' }}><Icon as={VscGithub} color={bgGithub} /></a>
                             </Box>
                             <Box paddingRight='10px' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-                                <Link href='https://www.instagram.com/onyewuchigodwill/' isExternal _focus={{ outline: 'none' }}><Icon as={FaInstagram} color={bgInstagram} /></Link>
+                                <a href='https://www.instagram.com/onyewuchigodwill/' target='_blank' _focus={{ outline: 'none' }}><Icon as={FaInstagram} color={bgInstagram} /></a>
                             </Box>
                             <Box paddingRight='10px' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-                                <Link href='https://twitter.com/GODWILLONYEWUC1' isExternal _focus={{ outline: 'none' }}><Icon as={BsTwitter} color={bgTwitter} /></Link>
+                                <a href='https://twitter.com/GODWILLONYEWUC1' target='_blank' _focus={{ outline: 'none' }}><Icon as={BsTwitter} color={bgTwitter} /></a>
                             </Box>
-                            <Box paddingRight='10px' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-                                <Link href='https://www.linkedin.com/in/godwill-onyewuchi-6746621b4/' isExternal _focus={{ outline: 'none' }}><Icon as={BsLinkedin} color={bgLinkedIn} /></Link>
+                            <Box paddingRight='10px'  _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
+                                <a href='https://www.linkedin.com/in/godwill-onyewuchi-6746621b4/' target='_blank' _focus={{ outline: 'none' }}><Icon as={BsLinkedin} color={bgLinkedIn} /></a>
                             </Box>
                         </Flex>
                     </Flex>
