@@ -4,7 +4,7 @@ import { Box,Text,Button, useMediaQuery, Image, Center, FormControl, Input, Form
 import { useColorModeValue } from '@chakra-ui/react';
 import Bounce from 'react-reveal/Bounce';
 
-const Login = () => {
+const Register = () => {
     const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
     const [isLargerThan900] = useMediaQuery('(min-width: 900px)')
     const [firstName, setFirstName] = useState('');
@@ -22,9 +22,9 @@ const Login = () => {
         <Box >
         <Center>
         {isLargerThan900 && <Box display={{md : 'flex'}} height={{ base: '70vh', md: '90vh' }} w='95%' px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} >
-               <Box w={{base: '100%', md: '35%'}} h={{ base: '200px', md: '250px', lg: '85vh' }}>
+               <Box w={{base: '100%', md: '35%'}} h={{ lg: '85vh' }} mt='5'>
                 <Bounce left>         
-                    <Image src='/images/Login.png' alt='Topic' h='100%'  width='100%' />         
+                    <Image src='/images/signup.png' alt='Topic' h='70vh'  width='100%' />         
                 </Bounce>
                </Box>
                 <Box w='5%'></Box>
@@ -104,7 +104,7 @@ const Login = () => {
 {isLesserThan900 && <Box display={{md : 'flex'}} w='100%' px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} >
                <Box>
                 <Bounce left>         
-                    <Image src='/images/Login.png' alt='Topic' h='30vh'  width='100%' />         
+                    <Image src='/images/signup.png' alt='Topic' h='30vh'  width='100%' />         
                 </Bounce>
                </Box>
                <Box w='100%'>
@@ -176,4 +176,4 @@ const Login = () => {
     )
 }
 
-export default Login;
+export default Register;

@@ -17,6 +17,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.0",
     "@fortawesome/free-solid-svg-icons": "^6.1.0",
     "@fortawesome/react-fontawesome": "^0.1.18",
+    "@prisma/client": "^3.11.0",
     "babel-plugin-macros": "^3.1.0",
     "framer-motion": "^6.2.6",
     "next": "12.1.0",

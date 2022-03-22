@@ -74,7 +74,7 @@ export default function Home() {
       
       </Center>}
     {isLesserThan900 && <Box align='center' mt={5} >
-    <Box display='flex' height={{ base: '35vh', md: '35vh' }} w='95%' bg={bgColor} >
+    <Box display='flex' height={{ base: '30vh', md: '35vh' }} w='95%' bg={bgColor} >
       <Box w={{base: '10%', md:'20%'}} mt='3'>
         <Socials spacing='2'/>
       </Box>
@@ -107,13 +107,12 @@ export default function Home() {
           </Box>
         </Center>  
       </Box>
-        <Box w={{base:'10%'}} mt='5'></Box>
       </Box>
 
       <Box>
               <Box display="block">
          <Bounce left>         
-         <Image src='/images/votingbg.png' alt='Topic' h={{ base: '55vh', md: '55vh'  }}  width='100%' />         
+         <Image src='/images/votingbg.png' alt='Topic' h={{ base: '65vh', md: '55vh'  }}  width='100%' />         
          </Bounce>
          </Box>  
       </Box>
