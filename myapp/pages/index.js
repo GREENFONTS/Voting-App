@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { Component, useEffect } from 'react';
 import Link from "next/link";
 import { Box,Text,Button,  useMediaQuery, Image, Center, VStack, Icon} from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
@@ -11,7 +11,7 @@ export default function Home() {
     const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
     const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody')
     const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
-
+    
   return (
     <>
     <Box>

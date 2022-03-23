@@ -3,38 +3,38 @@ generator client {
 }
 
 datasource db {
-  provider = "postgres"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model admin {
-  firstName String
-  lastName String
-  userName String
-  tel String
+  firstName    String
+  lastName     String
+  userName     String
+  tel          String
   organization String
-  email    String @id
-  password String
-  id       String
+  email        String @id
+  password     String
+  id           String
 }
 
 model position {
-  name String @unique @id
+  name String @id @unique
   user String
 }
 
 model Nominee {
-  name  String
-  post  String
-  image String
-  votes Int
-  id    String @id
+  name   String
+  post   String
+  image  String
+  votes  Int
+  id     String @id
   postNo Int
-  user String
+  user   String
 }
 
 model Coupons {
   codes String  @id
   used  Boolean
-  user String
+  user  String
 }

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from "next/link";
-import { Box,Text,Button, useMediaQuery, Image, Center, FormControl, Input, FormLabel, FormHelperText} from '@chakra-ui/react';
+import router from 'next/router';
+import { Box,Text,Button, useMediaQuery, Image, Center, FormControl, Input, FormLabel, FormHelperText, Alert, AlertIcon, CloseButton} from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
 import Bounce from 'react-reveal/Bounce';
 
@@ -15,8 +16,73 @@ const Register = () => {
     const [organization, setOrganization] = useState('');
     const [password, setPassword] = useState('');
     const [password1, setPassword1] = useState('');
+    const [isPasswordLengthError, setIsPasswordLengthError] = useState(false);
+    const [isPasswordMatchError, setIsPasswordMatchError] = useState(false);
+    const [isRequired, setIsRequired] = useState(false);
+    const [formError, setFormError] = useState('');
+    const [alertMessage, setAlertMessage] =useState(null)
 
-    const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody')
+    const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody');
+    const formBody = {
+        firstName,
+        lastName,
+        userName,
+        email,
+        tel,
+        organization,
+        password,
+        password1
+    }
+
+useEffect(() => {
+    if(userName === '' || email === '' || organization === ''){
+        setIsRequired(true)
+    }
+    else{
+        setIsRequired(false)
+    }
+}, [userName, email, organization])
+
+
+useEffect(() => {
+ if(password.length > 1 && password.length < 8 ){
+    setFormError("Password must be greater than 8 characters")
+    setIsPasswordLengthError(true)
+ }
+ else{
+    setFormError("")
+    setIsPasswordLengthError(false)
+ }
+}, [password])
+
+useEffect(() => {
+    if(password1.length > 1 && password != password1 ){
+       setFormError("Passwords don't match")
+       setIsPasswordMatchError(true)
+    }
+    else{
+       setFormError("")
+       setIsPasswordMatchError(false)
+    }
+   }, [password1])
+
+    const submitHandler = async () => {
+        const res = await fetch('/api/register', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(formBody)
+        });
+        const data = await res.json()
+        if(res.status == 404){
+            setAlertMessage(data[0].msg)
+        }
+        if(res.status === 200){
+            router.push('/login')
+        }
+    }
+
     return (
         <>
         <Box >
@@ -34,7 +100,11 @@ const Register = () => {
                        <Text fontSize='18px' fontFamily='sans-serif' mb='2'>Create and host an online Election efficiently </Text>
                        <Text fontSize='15px' fontFamily='sans-serif' mb='2' color='gray.500'>Let's get you all set up so that you can create your admin account <br/>and set up the election </Text>
                    </Box>
-
+                   {alertMessage !== null ? <Alert status='error'> <AlertIcon />
+                        {alertMessage}
+                        <CloseButton position='absolute' right='8px' top='8px' onClick={(e) => setAlertMessage(null)} />
+                    </Alert> : <></>} 
+                     
                    <Box display={{lg:'flex'}}>
                    <FormControl w='45%'>
                    <FormLabel htmlFor='firstName'>FirstName</FormLabel>
@@ -79,17 +149,19 @@ const Register = () => {
                    <FormControl isRequired w='45%'>
                     <FormLabel htmlFor='password'>Password</FormLabel>
                     <Input id='password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                    {isPasswordLengthError ? <FormHelperText color='red.500' fontSize='11px'>{formError}</FormHelperText> : <></>}
                     </FormControl>
 
                     <Box w='5%'></Box>
                     <FormControl isRequired w='45%'>
                     <FormLabel htmlFor='password1'>Confirm Password</FormLabel>
                     <Input id='password1' type='password' value={password1} onChange={(e) => setPassword1(e.target.value)} />
+                    {isPasswordMatchError ? <FormHelperText color='red.500' fontSize='11px'>{formError}</FormHelperText> : <></>}
                    </FormControl>
                    </Box>
 
                    <Box mt='5'>
-                       <Button id='button' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>Create Account</Button>
+                       <Button id='button' disabled={isPasswordLengthError || isPasswordMatchError || isRequired} _hover={{ transform: 'scale(1.05)', cursor: "pointer" }} onClick={(e) => submitHandler()}>Create Account</Button>
                    </Box>
 
                    <Box mt='5' display='flex'>
@@ -113,6 +185,11 @@ const Register = () => {
                        <Text fontSize='15px' fontFamily='sans-serif' mb='2'>Create and host an online Election efficiently </Text>
                        <Text fontSize='12px' fontFamily='sans-serif' mb='2' color='gray.500'>Let's get you all set up so that you can create your admin account and set up the election </Text>
                    </Box>
+
+                   {alertMessage !== null ? <Alert status='error'> <AlertIcon />
+                        {alertMessage}
+                        <CloseButton position='absolute' right='8px' top='8px' onClick={(e) => setAlertMessage(null)} />
+                    </Alert> : <></>} 
 
                    <FormControl >
                    <FormLabel htmlFor='firstName'>FirstName</FormLabel>
@@ -148,15 +225,18 @@ const Register = () => {
                    <FormControl isRequired >
                     <FormLabel htmlFor='password'>Password</FormLabel>
                     <Input id='password' type='password' value={password} onChange={(e) => setPassword(e.target.value)} />
+                    {isPasswordLengthError ? <FormHelperText color='red.500' fontSize='11px'>{formError}</FormHelperText> : <></>}
                     </FormControl>
 
                     <FormControl isRequired >
                     <FormLabel htmlFor='password1'>Confirm Password</FormLabel>
                     <Input id='password1' type='password' value={password1} onChange={(e) => setPassword1(e.target.value)} />
+                    {isPasswordMatchError ? <FormHelperText color='red.500' fontSize='11px'>{formError}</FormHelperText> : <></>}
+
                    </FormControl>
 
                    <Box mt='5'>
-                       <Button id='button' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>Create Account</Button>
+                   <Button id='button' disabled={isPasswordLengthError || isPasswordMatchError || isRequired} _hover={{ transform: 'scale(1.05)', cursor: "pointer" }} onClick={(e) => submitHandler()}>Create Account</Button>
                    </Box>
 
                    <Box mt='5' display='flex'>
@@ -176,4 +256,6 @@ const Register = () => {
     )
 }
 
+
 export default Register;
+
