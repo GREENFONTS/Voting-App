@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Link from "next/link";
 import router from 'next/router';
 import { Box,Text,Button, useMediaQuery, Image, Center, FormControl, Input, FormLabel, Alert, Icon, AlertIcon, CloseButton} from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
 import Bounce from 'react-reveal/Bounce';
 import { FaUserLock } from 'react-icons/fa';
+import { userDetailsContext } from '../components/userDetailsProvider';
 
 const Login = ({users}) => {
     const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
@@ -13,6 +14,7 @@ const Login = ({users}) => {
     const [password, setPassword] = useState('');
     const [alertMessage, setAlertMessage] =useState(null);
     const [isRequired, setIsRequired] = useState(false);
+    const [user, setUser] = useContext(userDetailsContext);
 
 
     const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody')
@@ -44,11 +46,11 @@ const Login = ({users}) => {
             setAlertMessage(data[0].msg)
         }
         if(res.status == 200){
-            let user = data.user
+            let users = data.user
             let token = data.token
-            localStorage.setItem('user', JSON.stringify(user))
+            localStorage.setItem('user', JSON.stringify(users))
             localStorage.setItem('token', JSON.stringify(token))
-
+            setUser(users)
             router.push('/dashboard')
         }
     }

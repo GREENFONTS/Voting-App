@@ -1,12 +1,16 @@
 import '../styles/index.css'
 import { ChakraProvider } from '@chakra-ui/react'
-import Header from '../components/Header'
+import Header from '../components/Header';
+import UserDetailsProvider from '../components/userDetailsProvider';
 
 function MyApp({ Component, pageProps }) {
   return <ChakraProvider >
-    <Header />
+    <UserDetailsProvider>
+          <Header />
           <Component {...pageProps} />
-        </ChakraProvider>
+    </UserDetailsProvider>
+   
+      </ChakraProvider>
 }
 
 export default MyApp

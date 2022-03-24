@@ -1,22 +1,35 @@
 const jwt = require('jsonwebtoken')
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 module.exports = {
-  ensureAuthenticated: function (token) {
+  ensureAuthenticated: async function (token) {
     if (!token) {
-      return false
+      return null
     }
     else {
-      console.log(process.env.TOKEN_KEY)
+      let isTrue = false
+      let userData;
       jwt.verify(token, process.env.TOKEN_KEY, (err, user) => {
         if (err) {
-          console.log(err)
-          return false
+          return null
         }
-        console.log(user, process.env.TOKEN_KEY)
-        return user
         
+       userData = user
       });
+      if(userData != undefined){
+        let authorizedUser = await prisma.admin.findUnique({
+          where:{
+            email: userData.email
+          }
+        })
+        await prisma.$disconnect();
+        return authorizedUser
+      }
+      
+      
     }
+    
   }
 };
 

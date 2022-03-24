@@ -12,6 +12,7 @@ export default async function handler(req, res) {
         email: email
       }
     })
+    await prisma.$disconnect()
       if (user == null) {
         error.push({
           msg: "Email not found"
@@ -36,7 +37,7 @@ export default async function handler(req, res) {
             expiresIn: "2h"
           }
         )
-        return res.status(200).send({user : user, token : token})
+        return res.status(200).send({token : token, user : user})
         }
     
     }

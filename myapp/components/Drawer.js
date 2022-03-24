@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Link from "next/link";
-import { Drawer, DrawerBody, DrawerFooter, DrawerHeader,DrawerOverlay, DrawerContent, Text, Box, LinkBox, HStack,
+import { Drawer, DrawerBody, DrawerFooter, DrawerHeader,DrawerOverlay, DrawerContent, Text, Box, LinkBox, HStack,  Accordion,
+    AccordionItem,  AccordionButton,  AccordionPanel,     AccordionIcon,
     LinkOverlay, VStack, Icon, Button, Flex, Image, useColorModeValue} from '@chakra-ui/react'
 import {VscGithub} from 'react-icons/vsc';
-import { FaInstagram } from 'react-icons/fa';
+import { FaInstagram, FaEdit, FaList, FaDownload, FaDoorClosed } from 'react-icons/fa';
 import { BsLinkedin, BsTwitter } from 'react-icons/bs';
+import {BiReset} from 'react-icons/bi';
 import Fade from 'react-reveal/Fade';
 import { FaVoteYea } from 'react-icons/fa';
+import {AiOutlineClear} from 'react-icons/ai';
 
 const DrawerComponent = (props) => {
 
@@ -17,16 +20,29 @@ const DrawerComponent = (props) => {
     const bgLinkedIn = useColorModeValue('#0077b5', 'white');
     const bgTwitter = useColorModeValue('#1DA1F2', 'white');
     const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
+    const [user, setUser] = useState(null)
+    const [userCheck, setUserCheck] = useState(false);
 
+    useEffect(() => {
+        if(props.user != null){
+            setUser(props.user)
+            setUserCheck(true)
+        }
+    }, [])
+    
 
    return (
         <Drawer
+        
             isOpen={props.isOpen}
             placement='right'
             onClose={props.onClose}
+            isFullHeight={false}
         >
             <DrawerOverlay />
             <DrawerContent backgroundColor={bgColor}>
+            {!userCheck ? 
+                <>
                 <DrawerHeader>
                     <Flex w='100%' align='center' justify='space-between'>
                         <Box alignItems='center'>
@@ -62,6 +78,172 @@ const DrawerComponent = (props) => {
                         </Box>
                     </Fade>
                 </DrawerBody>
+                </> : <>
+                <DrawerHeader>
+                    <Flex w='100%' align='center' p='1px' justify='space-between'>
+                        <Box alignItems='center'>
+                            <LinkBox>
+                            <HStack _hover={{ cursor: "pointer" }}>
+                        <Link href='/' _focus={{ outline: 'none' }}>
+                               <Icon as={FaVoteYea} w={{ base: '18px', md: '20px', lg: '35px' }} h={{ base: '18px', md: '20px', lg: '35px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}/> 
+                           </Link>
+                        <Text fontWeight="bold"  fontSize={{ base: '14px', md: '16px', lg: '20px' }} fontFamily="cursive" color={textColor}>{user.organization}</Text>
+
+                    </HStack>
+                            </LinkBox>
+                        </Box>
+                        <Button h={10} w={10} variant='unstyled' m={3} onClick={props.onClose}>
+                            x
+                        </Button>
+                    </Flex>
+                </DrawerHeader>
+
+                <DrawerBody>
+                    <Box pb='2px'>
+                        <Text  _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='700' fontSize={{base: '15px', md: '18px', lg:'25px'}} color='purple.300'>MENU</Text>
+                    </Box>
+
+                    <Box>
+                    <Fade right>
+                    <Accordion defaultIndex={[0]} allowMultiple>
+                        <AccordionItem>
+                            <AccordionButton>
+                                <Box flex='1' textAlign='left'>
+                            <Text _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='700' fontSize={{base: '15px', md: '18px', lg:'20px'}} color='gray.500'>
+                            Positions
+                            </Text>
+                                </Box>
+                                <AccordionIcon />
+                            </AccordionButton>
+                            
+                            <AccordionPanel ml='4' p='2px' display='block' >
+                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={FaEdit} />
+                            <Link href='/addPosition' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Add Position</Link>
+                            </HStack>
+
+                           <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={FaList} />
+                            <Link href='/showPositions' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Show Positions</Link>
+                            </HStack>
+
+                            </AccordionPanel>
+                        </AccordionItem>
+                        </Accordion>                   
+                        
+                    </Fade>
+
+
+                    <Fade left>
+                    <Accordion defaultIndex={[0]} allowMultiple>
+                        <AccordionItem>
+                            <AccordionButton>
+                                <Box flex='1' textAlign='left'>
+                            <Text _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='700' fontSize={{base: '15px', md: '18px', lg:'20px'}} color='gray.500'>
+                            Nominees
+                            </Text>
+                                </Box>
+                                <AccordionIcon />
+                            </AccordionButton>
+                            
+                            <AccordionPanel ml='4' p={2} display='block' >
+                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={FaEdit} />
+                            <Link href='/addNominee' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Add Nominee</Link>
+                            </HStack>
+
+                           <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={FaList} />
+                            <Link href='/showNominees' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Show Nominees</Link>
+                            </HStack>
+                            
+                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={AiOutlineClear} />
+                            <Link href='/clearNominees' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Clear Nominees</Link>
+                            </HStack>
+                            </AccordionPanel>
+                        </AccordionItem>
+                        </Accordion>                   
+                        
+                    </Fade>
+
+                    <Fade bottom>
+                    <Accordion defaultIndex={[0]} allowMultiple>
+                        <AccordionItem>
+                            <AccordionButton>
+                                <Box flex='1' textAlign='left'>
+                            <Text _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='700' fontSize={{base: '15px', md: '18px', lg:'20px'}} color='gray.500'>
+                            Codes
+                            </Text>
+                                </Box>
+                                <AccordionIcon />
+                            </AccordionButton>
+                            
+                            <AccordionPanel ml='4' p='2px' display='block' >
+                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={FaEdit} />
+                            <Link href='/generateCodes' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Create Codes</Link>
+                            </HStack>
+
+                           <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={FaList} />
+                            <Link href='/showCodes' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Show Codes</Link>
+                            </HStack>
+
+                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={FaDownload} />
+                            <Link href='/downloadCodes' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Download Codes</Link>
+                            </HStack>
+
+                            </AccordionPanel>
+                        </AccordionItem>
+                        </Accordion>           
+                        
+                    </Fade>
+
+                    <Fade bottom>
+                    <Accordion defaultIndex={[0]} allowMultiple>
+                        <AccordionItem>
+                            <AccordionButton>
+                                <Box flex='1' textAlign='left'>
+                            <Text _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='700' fontSize={{base: '15px', md: '18px', lg:'20px'}} color='gray.500'>
+                            Election
+                            </Text>
+                                </Box>
+                                <AccordionIcon />
+                            </AccordionButton>
+                            
+                            <AccordionPanel ml='4' p='1px' display='block' >
+                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={FaEdit} />
+                            <Link href='/generateLink' target='_blank' fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Create Link</Link>
+                            </HStack>
+
+                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={FaDoorClosed} />
+                            <Link href='/endElection' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >End Election</Link>
+                            </HStack>
+
+                           <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={FaList} />
+                            <Link href='/showResults' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Show Result</Link>
+                            </HStack>
+
+                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
+                            <Icon as={BiReset} />
+                            <Link href='/resetVotes' target='_blank' fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Reset Votes</Link>
+                            </HStack>
+
+                            </AccordionPanel>
+                        </AccordionItem>
+                        </Accordion>                   
+                        
+                    </Fade>
+
+                    </Box>
+                   
+                </DrawerBody>
+                </>}
 
                 <DrawerFooter>
                     <Flex direction='column' px='4px' py='6px' h='100%' w='100%' bg={bgColor} borderTop='1px' borderColor='gray.200' align="center" justify="space-between" >
