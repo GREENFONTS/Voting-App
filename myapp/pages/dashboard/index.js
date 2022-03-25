@@ -1,12 +1,12 @@
 import {  useEffect, useState, useContext } from 'react';
 import Link from "next/link";
 import router from 'next/router';
-import { Flex, Box,Text,Button,  useMediaQuery, Image, Center, Stack, Icon, Skeleton} from '@chakra-ui/react';
+import { Flex, Box,Text,Button,  useMediaQuery, Modal, ModalBody, ModalHeader, ModalOverlay, ModalCloseButton, ModalContent,  ModalFooter, useDisclosure} from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
 import Bounce from 'react-reveal/Bounce';
 import Fade from 'react-reveal/Fade';
-import Socials from '../components/social';
-import { userDetailsContext } from '../components/userDetailsProvider';
+import Socials from '../../components/social';
+import { userDetailsContext } from '../../components/userDetailsProvider';
 
 
 const dashboard = () => {
@@ -16,9 +16,11 @@ const dashboard = () => {
     const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
     const [checkToken, setCheckToken] = useState(false);
     const [user, setUser] = useContext(userDetailsContext);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     useEffect(async () => {
         let token = JSON.parse(localStorage.getItem('token'))
+        
         if(token === null){
           router.push('/login')
         }
@@ -31,9 +33,7 @@ const dashboard = () => {
             router.push('/login')
         }
         else{
-          let user = data
-          localStorage.setItem('user', JSON.stringify(user))
-          setUser(data)
+          setUser(JSON.parse(localStorage.getItem('user')))
         }
         }
         

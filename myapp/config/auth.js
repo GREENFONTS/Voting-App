@@ -17,15 +17,16 @@ module.exports = {
         
        userData = user
       });
-      if(userData != undefined){
-        let authorizedUser = await prisma.admin.findUnique({
-          where:{
-            email: userData.email
-          }
-        })
-        await prisma.$disconnect();
-        return authorizedUser
-      }
+      // if(userData != undefined){
+      //   let authorizedUser = await prisma.admin.findUnique({
+      //     where:{
+      //       email: userData.email
+      //     }
+      //   })
+      //   await prisma.$disconnect();
+      //   return authorizedUser
+      return userData
+      // }
       
       
     }

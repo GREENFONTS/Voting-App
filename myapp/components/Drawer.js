@@ -10,6 +10,7 @@ import {BiReset} from 'react-icons/bi';
 import Fade from 'react-reveal/Fade';
 import { FaVoteYea } from 'react-icons/fa';
 import {AiOutlineClear} from 'react-icons/ai';
+import { userDetailsContext } from '../components/userDetailsProvider';
 
 const DrawerComponent = (props) => {
 
@@ -20,21 +21,26 @@ const DrawerComponent = (props) => {
     const bgLinkedIn = useColorModeValue('#0077b5', 'white');
     const bgTwitter = useColorModeValue('#1DA1F2', 'white');
     const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
-    const [user, setUser] = useState(null)
-    const [userCheck, setUserCheck] = useState(false);
+    const [user, setUser] = useState({})
+    const [userCheck, setUserCheck] = useState(true);
+    const [isOpen, setIsOpen] = useState(true);
+    const [check, setCheck] = useState(true)
 
     useEffect(() => {
-        if(props.user != null){
-            setUser(props.user)
+        setUser(JSON.parse(localStorage.getItem('user')))
+        if(user != null || {}){
+            
             setUserCheck(true)
         }
+        if(user.organization != undefined){
+            setCheck(false)
+        }
     }, [])
-    
 
    return (
         <Drawer
         
-            isOpen={props.isOpen}
+            isOpen={props.isOpen && isOpen}
             placement='right'
             onClose={props.onClose}
             isFullHeight={false}
@@ -87,7 +93,7 @@ const DrawerComponent = (props) => {
                         <Link href='/' _focus={{ outline: 'none' }}>
                                <Icon as={FaVoteYea} w={{ base: '18px', md: '20px', lg: '35px' }} h={{ base: '18px', md: '20px', lg: '35px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}/> 
                            </Link>
-                        <Text fontWeight="bold"  fontSize={{ base: '14px', md: '16px', lg: '20px' }} fontFamily="cursive" color={textColor}>{user.organization}</Text>
+                        <Text fontWeight="bold"  fontSize={{ base: '14px', md: '16px', lg: '20px' }} fontFamily="cursive" color={textColor}>{ user.organization }</Text>
 
                     </HStack>
                             </LinkBox>
@@ -119,7 +125,9 @@ const DrawerComponent = (props) => {
                             <AccordionPanel ml='4' p='2px' display='block' >
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
-                            <Link href='/addPosition' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Add Position</Link>
+                            <Button bg='white' onClick={(e) => setIsOpen(false)}>
+                            <Link href='/dashboard/addPosition' fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}}>Add Position</Link>
+                            </Button>
                             </HStack>
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >

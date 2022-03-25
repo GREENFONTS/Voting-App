@@ -30,7 +30,6 @@ const Header = () => {
         if(user != null || undefined){
             setUserCheck(true)
         }
-        console.log(user)
     }, [user])
 
     const signOutHandler = () => {
@@ -75,8 +74,6 @@ const Header = () => {
                                <Icon as={FaVoteYea} w={{ base: '27px', md: '30px', lg: '35px' }} h={{ base: '18px', md: '20px', lg: '35px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}/> 
                            </Link>
                         <Text fontWeight='700' mr='9' fontSize={{ base: '17px', md: '18px', lg: '20px' }} fontFamily="cursive" color={textColor}>{user.organization}</Text>
-                        <HamburgerIcon  onClick={onOpen} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
-                        <DrawerComponent isOpen={isOpen} onClose={onClose} user={user} />
                         
                     </HStack>
                 </LinkBox>
@@ -88,7 +85,8 @@ const Header = () => {
                     <Icon as={FaUser} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} mx={3}  color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
                    
                     <Button bgColor={bgColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer", borderBottom: '1px solid purple'}} fontFamily="cursive" fontSize={{ base: '11px', md: '15px', lg: '17px' }}  onClick={(e) => signOutHandler()}>SignOut</Button>
-
+                    <HamburgerIcon  onClick={onOpen} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
+                        <DrawerComponent isOpen={isOpen} onClose={onClose} user={user} />
                 </Flex>
 
                 
