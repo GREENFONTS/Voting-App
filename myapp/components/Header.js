@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Link from "next/link";
-import { Box, Flex, HStack, Icon, LinkBox, Text, VStack, Button, useDisclosure, useMediaQuery, Image, } from '@chakra-ui/react';
+import router from 'next/router';
+import { Box, Flex, HStack, Icon, LinkBox, Text, Button, useDisclosure, useMediaQuery, Tooltip} from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { FaUser, FaVoteYea } from 'react-icons/fa';
 import { BiMoon } from 'react-icons/bi';
@@ -32,8 +33,15 @@ const Header = () => {
         console.log(user)
     }, [user])
 
+    const signOutHandler = () => {
+        localStorage.clear()
+        setUser(null)
+        setUserCheck(false)
+        router.push('/login')
+    }
+
     return (
-        <Flex px={{ base: '24px', md: '27px', lg: '30px' }} py={2} h='50px' w='full' bg={bgColor} align="center" justify="space-between">
+        <Flex px={{ base: '15px', md: '20px', lg: '25px' }} py={1} h='50px' w='full' bg={bgColor} align="center" justify="space-between">
             {!userCheck ? <>  <Box alignItems='center'> 
                 <LinkBox>
                     <HStack _hover={{ cursor: "pointer" }}>
@@ -73,12 +81,14 @@ const Header = () => {
                     </HStack>
                 </LinkBox>
             </Box>
-            <Flex h='full' align="center" justify="space-between">
-                <Flex align="center" justify="space-between" >
-                <Icon as={icon} onClick={toggleColorMode} mx={5} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
-                    <Icon as={FaUser} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} mx={10}  color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
-                    <Text bgColor={textColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer"}} fontWeight='700' fontSize={{ base: '17px', md: '18px', lg: '20px' }} fontFamily="cursive">{user.userName}</Text>
-    
+            <Flex  align="center" >
+                <Flex align="center" >
+                <Icon as={icon} onClick={toggleColorMode} mx={3} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
+                    
+                    <Icon as={FaUser} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} mx={3}  color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
+                   
+                    <Button bgColor={bgColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer", borderBottom: '1px solid purple'}} fontFamily="cursive" fontSize={{ base: '11px', md: '15px', lg: '17px' }}  onClick={(e) => signOutHandler()}>SignOut</Button>
+
                 </Flex>
 
                 

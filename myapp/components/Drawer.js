@@ -44,7 +44,7 @@ const DrawerComponent = (props) => {
             {!userCheck ? 
                 <>
                 <DrawerHeader>
-                    <Flex w='100%' align='center' justify='space-between'>
+                    <Flex w='100%' align='center'  justify='space-between'>
                         <Box alignItems='center'>
                             <LinkBox>
                             <HStack _hover={{ cursor: "pointer" }}>
@@ -79,8 +79,8 @@ const DrawerComponent = (props) => {
                     </Fade>
                 </DrawerBody>
                 </> : <>
-                <DrawerHeader>
-                    <Flex w='100%' align='center' p='1px' justify='space-between'>
+                <DrawerHeader pt='0' pb='0'>
+                    <Flex w='100%' align='center' p='0' justify='space-between'>
                         <Box alignItems='center'>
                             <LinkBox>
                             <HStack _hover={{ cursor: "pointer" }}>
@@ -98,8 +98,8 @@ const DrawerComponent = (props) => {
                     </Flex>
                 </DrawerHeader>
 
-                <DrawerBody>
-                    <Box pb='2px'>
+                <DrawerBody pt='0' pb='0'>
+                    <Box>
                         <Text  _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='700' fontSize={{base: '15px', md: '18px', lg:'25px'}} color='purple.300'>MENU</Text>
                     </Box>
 
@@ -107,7 +107,7 @@ const DrawerComponent = (props) => {
                     <Fade right>
                     <Accordion defaultIndex={[0]} allowMultiple>
                         <AccordionItem>
-                            <AccordionButton>
+                            <AccordionButton pt='0.5' pb='0.5'>
                                 <Box flex='1' textAlign='left'>
                             <Text _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='700' fontSize={{base: '15px', md: '18px', lg:'20px'}} color='gray.500'>
                             Positions
@@ -135,9 +135,9 @@ const DrawerComponent = (props) => {
 
 
                     <Fade left>
-                    <Accordion defaultIndex={[0]} allowMultiple>
+                    <Accordion allowMultiple>
                         <AccordionItem>
-                            <AccordionButton>
+                            <AccordionButton pt='0.5' pb='0.5'>
                                 <Box flex='1' textAlign='left'>
                             <Text _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='700' fontSize={{base: '15px', md: '18px', lg:'20px'}} color='gray.500'>
                             Nominees
@@ -168,9 +168,9 @@ const DrawerComponent = (props) => {
                     </Fade>
 
                     <Fade bottom>
-                    <Accordion defaultIndex={[0]} allowMultiple>
+                    <Accordion allowMultiple>
                         <AccordionItem>
-                            <AccordionButton>
+                            <AccordionButton pt='0.5' pb='0.5'>
                                 <Box flex='1' textAlign='left'>
                             <Text _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='700' fontSize={{base: '15px', md: '18px', lg:'20px'}} color='gray.500'>
                             Codes
@@ -202,9 +202,9 @@ const DrawerComponent = (props) => {
                     </Fade>
 
                     <Fade bottom>
-                    <Accordion defaultIndex={[0]} allowMultiple>
+                    <Accordion allowMultiple>
                         <AccordionItem>
-                            <AccordionButton>
+                            <AccordionButton pt='0.5' pb='0.5'>
                                 <Box flex='1' textAlign='left'>
                             <Text _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='700' fontSize={{base: '15px', md: '18px', lg:'20px'}} color='gray.500'>
                             Election
