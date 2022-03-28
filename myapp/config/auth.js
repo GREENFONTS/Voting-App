@@ -1,7 +1,4 @@
 const jwt = require('jsonwebtoken')
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-
 module.exports = {
   ensureAuthenticated: async function (token) {
     if (!token) {

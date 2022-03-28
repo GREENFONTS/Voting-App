@@ -27,17 +27,19 @@ const DrawerComponent = (props) => {
     const [check, setCheck] = useState(true)
 
     useEffect(() => {
-        setUser(JSON.parse(localStorage.getItem('user')))
-        if(user != null || {}){
-            
+        let users = JSON.parse(localStorage.getItem('user'))
+        if(user === null || users === null ){
+            setUserCheck(false)
+        }
+        else if(user.organization != undefined || users.organization){
+            setCheck(false)
             setUserCheck(true)
         }
-        if(user.organization != undefined){
-            setCheck(false)
-        }
+        // console.log(user, !userCheck)
     }, [])
+    
 
-   return (
+    return (
         <Drawer
         
             isOpen={props.isOpen && isOpen}
@@ -126,7 +128,7 @@ const DrawerComponent = (props) => {
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
                             <Button bg='white' onClick={(e) => setIsOpen(false)}>
-                            <Link href='/dashboard/addPosition' fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}}>Add Position</Link>
+                            <Link href='/admin/addPosition' fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}}>Add Position</Link>
                             </Button>
                             </HStack>
 

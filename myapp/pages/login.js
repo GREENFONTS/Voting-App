@@ -51,7 +51,7 @@ const Login = ({users}) => {
             localStorage.setItem('user', JSON.stringify(users))
             localStorage.setItem('token', JSON.stringify(token))
             setUser(users)
-            router.push('/dashboard')
+            router.push('/admin')
         }
     }
     return (

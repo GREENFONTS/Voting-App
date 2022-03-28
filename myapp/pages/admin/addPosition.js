@@ -10,20 +10,18 @@ import { userDetailsContext } from '../../components/userDetailsProvider';
 
 
 const addPosition = () => {
-    const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody')
-    const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
-    const [checkToken, setCheckToken] = useState(false);
+    
     const [user, setUser] = useContext(userDetailsContext);
     const { onOpen, onClose } = useDisclosure();
     const [isOpen, setIsOpen] = useState(true);
     const [isAlertOpen, setAlertOpen] = useState(false);
-    const [position, setPosition] = useState('')
+    const [position, setPosition] = useState('');
+    const [response, setResponse] = useState('')
 
-    const submitHandler = () => {
-        setAlertOpen(true)
-        console.log(position)
+    
+    let formBody = {
+      position,
     }
-
 
     useEffect(async () => {
         let token = JSON.parse(localStorage.getItem('token'))
@@ -31,22 +29,34 @@ const addPosition = () => {
         if(token === null){
           router.push('/login')
         }
-        else{
-          const res = await fetch(`/api/dashboard/?token=${token}`);
-          const data = await res.json()
-          if(res.status === 403){            
-            localStorage.setItem('user', null)
-            setCheckToken(true)
-            router.push('/login')
-        }
-        else{
-          setUser(JSON.parse(localStorage.getItem('user')))
-        }
-        }
-        
-        
     }, [])
+    
+    const submitHandler = async () => {
+      console.log(formBody)
+      const res = await fetch('/api/admin/addPositions', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({position, user: user.email})
+    });
+    const data = await res.json()
 
+    if(res.status == 404){
+      setAlertOpen(true)
+      setResponse(data.msg)
+    }
+    else{
+    
+      setIsOpen(false)
+      setResponse(data.msg)
+      router.push('/admin')
+      
+     
+      
+    }
+
+    }
 
   return (
     <>
@@ -74,8 +84,8 @@ const addPosition = () => {
   </ModalContent>
 </Modal>
 
-{isAlertOpen ? <Alert status='success'> <AlertIcon />
-                        {position} Position added successfully
+{isAlertOpen ? <Alert status='error'> <AlertIcon />
+                        {response}
                         <CloseButton position='absolute' right='8px' top='8px'  onClick={() => setAlertOpen(false)}/>
                     </Alert> : <></>}
     </Flex>

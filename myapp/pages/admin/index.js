@@ -25,7 +25,7 @@ const dashboard = () => {
           router.push('/login')
         }
         else{
-          const res = await fetch(`/api/dashboard/?token=${token}`);
+          const res = await fetch(`/api/admin/?token=${token}`);
           const data = await res.json()
           if(res.status === 403){            
             localStorage.setItem('user', null)

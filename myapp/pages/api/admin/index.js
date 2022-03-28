@@ -1,7 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-import { verify } from "jsonwebtoken";
-const prisma = new PrismaClient();
-import { ensureAuthenticated} from '../../config/auth';
+import { ensureAuthenticated} from '../../../config/auth';
 
 export default async function handler(req, res) {
     const token = req.query.token
