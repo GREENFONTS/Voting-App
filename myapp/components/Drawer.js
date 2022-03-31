@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Link from "next/link";
-import { Drawer, DrawerBody, DrawerFooter, DrawerHeader,DrawerOverlay, DrawerContent, Text, Box, LinkBox, HStack,  Accordion,
+import { Drawer, DrawerBody, DrawerFooter, DrawerHeader,DrawerOverlay, DrawerContent, Text, Box, LinkBox, HStack,  Accordion, useDisclosure,
     AccordionItem,  AccordionButton,  AccordionPanel,     AccordionIcon,
     LinkOverlay, VStack, Icon, Button, Flex, Image, useColorModeValue} from '@chakra-ui/react'
 import {VscGithub} from 'react-icons/vsc';
@@ -10,7 +10,7 @@ import {BiReset} from 'react-icons/bi';
 import Fade from 'react-reveal/Fade';
 import { FaVoteYea } from 'react-icons/fa';
 import {AiOutlineClear} from 'react-icons/ai';
-import { userDetailsContext } from '../components/userDetailsProvider';
+import { useCounter } from '../services/state';
 
 const DrawerComponent = (props) => {
 
@@ -22,29 +22,26 @@ const DrawerComponent = (props) => {
     const bgTwitter = useColorModeValue('#1DA1F2', 'white');
     const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
     const [user, setUser] = useState({})
-    const [userCheck, setUserCheck] = useState(true);
-    const [isOpen, setIsOpen] = useState(true);
+    const [userCheck, setUserCheck] = useState(true)
     const [check, setCheck] = useState(true)
-
-    useEffect(() => {
-        let users = JSON.parse(localStorage.getItem('user'))
-        if(user === null || users === null ){
+    const [state, actions] = useCounter();
+    const {isOpen, onOpen, onClose } = useDisclosure()
+    
+    useEffect(async () => {
+        if(state.user === null){
             setUserCheck(false)
         }
-        else if(user.organization != undefined || users.organization){
-            setCheck(false)
-            setUserCheck(true)
-        }
-        // console.log(user, !userCheck)
-    }, [])
-    
+            const res = await fetch('/api/admin/positions/find') 
+            const data = await res.json()
+            console.log('entered')
+            actions.getPositions(data)      
+    }, [state.refreshDrawer])
 
     return (
         <Drawer
-        
-            isOpen={props.isOpen && isOpen}
+            onClose={onClose}
+            isOpen={state.drawerState}
             placement='right'
-            onClose={props.onClose}
             isFullHeight={false}
         >
             <DrawerOverlay />
@@ -64,7 +61,7 @@ const DrawerComponent = (props) => {
                     </HStack>
                             </LinkBox>
                         </Box>
-                        <Button h={10} w={10} variant='unstyled' m={3} onClick={props.onClose}>
+                        <Button h={10} w={10} variant='unstyled' m={3} onClick={() => actions.addDrawerState(false)}>
                             x
                         </Button>
                     </Flex>
@@ -95,12 +92,12 @@ const DrawerComponent = (props) => {
                         <Link href='/' _focus={{ outline: 'none' }}>
                                <Icon as={FaVoteYea} w={{ base: '18px', md: '20px', lg: '35px' }} h={{ base: '18px', md: '20px', lg: '35px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}/> 
                            </Link>
-                        <Text fontWeight="bold"  fontSize={{ base: '14px', md: '16px', lg: '20px' }} fontFamily="cursive" color={textColor}>{ user.organization }</Text>
+                        <Text fontWeight="bold"  fontSize={{ base: '14px', md: '16px', lg: '20px' }} fontFamily="cursive" color={textColor}>{ state.user === null ? '' : state.user.organization }</Text>
 
                     </HStack>
                             </LinkBox>
                         </Box>
-                        <Button h={10} w={10} variant='unstyled' m={3} onClick={props.onClose}>
+                        <Button h={10} w={10} variant='unstyled' m={3} onClick={() => actions.addDrawerState(false)}>
                             x
                         </Button>
                     </Flex>
@@ -127,14 +124,22 @@ const DrawerComponent = (props) => {
                             <AccordionPanel ml='4' p='2px' display='block' >
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
-                            <Button bg='white' onClick={(e) => setIsOpen(false)}>
-                            <Link href='/admin/addPosition' fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}}>Add Position</Link>
+                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.addDrawerState(false)
+                                actions.addPosition(true)
+                            }}>
+                            Add Position
                             </Button>
                             </HStack>
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaList} />
-                            <Link href='/showPositions' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Show Positions</Link>
+                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.addDrawerState(false)
+                                actions.listPositions(true)
+                            }}>
+                            Show Positions
+                            </Button>
                             </HStack>
 
                             </AccordionPanel>
@@ -159,7 +164,12 @@ const DrawerComponent = (props) => {
                             <AccordionPanel ml='4' p={2} display='block' >
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
-                            <Link href='/addNominee' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Add Nominee</Link>
+                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.addDrawerState(false)
+                                actions.addNominee(true)
+                            }}>
+                            Add Nominees
+                            </Button>
                             </HStack>
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >

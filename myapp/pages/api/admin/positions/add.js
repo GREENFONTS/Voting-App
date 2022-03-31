@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-    console.log(req.body.position)
     const position = await prisma.position.findFirst({
         where: {
           name: req.body.position,
@@ -11,7 +10,6 @@ export default async function handler(req, res) {
       })
       if (position != null) {
         res.status(404).json({msg: "Nominee already exists"});
-        console.log(position)
       }
       else {
         await prisma.position.create({

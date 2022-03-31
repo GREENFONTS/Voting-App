@@ -1,4 +1,4 @@
-import { ensureAuthenticated} from '../../../config/auth';
+import { ensureAuthenticated} from '../../../services/auth';
 
 export default async function handler(req, res) {
     const token = req.query.token

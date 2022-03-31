@@ -1,25 +1,18 @@
-import {  useEffect, useState, useContext } from 'react';
+import {  useEffect, useState } from 'react';
 import Link from "next/link";
 import router from 'next/router';
-import { Flex, Box,Text,Button,  useMediaQuery, Modal, ModalBody, ModalHeader, ModalOverlay, ModalCloseButton, ModalContent,  ModalFooter, useDisclosure} from '@chakra-ui/react';
-import { useColorModeValue } from '@chakra-ui/react';
-import Bounce from 'react-reveal/Bounce';
-import Fade from 'react-reveal/Fade';
-import Socials from '../../components/social';
-import { userDetailsContext } from '../../components/userDetailsProvider';
+import { Flex} from '@chakra-ui/react';;
+import { useCounter } from '../../services/state';
+import AddPosition from '../../components/admin/positions/addPosition';
+import PositionList from '../../components/admin/positions/listPositions';
+import AddNominee from '../../components/admin/nominees/addNominees';
 
-
-const dashboard = () => {
-    const [isLargerThan900] = useMediaQuery('(min-width: 900px)')
-    const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
-    const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody')
-    const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
-    const [checkToken, setCheckToken] = useState(false);
-    const [user, setUser] = useContext(userDetailsContext);
-    const { isOpen, onOpen, onClose } = useDisclosure();
+const admin = () => {
+    const [state, actions] = useCounter();
 
     useEffect(async () => {
         let token = JSON.parse(localStorage.getItem('token'))
+        let users = JSON.parse(localStorage.getItem('user'))
         
         if(token === null){
           router.push('/login')
@@ -29,25 +22,22 @@ const dashboard = () => {
           const data = await res.json()
           if(res.status === 403){            
             localStorage.setItem('user', null)
-            setCheckToken(true)
             router.push('/login')
+        } else if (data.email === users.email){
+          actions.addUser(users)
         }
-        else{
-          setUser(JSON.parse(localStorage.getItem('user')))
         }
-        }
-        
         
     }, [])
 
-
-
   return (
     <>
-
+    <AddPosition isOpen={state.addPositionModal} isClose={actions.addPosition} user={state.user}/>
+    <PositionList isOpen={state.listPositionModal} isClose={actions.listPositions} user={state.user} positions={state.positions} refreshDrawer={actions.refreshDrawer}/>
+    <AddNominee isOpen={state.addNomineeModal} isClose={actions.addNominee} user={state.user} positions={state.positions} />
     </>
   )
 }
 
 
-export default dashboard;
+export default admin;

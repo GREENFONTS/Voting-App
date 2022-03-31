@@ -5,7 +5,7 @@ import { Box,Text,Button, useMediaQuery, Image, Center, FormControl, Input, Form
 import { useColorModeValue } from '@chakra-ui/react';
 import Bounce from 'react-reveal/Bounce';
 import { FaUserLock } from 'react-icons/fa';
-import { userDetailsContext } from '../components/userDetailsProvider';
+import { useCounter } from '../services/state';
 
 const Login = ({users}) => {
     const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
@@ -14,7 +14,7 @@ const Login = ({users}) => {
     const [password, setPassword] = useState('');
     const [alertMessage, setAlertMessage] =useState(null);
     const [isRequired, setIsRequired] = useState(false);
-    const [user, setUser] = useContext(userDetailsContext);
+    const [state, actions] = useCounter();
 
 
     const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody')
@@ -50,7 +50,7 @@ const Login = ({users}) => {
             let token = data.token
             localStorage.setItem('user', JSON.stringify(users))
             localStorage.setItem('token', JSON.stringify(token))
-            setUser(users)
+            actions.addUser(users)
             router.push('/admin')
         }
     }
