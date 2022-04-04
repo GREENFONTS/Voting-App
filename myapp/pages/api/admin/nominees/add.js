@@ -1,19 +1,40 @@
 import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
-const formidable = require('formidable-serverless');
-const upload = require('../../../../services/multer');
-const cloudinary = require('../../../../config/cloudinary')
+const {v4 : uuidv4}= require('uuid')
 
 export default async function handler(req, res) {
-    console.log(req.body.image)
+    const prisma = new PrismaClient();
 
-    const form = new formidable.IncomingForm();
+    let checkNominee = null
+    let positions = req.body.positions
+    try{
+       checkNominee  = await prisma.nominee.findMany({
+            where: {
+            name: req.body.name,
+            post: req.body.position,
+            user: req.body.user.email
+          }
+        });
 
-    form.parse(req, function(err, fields, files) {
-        console.log('reachedd')
-      res.writeHead(200, {'content-type': 'text/plain'});
-      res.write('received upload:\n\n');
-      res.end(util.inspect({fields: fields, files: files}));
-      console.log(fields, files)
-    });
+    }
+  catch(err){
+      console.log(err)
+  }
+  
+    if (checkNominee.length > 0) {
+      res.status(404).send({msg: "Nominee already exists"})
+    }
+    else {
+      await prisma.nominee.create({
+        data: {
+          name: req.body.name,
+          post: req.body.position,
+          user: req.body.user.email,
+          id: uuidv4(),
+          votes: 0,
+          postNo: positions.indexOf(req.body.post) + 1,
+        },
+      });
+      await prisma.$disconnect();
+      res.status(200).send({msg: "Nominee created successfully"})
+    }
 }

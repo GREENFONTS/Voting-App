@@ -39,9 +39,13 @@ const AddPosition = (props) => {
       setResponse(data.msg)
     }
     else{
-
+      setPosition('')
       setAlertSuccess(true)
       setResponse(data.msg)  
+
+      const res = await fetch('/api/admin/positions/find')
+      const datas = await res.json()
+      props.getPositions(datas)
     }
 
     }

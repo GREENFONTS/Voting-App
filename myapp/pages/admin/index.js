@@ -6,6 +6,7 @@ import { useCounter } from '../../services/state';
 import AddPosition from '../../components/admin/positions/addPosition';
 import PositionList from '../../components/admin/positions/listPositions';
 import AddNominee from '../../components/admin/nominees/addNominees';
+import NomineesList from '../../components/admin/nominees/listNominees';
 
 const admin = () => {
     const [state, actions] = useCounter();
@@ -32,9 +33,11 @@ const admin = () => {
 
   return (
     <>
-    <AddPosition isOpen={state.addPositionModal} isClose={actions.addPosition} user={state.user}/>
+    <AddPosition isOpen={state.addPositionModal} isClose={actions.addPosition} user={state.user} getPositions={actions.getPositions}/>
     <PositionList isOpen={state.listPositionModal} isClose={actions.listPositions} user={state.user} positions={state.positions} refreshDrawer={actions.refreshDrawer}/>
     <AddNominee isOpen={state.addNomineeModal} isClose={actions.addNominee} user={state.user} positions={state.positions} />
+    <NomineesList isOpen={state.listNomineeModal} isClose={actions.listNominees} user={state.user} nominees={state.nominees} refreshDrawer={actions.refreshDrawer}/>
+
     </>
   )
 }

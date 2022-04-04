@@ -18,7 +18,8 @@ export default async function handler(req, res) {
             user: req.body.user
           }
         })
+        await prisma.$disconnect();
         res.status(200).json({msg: `${req.body.position} added successfully`});
       }
-      await prisma.$disconnect();
+     
 }

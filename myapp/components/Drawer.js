@@ -28,13 +28,23 @@ const DrawerComponent = (props) => {
     const {isOpen, onOpen, onClose } = useDisclosure()
     
     useEffect(async () => {
-        if(state.user === null){
+        if(state.user === null || state.user === undefined){
             setUserCheck(false)
         }
-            const res = await fetch('/api/admin/positions/find') 
-            const data = await res.json()
-            console.log('entered')
-            actions.getPositions(data)      
+        else{
+            console.log(state.user)
+            const positionsRes = await fetch('/api/admin/positions/find', {
+                method: 'POST',
+                body: JSON.stringify({user: state.user})
+            }) 
+            const positionData = await positionsRes.json()
+            actions.getPositions(positionData) 
+
+            const nomineesRes = await fetch('/api/admin/nominees/find') 
+            const nomineesData = await nomineesRes.json()
+            actions.getNominees(nomineesData)
+        }
+                 
     }, [state.refreshDrawer])
 
     return (
@@ -174,7 +184,12 @@ const DrawerComponent = (props) => {
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaList} />
-                            <Link href='/showNominees' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Show Nominees</Link>
+                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.addDrawerState(false)
+                                actions.listNominees(true)
+                            }}>
+                            Show Nominees
+                            </Button>
                             </HStack>
                             
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >

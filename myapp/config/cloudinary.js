@@ -1,8 +1,8 @@
 const cloudinary = require('cloudinary').v2;
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
+  cloud_name: 'elevio',
+  api_key: "441632273511282",
+  api_secret: 'QZ_pdgzLjbs90_CinCMIkUYAxis',
 });
 
 module.exports = cloudinary;

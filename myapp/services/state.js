@@ -10,6 +10,8 @@ const Store = createStore({
     positions: [],
     refreshDrawer : false,
     addNomineeModal: false,
+    nominees: [],
+    listNomineeModal : false,
   },
   // actions that trigger store mutation
   actions: { 
@@ -65,7 +67,23 @@ const Store = createStore({
           addNomineeModal: value,
         });
       },
+
+      listNominees:
+      (value) =>
+      ({ setState, getState }) => {
+        setState({
+          listNomineeModal: value,
+        });
+      },
+      getNominees:
+      (value) =>
+      ({ setState, getState }) => {
+        setState({
+          nominees: value,
+        });
+      },
   },
 });
 
 export const useCounter = createHook(Store);
+

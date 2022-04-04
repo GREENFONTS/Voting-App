@@ -1,6 +1,7 @@
 import {  useEffect, useState } from 'react';
 import { Flex, Alert, AlertIcon, CloseButton, Button, FormControl, FormLabel, Input,  Modal, ModalBody, ModalHeader, 
-  ModalCloseButton, ModalContent,  ModalFooter, useDisclosure} from '@chakra-ui/react';
+  ModalCloseButton, ModalContent,  ModalFooter, useDisclosure, StatHelpText} from '@chakra-ui/react';
+import { sha1Generator } from '../../../services/sha';
 
 const AddNominee = (props) => {
 
@@ -9,14 +10,15 @@ const AddNominee = (props) => {
     const [isAlertSuccess, setAlertSuccess] = useState(false);
     const [name, setName] = useState('');
     const [position, setPosition] = useState('');
-    const [image, setImage] = useState();
+    const [image, setImage] = useState(null);
     const [inputCheck, setInputCheck] = useState(false)
     const [response, setResponse] = useState('');
      
     let formBody = {
       name, 
       position,
-      image
+      positions: props.positions,
+      user : props.user
     }
 
     useEffect(() => {
@@ -29,33 +31,24 @@ const AddNominee = (props) => {
     }, [position])
   
     const submitHandler = async () => {
-        console.log(image)
-       let result = await fetch(
-			'https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5',
-			{
-				method: 'POST',
-				body: image,
-			}
-		)
-        console.log(result)
-    //   const res = await fetch('/api/admin/nominees/add', {
-    //     method: 'POST',
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //       },
-    //       body: JSON.stringify(formBody)
-    // });
-    // const data = await res.json()
+      const res = await fetch(`/api/admin/nominees/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({name, position, positions: props.positions, user: props.user})
+    });
+    const data = await res.json()
 
-    // if(res.status == 404){
-    //   setAlertError(true)
-    //   setResponse(data.msg)
-    // }
-    // else{
+    if(res.status == 404){
+      setAlertError(true)
+      setResponse(data.msg)
+    }
+    else{
 
-    //   setAlertSuccess(true)
-    //   setResponse(data.msg)  
-    // }
+      setAlertSuccess(true)
+      setResponse(data.msg)  
+    }
 
     }
 
@@ -84,11 +77,10 @@ const AddNominee = (props) => {
             <Input id='position' type='text' value={position} onChange={(e) => setPosition(e.target.value)} />
         </FormControl>
 
-         <FormControl isRequired >
+         {/* <FormControl isRequired >
             <FormLabel htmlFor='image'>Upload Image</FormLabel>
-            <Input id='image' type='file' onChange={(e) => {console.log(e.target.files[0])
-                setImage(e.target.files[0])}} />
-        </FormControl>
+            <Input id='image' type='file' onChange={(e) => setImage(e.target.files[0])} />
+        </FormControl> */}
     </ModalBody>
 
     <ModalFooter>
