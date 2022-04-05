@@ -32,17 +32,26 @@ const DrawerComponent = (props) => {
             setUserCheck(false)
         }
         else{
-            console.log(state.user)
             const positionsRes = await fetch('/api/admin/positions/find', {
                 method: 'POST',
-                body: JSON.stringify({user: state.user})
+                body: JSON.stringify({user: state.user.email})
             }) 
             const positionData = await positionsRes.json()
             actions.getPositions(positionData) 
 
-            const nomineesRes = await fetch('/api/admin/nominees/find') 
+            const nomineesRes = await fetch('/api/admin/nominees/find', {
+                method: 'POST',
+                body: JSON.stringify({user: state.user.email})
+            }) 
             const nomineesData = await nomineesRes.json()
             actions.getNominees(nomineesData)
+
+            const codesRes = await fetch('/api/admin/codes/find', {
+                method: 'POST',
+                body: JSON.stringify({user: state.user.email})
+            }) 
+            const codesData = await codesRes.json()
+            actions.getCodes(codesData)
         }
                  
     }, [state.refreshDrawer])
@@ -135,6 +144,7 @@ const DrawerComponent = (props) => {
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
                             <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.addPosition(true)
                             }}>
@@ -145,6 +155,7 @@ const DrawerComponent = (props) => {
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaList} />
                             <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.listPositions(true)
                             }}>
@@ -175,6 +186,7 @@ const DrawerComponent = (props) => {
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
                             <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.addNominee(true)
                             }}>
@@ -194,7 +206,13 @@ const DrawerComponent = (props) => {
                             
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={AiOutlineClear} />
-                            <Link href='/clearNominees' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Clear Nominees</Link>
+                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.listNominees(false)
+                                actions.addDrawerState(false)
+                                actions.clearNominees(true)
+                            }}>
+                            Clear Nominees
+                            </Button>
                             </HStack>
                             </AccordionPanel>
                         </AccordionItem>
@@ -217,17 +235,24 @@ const DrawerComponent = (props) => {
                             <AccordionPanel ml='4' p='2px' display='block' >
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
-                            <Link href='/generateCodes' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Create Codes</Link>
+                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.listNominees(false)
+                                actions.addDrawerState(false)
+                                actions.generateCode(true)
+                            }}>
+                            Generate Codes
+                            </Button>
                             </HStack>
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaList} />
-                            <Link href='/showCodes' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Show Codes</Link>
-                            </HStack>
-
-                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
-                            <Icon as={FaDownload} />
-                            <Link href='/downloadCodes' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Download Codes</Link>
+                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.listNominees(false)
+                                actions.addDrawerState(false)
+                                actions.listCodes(true)
+                            }}>
+                            Show Codes
+                            </Button>
                             </HStack>
 
                             </AccordionPanel>

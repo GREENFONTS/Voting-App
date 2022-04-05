@@ -1,7 +1,8 @@
 import {  useEffect, useState} from 'react';
 import {FaEdit, FaTrash} from 'react-icons/fa'
 import { Flex, Box, Text, Icon, Alert, AlertIcon, CloseButton, Button, FormControl, FormLabel, Input,  Modal, ModalBody, 
-    ModalHeader,  ModalCloseButton, ModalContent,  ModalFooter, useDisclosure} from '@chakra-ui/react';
+    ModalHeader,  ModalCloseButton, ModalContent,  ModalFooter, useDisclosure, Image, VStack, HStack, Select} from '@chakra-ui/react';
+import {MdArrowDropDown} from 'react-icons/md';
 
 const NomineesList = (props) => {
 
@@ -13,36 +14,40 @@ const NomineesList = (props) => {
     const [inputCheck, setInputCheck] = useState(false)
     const [response, setResponse] = useState('');
     const [isOpen, setIsOpen] = useState(false);
-    const [positionName, setPositionName] = useState(null)
-    
+    const [name, setName] = useState('');
+    const [nomineeName, setNomineeName] = useState('')
+    const [currentState, setCurrentState] = useState(null)
+
     useEffect(() => {
-        if(position.length < 1){
-          setInputCheck(true)
-        }
-        else{
-            setInputCheck(false)
-        }
-      }, [position])
+      if(position.length < 1 || name.length < 1){
+        setInputCheck(true)
+      }
+      else{
+          setInputCheck(false)
+      }
+    }, [position, name])
   
     const submitHandler = async () => {
-      const res = await fetch('/api/admin/positions/update', {
+      const res = await fetch('/api/admin/nominees/update', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({positionName, position, user: props.user.email})
+          body: JSON.stringify({name, position, user: props.user.email, currentState})
     });
     const data = await res.json()
 
     if(res.status == 404){
-    setPosition('')
+      setPosition('')
+      setName('')
       setAlertError(true)
       setResponse(data.msg)
     }
     else{
-    setPosition('')
+     setPosition('')
+     setName('')
       props.refreshDrawer(true)
-      props.isClose(false)
+      props.isClose(true)
       setAlertSuccess(true)
       setResponse(data.msg)  
     }
@@ -54,13 +59,12 @@ const NomineesList = (props) => {
       setAlertSuccess(false)
     }
 
-    const deleteHandler = async (name) => {
-        const res = await fetch(`/api/admin/positions/delete?position=${name}&user=${props.user.email}`)
+    const deleteHandler = async (ele) => {
+        const res = await fetch(`/api/admin/nominees/delete?name=${ele.name}&position=${ele.post}&user=${props.user.email}`)
         const data = await res.json()
 
         if(res.status === 200){
         props.refreshDrawer()
-      props.isClose(false)
       setAlertSuccess(true)
       setResponse(data.msg) 
         }
@@ -69,70 +73,7 @@ const NomineesList = (props) => {
 
   return (
     <>
-    <Flex p='5'>
-    <Modal isOpen={props.isOpen} onClose={onClose}>
-  {/* <ModalOverlay /> */}
-   <ModalContent>
-    <ModalHeader align='center'>Positions</ModalHeader>
-    <ModalCloseButton onClick={(e) => props.isClose(false)} />
-    <ModalBody>
-        <>{props.nominees.map((ele) => {
-            return (
-                < >
-                <Flex bg='#e9e9e9' p='1' borderRadius='2px' mb='2'>
-                    <Box w='80%'>
-                        <Text fontSize={{lg: '20px'}} fontFamily='cursive'>{ele.name}</Text>
-                    </Box>
-                    <Box w='20%' align='center' p='2'>
-                    <Icon mr='20px' as={FaEdit} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => { setPositionName(ele.name)
-                        setIsOpen(true) }
-                    }/>
-                        <Icon as={FaTrash} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => deleteHandler(ele.name)}/>
-                    </Box>
-            
-                
-                </Flex>
-                {updateCheck ?
-                <Flex p='1'>
-                    <Box w='70%'>
-                    <FormControl isRequired >
-                    <FormLabel htmlFor='position'>Update Position</FormLabel>
-                    <Input id='position' type='position' value={position} onChange={(e) => setPosition(e.target.value)} />
-                    
-                </FormControl>
-                    </Box>
-                <Box w='30%' align='center' p='2'>
-                <br />
-                <Button disabled={inputCheck} bg='#e8e8e8' mr={3} onClick={() => {setUpdateCheck(false)
-                submitHandler()
-      }}>
-        Submit
-      </Button></Box>
-                
-                </Flex>
-                
-                
-         : <></>}
-         </>
-            )
-        })}
-            
-                </>
-                
-            
-        
-    </ModalBody>
-
-    <ModalFooter>
-      <Button bg='#e8e8e8' mr={3} onClick={() => {
-          props.isClose(false)
-      }}>
-        Close
-      </Button>
-    </ModalFooter>
-  </ModalContent>
-</Modal> 
-{isAlertError ? <Alert status='error'> <AlertIcon />
+    {isAlertError ? <Alert status='error'> <AlertIcon />
                         {response}
                         <CloseButton position='absolute' right='8px' top='8px'  onClick={() => handleClose()}/>
                     </Alert> : <></>}
@@ -143,24 +84,70 @@ const NomineesList = (props) => {
                     </Alert> : <></>}
 
 
-    </Flex>
+    <Box p='5'>
+      <Box mb='1' align='center'>
+        <Text fontSize={{base: '20px', md:'25px', lg:'35px'}} fontFamily='cursive' fontWeight='700'>Nominees</Text>
+      </Box>
+    <Flex display={{base: 'block'}}>
+      {props.nominees.map((ele) => {
+        return(
+        <Box mb='2' display={ {md: 'inline-block'}} key={ele.id} align='center' p='1' w={{base: "100%", md: "47%", lg:"32%" }} mr={{lg:'3'}} h={{base: "50vh", md: "30vh", lg:"40vh" }} borderLeft='1px' borderBottom='1px' borderColor='gray.200' boxShadow='base'>
+        <Image src='/Images/flag.png' alt='Nominee Image' objectFit='cover' boxSize={{base: "40vh", md: "20vh", lg:"25vh" }}/>
+        <Flex p='1' justify='space-between'>
+          <VStack align='start'>
+            <Text>Name: {ele.name}</Text>
+            <Text>Position: {ele.post}</Text>
+          </VStack>
+          <Box p='2'>
+          <HStack>
+          <Icon mr='10px' as={FaEdit} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => { setCurrentState(ele)
+                        setIsOpen(true) }
+                    }/>
+                        <Icon as={FaTrash} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => deleteHandler(ele)}/>
+          </HStack>
+          </Box>
+          
+        </Flex>
+        </Box>
+        )
+      })}
+      
+      
+    </Flex> 
+  
+
+
+
+    </Box>
 
     <Modal isOpen={isOpen} onClose={onClose}>
   {/* <ModalOverlay /> */}
    <ModalContent>
-    <ModalHeader align='center'>Update Position - {positionName}</ModalHeader>
+    <ModalHeader align='center'>Update Nominee - {currentState != null ? currentState.name : ''}</ModalHeader>
     <ModalCloseButton onClick={(e) => setIsOpen(false)} />
     <ModalBody>
         <FormControl isRequired >
+            <FormLabel htmlFor='name'>Name</FormLabel>
+            <Input id='name' type='text' value={name} onChange={(e) => setName(e.target.value)} />
+        </FormControl>
+
+        <FormControl isRequired >
             <FormLabel htmlFor='position'>Position</FormLabel>
-            <Input id='position' type='position' value={position} onChange={(e) => setPosition(e.target.value)} />
+            <Select icon={<MdArrowDropDown />} placeholder='Select Nominee Position' onChange={(e) => setPosition(e.target.value)}>
+            {props.positions.map((ele) => {
+            return (
+            <option value={ele.name}>{ele.name}</option>
+            )}
+            )}
+
+            </Select>
         </FormControl>
     </ModalBody>
 
     <ModalFooter>
       <Button disabled={inputCheck} bg='#e8e8e8' mr={3} onClick={() => {
           setIsOpen(false)
-          submitHandler(positionName)
+          submitHandler(name, position)
       }}>
         Submit
       </Button>

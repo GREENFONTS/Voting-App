@@ -12,6 +12,11 @@ const Store = createStore({
     addNomineeModal: false,
     nominees: [],
     listNomineeModal : false,
+    clearNomineesModal: false,
+    generateCodeModal: false,
+    codes: [],
+    listCodesModal : false,
+
   },
   // actions that trigger store mutation
   actions: { 
@@ -80,6 +85,33 @@ const Store = createStore({
       ({ setState, getState }) => {
         setState({
           nominees: value,
+        });
+      },
+      clearNominees: (value) =>
+      ({ setState, getState }) => {
+        setState({
+          clearNomineesModal: value,
+        });
+      },
+      generateCode:
+      (value) =>
+      ({ setState, getState }) => {
+        setState({
+          generateCodeModal: value,
+        });
+      },
+      listCodes:
+      (value) =>
+      ({ setState, getState }) => {
+        setState({
+          listCodesModal: value,
+        });
+      },
+      getCodes:
+      (value) =>
+      ({ setState, getState }) => {
+        setState({
+          codes: value,
         });
       },
   },

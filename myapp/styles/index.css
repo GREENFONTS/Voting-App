@@ -21,3 +21,9 @@
         box-shadow: 2px 2px 4px #c5c5c5, -2px -2px 4px #ffffff;
     }
   }
+
+  @media print {
+    #header{
+        display: none;
+    }
+}
