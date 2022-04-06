@@ -18,20 +18,35 @@ const Voting = ({router}) => {
     const [isRequired, setIsRequired] = useState(true);
     const [alertMessage, setAlertMessage] = useState(null)
     const user = router.query;
+
+    useEffect(async () => {
+        const res = await fetch(`/api/voting/?user=${user.id}`);
+        const data = await res.json()
+
+        if(res.status == 404){
+            router.push('/404.js')
+        }
+        if(res.status == 200){
+            localStorage.setItem('admin', data.user) 
+        }
+    }, [])
     useEffect(() => {
         if(code.length > 1){
             setIsRequired(false)
         }
     }, [code])
     const submitHandler = async () => {
-        const res = await fetch(`/api/voting/code/?code=${code}&user=${user.id}`)
+        let email = localStorage.getItem('admin')
+        const res = await fetch(`/api/voting/code/?code=${code}&user=${email}`)
         const data = await res.json()
 
         if(res.status == 404){
             setAlertMessage(data.msg)
         }
         if(res.status == 200){
-            localStorage.setItem('token', data.token)
+            localStorage.setItem('codeToken', data.token)
+            localStorage.setItem('positions', JSON.stringify(data.positions))
+            localStorage.setItem('nominees', JSON.stringify(data.nominees))
             router.push(`/voting/${user.organization}/${user.id}/name`)
         }
     }

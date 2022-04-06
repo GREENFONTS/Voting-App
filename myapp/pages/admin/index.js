@@ -42,7 +42,7 @@ const admin = () => {
     {state.listCodesModal ? <CodeList isOpen={state.listCodesModal} isClose={actions.listCodesModal} codes={state.codes} user={state.user} refreshDrawer={actions.refreshDrawer} /> : <></> }
     <AddPosition isOpen={state.addPositionModal} isClose={actions.addPosition} user={state.user} getPositions={actions.getPositions} refreshDrawer={actions.refreshDrawer}/>
     <PositionList isOpen={state.listPositionModal} isClose={actions.listPositions} user={state.user} positions={state.positions} refreshDrawer={actions.refreshDrawer}/>
-    <AddNominee isOpen={state.addNomineeModal} listNomineeModal={actions.listNominees} isClose={actions.addNominee} user={state.user} positions={state.positions} refreshDrawer={actions.refreshDrawer}/>
+    <AddNominee isOpen={state.addNomineeModal} listNomineeModal={actions.listNominees} positions={state.positions} isClose={actions.addNominee} user={state.user} refreshDrawer={actions.refreshDrawer}/>
     <ClearNominees clearNominees={actions.clearNominees} isOpen={state.clearNomineesModal} refreshDrawer={actions.refreshDrawer}/>
     <GenerateLink isClose={actions.generateLink} isOpen={state.generateLinkModal} user={state.user} />
     <GenerateCode generateCode={actions.generateCode} isOpen={state.generateCodeModal} refreshDrawer={actions.refreshDrawer} user={state.user} />

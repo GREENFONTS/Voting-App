@@ -88,7 +88,14 @@ const AddNominee = (props) => {
 
         <FormControl isRequired >
             <FormLabel htmlFor='position'>Position</FormLabel>
-            <Input id='position' type='text' value={position} onChange={(e) => setPosition(e.target.value)} />
+            <Select icon={<MdArrowDropDown />} placeholder='Select Nominee Position' onChange={(e) => setPosition(e.target.value)}>
+            {props.positions.map((ele) => {
+            return (
+            <option value={ele.name}>{ele.name}</option>
+            )}
+            )}
+
+            </Select>
         </FormControl>
 
          {/* <FormControl isRequired >
