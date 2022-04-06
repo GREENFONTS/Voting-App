@@ -43,7 +43,6 @@ const GenerateCode = (props) => {
     }
     else{
       setNumber("")
-      props.listCodes(true)
       props.refreshDrawer(true)
       setAlertSuccess(true)
       setResponse(data.msg)  

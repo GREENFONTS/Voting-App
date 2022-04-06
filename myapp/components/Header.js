@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Link from "next/link";
-import router from 'next/router';
+import {withRouter, router} from 'next/router';
 import { Box, Flex, HStack, Icon, LinkBox, Text, Button, useDisclosure, useMediaQuery, Tooltip} from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { FaUser, FaVoteYea } from 'react-icons/fa';
@@ -10,7 +10,7 @@ import { useColorMode, useColorModeValue } from '@chakra-ui/react';
 import DrawerComponent from './Drawer';
 import { useCounter } from '../services/state';
 
-const Header = () => {
+const Header = ({router}) => {
 
     const [isLargerThan900] = useMediaQuery('(min-width: 900px)')
     const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
@@ -24,6 +24,12 @@ const Header = () => {
     const [userCheck, setUserCheck] = useState(false);
     const [click, setClick] = useState(false);
     const [state, actions] = useCounter()
+
+    useEffect(() => {
+        if(router.pathname.includes('/voting/')){
+            actions.setHeaderState(false)
+        }
+    }, [])
  
     useEffect(() => {
         if(state.user != null){
@@ -39,6 +45,8 @@ const Header = () => {
     }
 
     return (
+        <>
+        {state.headerState ? 
         <Flex id='header' px={{ base: '15px', md: '20px', lg: '25px' }} py={1} h='50px' w='full' bg={bgColor} align="center" justify="space-between">
             {!userCheck ? <>  <Box alignItems='center'> 
                 <LinkBox>
@@ -90,8 +98,10 @@ const Header = () => {
                 
             </Flex></>}
         </Flex >
+: <></>}
+        </>
         
     )
         
 }
-export default Header
+export default withRouter(Header)

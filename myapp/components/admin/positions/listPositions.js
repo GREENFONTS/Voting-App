@@ -78,8 +78,8 @@ const PositionList = (props) => {
     <ModalBody>
         <>{props.positions.map((ele) => {
             return (
-                < >
-                <Flex bg='#e9e9e9' p='1' borderRadius='2px' mb='2'>
+                <>
+                <Flex bg='#e9e9e9' p='1' borderRadius='2px' mb='2' key={props.positions.indexOf(ele)}>
                     <Box w='80%'>
                         <Text fontSize={{lg: '20px'}} fontFamily='cursive'>{ele.name}</Text>
                     </Box>
