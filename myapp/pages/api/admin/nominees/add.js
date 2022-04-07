@@ -5,7 +5,12 @@ export default async function handler(req, res) {
     const prisma = new PrismaClient();
 
     let checkNominee = null
-    let positions = req.body.positions
+    let positionData = req.body.positions
+    let positions = []
+    positionData.forEach(element => {
+      positions.push(element.name)
+    });
+    
     try{
        checkNominee  = await prisma.nominee.findMany({
             where: {
@@ -31,7 +36,7 @@ export default async function handler(req, res) {
           user: req.body.user.email,
           id: uuidv4(),
           votes: 0,
-          postNo: positions.indexOf(req.body.post) + 1,
+          postNo: positions.indexOf(req.body.position) + 1,
         },
       });
       await prisma.$disconnect();

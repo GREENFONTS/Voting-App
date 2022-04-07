@@ -71,7 +71,6 @@ const Login = ({users}) => {
                    </Box>
                    <Box>
                        <Text fontSize='30px' fontFamily='sans-serif' mb='9' fontWeight='700'>Login</Text>
-                       <Text fontSize='18px' fontFamily='sans-serif' mb='5'>Login to your account </Text>
                        <Text fontSize='15px' fontFamily='sans-serif' mb='2' color='gray.500'>Welcome back, let's get back to business </Text>
                    </Box>
                    
@@ -117,7 +116,6 @@ const Login = ({users}) => {
                    </Box>
                    <Box>
                        <Text fontSize='20px' fontFamily='sans-serif' mb='9' fontWeight='700'>Login</Text>
-                       <Text fontSize='15px' fontFamily='sans-serif' mb='5'>Login to your account </Text>
                        <Text fontSize='12px' fontFamily='sans-serif' mb='2' color='gray.500'>Welcome back, let's get back to business </Text>
                    </Box>
                    

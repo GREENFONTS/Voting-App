@@ -22,20 +22,42 @@ const Voting = ({router}) => {
     useEffect(async () => {
         const res = await fetch(`/api/voting/?user=${user.id}`);
         const data = await res.json()
+        let email = data.user
 
         if(res.status == 404){
             router.push('/404.js')
         }
         if(res.status == 200){
-            localStorage.setItem('admin', data.user) 
+            localStorage.setItem('admin', email) 
+
+            const positionsRes = await fetch('/api/admin/positions/find', {
+              method: 'POST',
+              body: JSON.stringify({user: email})
+          }) 
+          const positionData = await positionsRes.json()
+          localStorage.setItem('positions', JSON.stringify(positionData))
+
+          const nomineesRes = await fetch('/api/admin/nominees/find', {
+              method: 'POST',
+              body: JSON.stringify({user: email})
+          }) 
+          const nomineesData = await nomineesRes.json()
+          
+          localStorage.setItem('nominees', JSON.stringify(nomineesData))
         }
     }, [])
+
     useEffect(() => {
         if(code.length > 1){
             setIsRequired(false)
-        }
+        }        
     }, [code])
     const submitHandler = async () => {
+      let positions = []
+      JSON.parse(localStorage.getItem('positions')).forEach((ele) => {
+        positions.push(ele.name)
+      })
+        console.log(positions)
         let email = localStorage.getItem('admin')
         const res = await fetch(`/api/voting/code/?code=${code}&user=${email}`)
         const data = await res.json()
@@ -45,15 +67,15 @@ const Voting = ({router}) => {
         }
         if(res.status == 200){
             localStorage.setItem('codeToken', data.token)
-            localStorage.setItem('positions', JSON.stringify(data.positions))
-            localStorage.setItem('nominees', JSON.stringify(data.nominees))
-            router.push(`/voting/${user.organization}/${user.id}/name`)
+            router.push(`/voting/${user.organization}/${user.id}/${positions[0]}`)
         }
     }
+ 
   return (
       <>
     <Box w='100%' h='100vh'  bgGradient='linear(to-r, gray.200, white, gray.100)'>
-
+    <>
+    </>
     {isLargerThan900 && <Center h='90vh' w='100%'>
         <Box height={{ base: '230px', md: '300px', lg: '80vh' }} w='95%' display={{ md: 'flex'}} px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} alignSelf="center">
       

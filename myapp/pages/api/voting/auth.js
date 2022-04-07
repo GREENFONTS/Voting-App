@@ -1,7 +1,6 @@
 import { ensureAuthenticated} from '../../../services/auth';
 
 export default async function handler(req, res) {
-    console.log('enetered')
     const token = req.query.token
     const verifyToken = await ensureAuthenticated(token)
     if(verifyToken === undefined || null){

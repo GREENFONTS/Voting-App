@@ -144,6 +144,7 @@ const DrawerComponent = (props) => {
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
                             <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.listCodes(false)
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.addPosition(true)
@@ -155,6 +156,7 @@ const DrawerComponent = (props) => {
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaList} />
                             <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.listCodes(false)
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.listPositions(true)
@@ -189,6 +191,7 @@ const DrawerComponent = (props) => {
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.addNominee(true)
+                                actions.listCodes(false)
                             }}>
                             Add Nominees
                             </Button>
@@ -210,6 +213,7 @@ const DrawerComponent = (props) => {
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.clearNominees(true)
+                                actions.listCodes(false)
                             }}>
                             Clear Nominees
                             </Button>
@@ -239,6 +243,7 @@ const DrawerComponent = (props) => {
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.generateCode(true)
+                                actions.listCodes(false)
                             }}>
                             Generate Codes
                             </Button>

@@ -7,16 +7,6 @@ export default async function handler(req, res) {
     const code = req.query.code
     const email = req.query.user
 
-    let positions = await prisma.position.findMany({
-        where: {
-            user: email
-        }
-    })
-    let nominees = await prisma.nominee.findMany({
-        where: {
-            user: email
-        }
-    })
     let codeData = await prisma.coupons.findMany({
         where: {
             user: email,
@@ -50,7 +40,7 @@ export default async function handler(req, res) {
           }
         )
         await prisma.$disconnect()
-        res.status(200).json({token, positions: positions, nominees: nominees})
+        res.status(200).json({token})
     
     }
 }

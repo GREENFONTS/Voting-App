@@ -1,6 +1,6 @@
 import {  useEffect, useState} from 'react';
 import {FaDownload} from 'react-icons/fa'
-import {Box, Text, Icon, useDisclosure, HStack, Table, TableContainer, Tr, Td, Th, Tbody, Tfoot, Thead} from '@chakra-ui/react';
+import {Box, Text, Icon, useDisclosure, HStack, Table, TableContainer, Tr, Td, Th, Tbody, Tfoot, Thead, Button} from '@chakra-ui/react';
 
 const CodeList = (props) => {
 
@@ -10,11 +10,6 @@ const CodeList = (props) => {
       <Box mb='2' align='center'>
         <Text fontSize={{base: '20px', md:'25px', lg:'35px'}} fontFamily='cursive' fontWeight='700'>Election Codes</Text>
       </Box>
-
-      <Box mb='1' align='center'>
-        <Text fontSize={{base: '15px', md:'20px', lg:'30px'}} fontFamily='cursive' fontWeight='700'>List of unused election codes</Text>
-      </Box>
-
     
       <TableContainer w={{md:'50%'}} mt='3'>
         <Table variant='striped' colorScheme='gray' size='sm' >
@@ -36,7 +31,7 @@ const CodeList = (props) => {
       
     </Tbody>
     <Tfoot align='center'>
-         <Text mt='4' fontSize='20px' fontFamily='cursive' fontWeight='600' _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} onClick={() => window.print()}>Download PDF</Text>
+         <Button mt='4' fontSize='20px' fontFamily='cursive' fontWeight='600' _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} onClick={() => window.print()}>Download PDF</Button>
     </Tfoot>
   </Table>
 </TableContainer>

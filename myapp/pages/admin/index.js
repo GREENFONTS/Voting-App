@@ -34,7 +34,7 @@ const admin = () => {
         }
         
     }, [])
-    // console.log(state.listNomineeModal)
+    console.log(state)
   return (
     <>
     <Box>
