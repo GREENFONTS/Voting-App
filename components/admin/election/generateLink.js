@@ -5,12 +5,18 @@ import { Flex, Icon, Button, Box, Modal, ModalBody, ModalHeader,
 import {MdFileCopy} from 'react-icons/md';
 import {TiTick} from 'react-icons/ti';
 const GenerateLink = (props) => {
-
+let url = ''
+if(process.env.NODE_ENV == 'development'){
+  url = 'http://localhost:3000/voting'
+}
+else{
+  url = 'https://acol-elect.herokuapp.com'
+}
     const { onOpen, onClose } = useDisclosure();
     const [copy, setCopy] = useState(false)
     let link = null 
     if(props.user){
-       link  = `http://localhost:3000/voting/${props.user.organization}/${props.user.id}`
+       link  = `${url}/${props.user.organization}/${props.user.id}`
     }
     async function copyToClipboard() {
         try {
