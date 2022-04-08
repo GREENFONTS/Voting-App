@@ -98,7 +98,7 @@ useEffect(() => {
                    <Box>
                        <Text fontSize='30px' fontFamily='sans-serif' mb='4' fontWeight='700'>Register</Text>
                        <Text fontSize='18px' fontFamily='sans-serif' mb='2'>Create and host an online Election efficiently </Text>
-                       <Text fontSize='15px' fontFamily='sans-serif' mb='2' color='gray.500'>Let's get you all set up so that you can create your admin account <br/>and set up the election </Text>
+                       <Text fontSize='15px' fontFamily='sans-serif' mb='2' color='gray.500'>Lets get you all set up so that you can create your admin account <br/>and set up the election </Text>
                    </Box>
                    {alertMessage !== null ? <Alert status='error'> <AlertIcon />
                         {alertMessage}
@@ -183,7 +183,7 @@ useEffect(() => {
                    <Box>
                        <Text fontSize='20px' fontFamily='sans-serif' mb='4' fontWeight='700'>Register</Text>
                        <Text fontSize='15px' fontFamily='sans-serif' mb='2'>Create and host an online Election efficiently </Text>
-                       <Text fontSize='12px' fontFamily='sans-serif' mb='2' color='gray.500'>Let's get you all set up so that you can create your admin account and set up the election </Text>
+                       <Text fontSize='12px' fontFamily='sans-serif' mb='2' color='gray.500'>Lets get you all set up so that you can create your admin account and set up the election </Text>
                    </Box>
 
                    {alertMessage !== null ? <Alert status='error'> <AlertIcon />

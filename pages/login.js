@@ -71,7 +71,7 @@ const Login = ({users}) => {
                    </Box>
                    <Box>
                        <Text fontSize='30px' fontFamily='sans-serif' mb='9' fontWeight='700'>Login</Text>
-                       <Text fontSize='15px' fontFamily='sans-serif' mb='2' color='gray.500'>Welcome back, let's get back to business </Text>
+                       <Text fontSize='15px' fontFamily='sans-serif' mb='2' color='gray.500'>Welcome back, lets get back to business </Text>
                    </Box>
                    
                    {alertMessage !== null ? <Alert status='error'> <AlertIcon />
@@ -94,7 +94,7 @@ const Login = ({users}) => {
                    </Box>
 
                    <Box mt='5' display='flex'>
-                       <Text mr='2'>Don't have an account yet? </Text>
+                       <Text mr='2'>Dont have an account yet? </Text>
                        <Text color='purple.600' fontFamily='sans-serif' fontWeight='600' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}><Link href='/register' >SignUp</Link></Text>
                    </Box>
                    
@@ -116,7 +116,7 @@ const Login = ({users}) => {
                    </Box>
                    <Box>
                        <Text fontSize='20px' fontFamily='sans-serif' mb='9' fontWeight='700'>Login</Text>
-                       <Text fontSize='12px' fontFamily='sans-serif' mb='2' color='gray.500'>Welcome back, let's get back to business </Text>
+                       <Text fontSize='12px' fontFamily='sans-serif' mb='2' color='gray.500'>Welcome back, lets get back to business </Text>
                    </Box>
                    
                    {alertMessage !== null ? <Alert status='error'> <AlertIcon />

@@ -15,7 +15,7 @@ const Posts = () => {
  let nominees = []
   
 
-  useEffect(async() => {
+  useEffect(async () => {
     const queryValue = window.location.pathname.split('/').slice(2,)
     const organization = queryValue[0]
     setOrganization(queryValue[0])

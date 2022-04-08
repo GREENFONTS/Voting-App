@@ -293,12 +293,12 @@ const DrawerComponent = (props) => {
 
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaDoorClosed} />
-                            <Link href='/endElection' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >End Election</Link>
+                            <Link href='/endElection' target='_blank'   fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >End Election</Link>
                             </HStack>
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaList} />
-                            <Link href='/showResults' target='_blank'  fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Show Result</Link>
+                            <Link href='/showResults' target='_blank'   fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Show Result</Link>
                             </HStack>
 
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
@@ -328,16 +328,16 @@ const DrawerComponent = (props) => {
                         <Text >Godwill Onyewuchi Humphrey</Text>
                         <Flex align="center" justify="center" paddingRight='10px'>
                             <Box paddingRight='10px' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-                                <a href='https://github.com/GREENFONTS' target='_blank' _focus={{ outline: 'none' }}><Icon as={VscGithub} color={bgGithub} /></a>
+                                <a href='https://github.com/GREENFONTS' target='_blank' rel="noreferrer" _focus={{ outline: 'none' }}><Icon as={VscGithub} color={bgGithub} /></a>
                             </Box>
                             <Box paddingRight='10px' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-                                <a href='https://www.instagram.com/onyewuchigodwill/' target='_blank' _focus={{ outline: 'none' }}><Icon as={FaInstagram} color={bgInstagram} /></a>
+                                <a href='https://www.instagram.com/onyewuchigodwill/' target='_blank' rel="noreferrer" _focus={{ outline: 'none' }}><Icon as={FaInstagram} color={bgInstagram} /></a>
                             </Box>
                             <Box paddingRight='10px' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-                                <a href='https://twitter.com/GODWILLONYEWUC1' target='_blank' _focus={{ outline: 'none' }}><Icon as={BsTwitter} color={bgTwitter} /></a>
+                                <a href='https://twitter.com/GODWILLONYEWUC1' target='_blank' rel="noreferrer" _focus={{ outline: 'none' }}><Icon as={BsTwitter} color={bgTwitter} /></a>
                             </Box>
                             <Box paddingRight='10px'  _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-                                <a href='https://www.linkedin.com/in/godwill-onyewuchi-6746621b4/' target='_blank' _focus={{ outline: 'none' }}><Icon as={BsLinkedin} color={bgLinkedIn} /></a>
+                                <a href='https://www.linkedin.com/in/godwill-onyewuchi-6746621b4/' target='_blank' rel="noreferrer" _focus={{ outline: 'none' }}><Icon as={BsLinkedin} color={bgLinkedIn} /></a>
                             </Box>
                         </Flex>
                     </Flex>

@@ -12,7 +12,7 @@ import GenerateCode from '../../components/admin/codes/generate';
 import CodeList from '../../components/admin/codes/listCodes';
 import GenerateLink from '../../components/admin/election/generateLink';
 
-const admin = () => {
+const Admin = () => {
     const [state, actions] = useCounter();
 
     useEffect(async () => {
@@ -52,4 +52,4 @@ const admin = () => {
 }
 
 
-export default admin;
+export default Admin;
