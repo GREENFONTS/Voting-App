@@ -91,7 +91,7 @@ const AddNominee = (props) => {
             <Select icon={<MdArrowDropDown />} placeholder='Select Nominee Position' onChange={(e) => setPosition(e.target.value)}>
             {props.positions.map((ele) => {
             return (
-            <option value={ele.name}>{ele.name}</option>
+            <option key={props.positions.indexOf(ele)} value={ele.name}>{ele.name}</option>
             )}
             )}
 
