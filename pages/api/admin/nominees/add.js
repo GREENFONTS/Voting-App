@@ -3,7 +3,7 @@ const {v4 : uuidv4}= require('uuid')
 
 export default async function handler(req, res) {
     const prisma = new PrismaClient();
-
+  
     let checkNominee = null
     let positionData = req.body.positions
     let positions = []

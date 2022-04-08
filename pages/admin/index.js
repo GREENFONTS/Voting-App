@@ -11,6 +11,7 @@ import ClearNominees from '../../components/admin/nominees/clearNominees';
 import GenerateCode from '../../components/admin/codes/generate';
 import CodeList from '../../components/admin/codes/listCodes';
 import GenerateLink from '../../components/admin/election/generateLink';
+import EndElection from '../../components/admin/election/endElection';
 
 const Admin = () => {
     const [state, actions] = useCounter();
@@ -34,6 +35,8 @@ const Admin = () => {
         }
         
     }, [])
+
+    console.log(state.endElection)
   return (
     <>
     <Box>
@@ -45,6 +48,7 @@ const Admin = () => {
     <ClearNominees clearNominees={actions.clearNominees} isOpen={state.clearNomineesModal} refreshDrawer={actions.refreshDrawer}/>
     <GenerateLink isClose={actions.generateLink} isOpen={state.generateLinkModal} user={state.user} />
     <GenerateCode generateCode={actions.generateCode} isOpen={state.generateCodeModal} refreshDrawer={actions.refreshDrawer} user={state.user} />
+    <EndElection electionState={state.endElection} endElection={actions.endElection} isClose={actions.endElectionModal} isOpen={state.endElectionModal}/>
     </Box>
     
     </>

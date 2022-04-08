@@ -90,7 +90,7 @@ useEffect(() => {
         {isLargerThan900 && <Box display={{md : 'flex'}} height={{ base: '70vh', md: '90vh' }} w='95%' px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} >
                <Box w={{base: '100%', md: '35%'}} h={{ lg: '85vh' }} mt='5'>
                 <Bounce left>         
-                    <Image src='/images/signup.png' alt='Topic' h='70vh'  width='100%' />         
+                    <Image src='signup.png' alt='Topic' h='70vh'  width='100%' />         
                 </Bounce>
                </Box>
                 <Box w='5%'></Box>
@@ -176,7 +176,7 @@ useEffect(() => {
 {isLesserThan900 && <Box display={{md : 'flex'}} w='100%' px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} >
                <Box>
                 <Bounce left>         
-                    <Image src='/images/signup.png' alt='Topic' h='30vh'  width='100%' />         
+                    <Image src='signup.png' alt='Topic' h='30vh'  width='100%' />         
                 </Bounce>
                </Box>
                <Box w='100%'>

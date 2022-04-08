@@ -23,6 +23,10 @@ const Voting = ({router}) => {
         const res = await fetch(`/api/voting/?user=${user.id}`);
         const data = await res.json()
         let email = data.user
+        console.log(state)
+        if(state.endElection){
+          router.push('/404.js')
+        }
 
         if(res.status == 404){
             router.push('/404.js')
@@ -85,7 +89,7 @@ const Voting = ({router}) => {
       <Box w={{base: '100%', md: '45%'}} h={{ base: '200px', md: '250px', lg: '75vh' }}>    
      
       <Fade right> <Bounce bottom>
-      <Image src='/images/votingbg.png' alt='Topic' h={{ base: '200px', md: '250px', lg: '75vh' }}  width='100%' />    </Bounce>     
+      <Image src='/votingbg.png' alt='Topic' h={{ base: '200px', md: '250px', lg: '75vh' }}  width='100%' />    </Bounce>     
       </Fade>
         
          </Box>

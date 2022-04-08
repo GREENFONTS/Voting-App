@@ -15,12 +15,12 @@ const AddNominee = (props) => {
     const [inputCheck, setInputCheck] = useState(false)
     const [response, setResponse] = useState('');
      
-    let formBody = {
-      name, 
-      position,
-      positions: props.positions,
-      user : props.user
-    }
+    // let formBody = {
+    //   name, 
+    //   position,
+    //   positions: props.positions,
+    //   user : props.user
+    // }
 
     useEffect(() => {
       if(position.length < 1 || name.length < 1){
@@ -31,13 +31,20 @@ const AddNominee = (props) => {
     }
     }, [position])
   
-    const submitHandler = async () => {
+    const submitHandler = async (e) => {
+      e.preventDefault()
+      const form = new FormData()
+      form.append('name', name)
+      form.append('position', position)
+      form.append('image', image)
+      form.append('user', props.user)
+      console.log(form)
       const res = await fetch(`/api/admin/nominees/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({name, position, positions: props.positions, user: props.user})
+      body: form
     });
     const data = await res.json()
 
@@ -98,16 +105,16 @@ const AddNominee = (props) => {
             </Select>
         </FormControl>
 
-         {/* <FormControl isRequired >
+         <FormControl isRequired >
             <FormLabel htmlFor='image'>Upload Image</FormLabel>
             <Input id='image' type='file' onChange={(e) => setImage(e.target.files[0])} />
-        </FormControl> */}
+        </FormControl>
     </ModalBody>
 
     <ModalFooter>
-      <Button disabled={inputCheck} bg='#e8e8e8' mr={3} onClick={() => {
+      <Button disabled={inputCheck} bg='#e8e8e8' mr={3} onClick={(e) => {
           props.isClose(false)
-          submitHandler()
+          submitHandler(e)
       }}>
         Submit
       </Button>

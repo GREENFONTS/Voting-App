@@ -293,7 +293,12 @@ const DrawerComponent = (props) => {
 
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaDoorClosed} />
-                            <Link href='/endElection' target='_blank'   fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >End Election</Link>
+                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.endElectionModal(true)
+                                actions.addDrawerState(false)
+                            }}>
+                           End Election
+                            </Button>
                             </HStack>
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
@@ -322,7 +327,7 @@ const DrawerComponent = (props) => {
                         <Flex paddingLeft='10px' align="center" justify="center">
                             <Text paddingRight='10px'>© 2022</Text>
                             <Box w='15px' h='15px' marginRight='10px'>
-                                <Image w='100%' h='100%' src='/images/flag.png' />
+                                <Image w='100%' h='100%' src='flag.png' />
                             </Box>
                         </Flex>
                         <Text >Godwill Onyewuchi Humphrey</Text>

@@ -21,7 +21,7 @@ export default function Home() {
       <Box w={{base: '100%', md: '45%'}} h={{ base: '200px', md: '250px', lg: '75vh' }}>    
      
       <Fade right> <Bounce bottom>
-      <Image src='/images/votingbg.png' alt='Topic' h={{ base: '200px', md: '250px', lg: '75vh' }}  width='100%' />    </Bounce>     
+      <Image src='votingbg.png' alt='Topic' h={{ base: '200px', md: '250px', lg: '75vh' }}  width='100%' />    </Bounce>     
       </Fade>
         
          </Box>
@@ -112,7 +112,7 @@ export default function Home() {
       <Box>
               <Box display="block">
          <Bounce left>         
-         <Image src='/images/votingbg.png' alt='Topic' h={{ base: '65vh', md: '55vh'  }}  width='100%' />         
+         <Image src='votingbg.png' alt='Topic' h={{ base: '65vh', md: '55vh'  }}  width='100%' />         
          </Bounce>
          </Box>  
       </Box>
