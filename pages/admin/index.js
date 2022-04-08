@@ -34,7 +34,6 @@ const admin = () => {
         }
         
     }, [])
-    console.log(state)
   return (
     <>
     <Box>

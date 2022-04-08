@@ -16,7 +16,6 @@ const Posts = () => {
   
 
   useEffect(async() => {
-    console.log('enetered')
     const queryValue = window.location.pathname.split('/').slice(2,)
     const organization = queryValue[0]
     setOrganization(queryValue[0])
@@ -69,10 +68,22 @@ const Posts = () => {
       console.log(data.msg)
     }
     if (res.status === 200){
-      let nextPostIndex = data.nominee.postNo
-      let nextPost = state.positions[nextPostIndex].name
-      setPost(nextPost)
-      router.push(`/voting/${organization}/${id}/${nextPost}`)
+      console.log(state.positions)
+      let positions = state.positions
+      // let nextPostIndex = data.nominee.postNo
+      // console.log(data, nextPostIndex)
+      // console.log(positions[nextPostIndex])
+      if(positions.length > 0){
+        let nextPost = positions[0].name      
+        setPost(nextPost)
+        router.push(`/voting/${organization}/${id}/${nextPost}`)
+        positions.shift()
+        actions.getPositions(positions)
+      }
+     else{
+       localStorage.setItem('codeToken', null)
+      router.push(`/voting/${organization}/${id}`)
+     }
       
     }
   }
@@ -82,11 +93,11 @@ const Posts = () => {
      <Box align='center'>
        <Text fontFamily='cursive' fontSize='50px'>{post}</Text>
      </Box>
-   <Flex display={{base: 'block'}}>
+   <Flex display={{base: 'block'}}mt='5' p='4'>
       {state.nominees.length > 0 ? state.nominees.map((ele) => {
         return(
-        <Box mb='2' display={ {md: 'inline-block'}} key={ele.id} align='center' p='1' w={{base: "100%", md: "47%", lg:"32%" }} mr={{lg:'3'}} h={{base: "50vh", md: "30vh", lg:"40vh" }} borderLeft='1px' borderBottom='1px' borderColor='gray.200' boxShadow='base'>
-        <Image src='/Images/flag.png' alt='Nominee Image' objectFit='cover' boxSize={{base: "40vh", md: "20vh", lg:"25vh" }}/>
+        <Box mb='2' display={ {md: 'inline-block'}} key={ele.id} align='center' p='1' w={{base: "100%", md: "47%", lg:"32%" }} mr={{lg:'3'}} h={{base: "40vh", md: "35vh", lg:"40vh" }} borderLeft='1px' borderBottom='1px' borderColor='gray.200' boxShadow='base'>
+        <Image src='/Images/flag.png' alt='Nominee Image' objectFit='cover' boxSize={{base: "27vh", md: "20vh", lg:"25vh" }}/>
         <Flex p='1' justify='space-between'>
           <VStack align='start' spacing='2'>
             <Text>Name: {ele.name}</Text>

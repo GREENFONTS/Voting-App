@@ -52,12 +52,13 @@ const Voting = ({router}) => {
             setIsRequired(false)
         }        
     }, [code])
+
     const submitHandler = async () => {
       let positions = []
       JSON.parse(localStorage.getItem('positions')).forEach((ele) => {
         positions.push(ele.name)
       })
-        console.log(positions)
+        
         let email = localStorage.getItem('admin')
         const res = await fetch(`/api/voting/code/?code=${code}&user=${email}`)
         const data = await res.json()
@@ -68,6 +69,8 @@ const Voting = ({router}) => {
         if(res.status == 200){
             localStorage.setItem('codeToken', data.token)
             router.push(`/voting/${user.organization}/${user.id}/${positions[0]}`)
+            positions.shift()
+            actions.getPositions(positions)
         }
     }
  
