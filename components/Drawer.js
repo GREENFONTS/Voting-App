@@ -45,15 +45,22 @@ const DrawerComponent = (props) => {
             }) 
             const nomineesData = await nomineesRes.json()
             actions.getNominees(nomineesData)
-
+        
             const codesRes = await fetch('/api/admin/codes/find', {
                 method: 'POST',
                 body: JSON.stringify({user: state.user.email})
             }) 
             const codesData = await codesRes.json()
             actions.getCodes(codesData)
+
+        const electionRes = await fetch('/api/voting/state', {
+            method: 'POST',
+            body: JSON.stringify({user: state.user.email})
+        }) 
+        const electionState = await electionRes.json()
+        actions.electionState(electionState.state)
         }
-                 
+                  
     }, [state.refreshDrawer])
 
     return (
@@ -297,7 +304,7 @@ const DrawerComponent = (props) => {
                                 actions.endElectionModal(true)
                                 actions.addDrawerState(false)
                             }}>
-                           End Election
+                           {state.electionState ? "End Election" : 'Start Election'}
                             </Button>
                             </HStack>
 

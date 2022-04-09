@@ -23,10 +23,20 @@ const Voting = ({router}) => {
         const res = await fetch(`/api/voting/?user=${user.id}`);
         const data = await res.json()
         let email = data.user
-        console.log(state)
-        if(state.endElection){
-          router.push('/404.js')
-        }
+
+        const electionRes = await fetch('/api/voting/state', {
+          method: 'POST',
+          body: JSON.stringify({user: email})
+      }) 
+      const electionState = await electionRes.json()
+      console.log(electionState)
+      actions.electionState(electionState.state)
+      console.log('atfist')
+      if(state.electionState == false){
+        console.log('enetred')
+        setAlertMessage('Voting has ended')
+        setIsRequired(true)
+      }
 
         if(res.status == 404){
             router.push('/404.js')

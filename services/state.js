@@ -19,7 +19,7 @@ const Store = createStore({
     generateLinkModal: false,
     headerState: true,
     endElectionModal : false,
-    endElection : false,
+    electionState: true
 
   },
   // actions that trigger store mutation
@@ -139,11 +139,11 @@ const Store = createStore({
           endElectionModal: value,
         });
       },
-      endElection:
+      electionState:
       (value) =>
       ({ setState, getState }) => {
         setState({
-          endElection: value,
+          electionState: value,
         });
       },
 

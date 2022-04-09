@@ -8,12 +8,26 @@ const EndElection = (props) => {
     const [isAlertSuccess, setAlertSuccess] = useState(false);
     const [response, setResponse] = useState('');
     
-    const submitHandler = () => {
+    const submitHandler = async () => {
+
+      const res = await fetch('/api/voting/updateState', {
+        method: 'POST',
+        body: JSON.stringify({user: props.user.email})
+    }) 
+
+    if(res.status == 200){
+      actions.electionState(false)
+      setResponse("Election Link has been disabled")  
         props.isClose(false)
         props.endElection(true)
         setAlertSuccess(true)
-        setResponse("Election Link has been disabled")  
-        console.log(props.electionState)
+    }
+    else{
+      setResponse("End Election request failed")  
+        props.isClose(false)
+        props.endElection(true)
+        setAlertError(true)
+    }
     }
 
     const handleClose = () => {

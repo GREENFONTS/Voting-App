@@ -37,3 +37,8 @@ model Coupons {
   used  Boolean
   user  String
 }
+
+model Election {
+  state Boolean
+  user String @id
+}

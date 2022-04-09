@@ -32,6 +32,13 @@ export default async function handler(req, res) {
               id: v4()
             }
           })
+
+          await prisma.election.create({
+            data:{
+              user: req.body.email,
+              state: true
+            }
+          })
           await prisma.$disconnect();
           return res.status(200).send({msg: 'Admin created successfully' , user : req.body})
         }
