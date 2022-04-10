@@ -47,7 +47,7 @@ const Admin = () => {
     <ClearNominees clearNominees={actions.clearNominees} isOpen={state.clearNomineesModal} refreshDrawer={actions.refreshDrawer}/>
     <GenerateLink isClose={actions.generateLink} isOpen={state.generateLinkModal} user={state.user} />
     <GenerateCode generateCode={actions.generateCode} isOpen={state.generateCodeModal} refreshDrawer={actions.refreshDrawer} user={state.user} />
-    <EndElection electionState={state.electionState} endElection={actions.electionState} user={state.user} isClose={actions.endElectionModal} isOpen={state.endElectionModal}/>
+    <EndElection electionState={state.electionState} endElection={actions.electionState} user={state.user} isClose={actions.endElectionModal} refreshDrawer={actions.refreshDrawer} isOpen={state.endElectionModal}/>
     </Box>
     
     </>

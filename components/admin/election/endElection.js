@@ -9,23 +9,22 @@ const EndElection = (props) => {
     const [response, setResponse] = useState('');
     
     const submitHandler = async () => {
-
       const res = await fetch('/api/voting/updateState', {
         method: 'POST',
-        body: JSON.stringify({user: props.user.email})
+        body: props.user.email
     }) 
-
+    const data = await res.json()
     if(res.status == 200){
-      actions.electionState(false)
-      setResponse("Election Link has been disabled")  
+      setResponse(`Election Link has been ${!data.state ? "enabled" : "disabled"} `)  
+        props.endElection(!data.state)
         props.isClose(false)
-        props.endElection(true)
         setAlertSuccess(true)
     }
     else{
       setResponse("End Election request failed")  
+      props.refreshDrawer(true)
         props.isClose(false)
-        props.endElection(true)
+        props.endElection(data.state)
         setAlertError(true)
     }
     }
@@ -55,7 +54,7 @@ const EndElection = (props) => {
     <ModalCloseButton onClick={(e) => props.isClose(false)} />
     <ModalBody>
         <Text fontSize='15px' fontFamily='cursive' fontWeight='600'>This will disable the voting link</Text>
-       <Text fontSize='20px' fontFamily='cursive' fontWeight='600'> Do you want to end the elections?</Text>
+       <Text fontSize='20px' fontFamily='cursive' fontWeight='600'> Do you want to {props.electionState ? "end": 'start'} the elections?</Text>
         <HStack mt='3'>
             <Button onClick={(e) => submitHandler()}>Yes</Button>
             <Button onClick={(e) => props.isClose(false)}>No</Button>

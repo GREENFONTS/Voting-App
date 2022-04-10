@@ -29,15 +29,9 @@ const Voting = ({router}) => {
           body: JSON.stringify({user: email})
       }) 
       const electionState = await electionRes.json()
-      console.log(electionState)
       actions.electionState(electionState.state)
-      console.log('atfist')
-      if(state.electionState == false){
-        console.log('enetred')
-        setAlertMessage('Voting has ended')
-        setIsRequired(true)
-      }
-
+      console.log(electionState.state, state.electionState)
+      
         if(res.status == 404){
             router.push('/404.js')
         }
@@ -61,6 +55,7 @@ const Voting = ({router}) => {
         }
     }, [])
 
+    console.log(state.electionState)
     useEffect(() => {
         if(code.length > 1){
             setIsRequired(false)
@@ -72,6 +67,14 @@ const Voting = ({router}) => {
       JSON.parse(localStorage.getItem('positions')).forEach((ele) => {
         positions.push(ele.name)
       })
+
+      console.log(state)
+      if(state.electionState == false){
+        setAlertMessage('Voting has ended')
+        setCode('')
+        setIsRequired(true)
+      }
+      else{
         
         let email = localStorage.getItem('admin')
         const res = await fetch(`/api/voting/code/?code=${code}&user=${email}`)
@@ -86,6 +89,7 @@ const Voting = ({router}) => {
             positions.shift()
             actions.getPositions(positions)
         }
+      }
     }
  
   return (
