@@ -20,7 +20,8 @@ const Store = createStore({
     headerState: true,
     endElectionModal : false,
     electionState: true,
-    showResultsModal : false
+    showResultsModal : false,
+    resetVotesModal: false,
 
   },
   // actions that trigger store mutation
@@ -152,6 +153,13 @@ const Store = createStore({
       ({ setState, getState }) => {
         setState({
           showResultsModal: value,
+        });
+      },
+      resetVotes:
+      (value) =>
+      ({ setState, getState }) => {
+        setState({
+          resetVotesModal: value,
         });
       },
 

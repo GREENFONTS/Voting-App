@@ -70,7 +70,7 @@ const Header = ({router}) => {
                    
                 </Flex>
 
-               {isLesserThan900 && <HamburgerIcon ml={4} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />} 
+               {isLesserThan900 && <HamburgerIcon onClick={() => actions.addDrawerState(true)} ml={4} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />} 
                 <DrawerComponent />
             </Flex> </> : 
             <>

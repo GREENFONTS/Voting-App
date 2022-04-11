@@ -1,29 +1,38 @@
 import { PrismaClient } from "@prisma/client";
-const {v4 : uuidv4}= require('uuid')
+import middleware from "../../../../middleware";
+const {v4 : uuidv4}= require('uuid');
+import nextConnect from "next-connect";
+import cloudinary from '../../../../config/cloudinary';
 
-export default async function handler(req, res) {
+const handler = nextConnect() 
+handler.use(middleware)
+handler.post(async (req,res) => {
     const prisma = new PrismaClient();
-  
+    let name = req.body.name[0]
+    let position = req.body.position[0]
+    let user = req.body.user[0]
+    let positionData = JSON.parse(req.body.positions)
+    console.log(user)
+    
+try{
+    let filePath = req.files.image[0].path
+    const result = await cloudinary.uploader.upload(filePath)
+   
     let checkNominee = null
-    let positionData = req.body.positions
     let positions = []
     positionData.forEach(element => {
       positions.push(element.name)
     });
     
-    try{
+    
        checkNominee  = await prisma.nominee.findMany({
             where: {
-            name: req.body.name,
-            post: req.body.position,
-            user: req.body.user.email
+            name: name,
+            post: position,
+            user: user
           }
         });
 
-    }
-  catch(err){
-      console.log(err)
-  }
   
     if (checkNominee.length > 0) {
       res.status(404).send({msg: "Nominee already exists"})
@@ -31,15 +40,29 @@ export default async function handler(req, res) {
     else {
       await prisma.nominee.create({
         data: {
-          name: req.body.name,
-          post: req.body.position,
-          user: req.body.user.email,
+          name: name,
+          post: position,
+          user: user,
+          image: result.secure_url,
           id: uuidv4(),
           votes: 0,
-          postNo: positions.indexOf(req.body.position) + 1,
+          postNo: positions.indexOf(position) + 1,
         },
       });
       await prisma.$disconnect();
       res.status(200).send({msg: "Nominee created successfully"})
     }
+
+  }
+  catch(err){
+      console.log(err)
+  }
+  
+})
+
+export const config = {
+  api: {
+     bodyParser : false
+  }
 }
+export default handler

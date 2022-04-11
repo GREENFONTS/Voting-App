@@ -43,8 +43,6 @@ const ShowResults = (props) => {
     }
 
     maxNomineePerpost()
-
-    console.log(list)
   return (
       <>
     <Box p='5' align='center'>
@@ -53,13 +51,13 @@ const ShowResults = (props) => {
       </Box>
     
       <TableContainer w={{md:'90%'}} mt='3' display={{lg: "flex"}}>
-        <Table  colorScheme='gray' size='sm' width='70%'>
+        <Table variant='striped' colorScheme='gray' size='sm' width='70%'>
     <Thead>
       <Tr>
         <Th fontSize='17px'>Post</Th>
         {list.map((ele) => {
           return(
-          <Th fontSize='17px' align='center'>Nominee {ele}</Th>
+          <Th key={list.indexOf(ele)} fontSize='17px' align='center'>Nominee {ele}</Th>
           )
         }) }
       </Tr>
@@ -72,7 +70,7 @@ const ShowResults = (props) => {
             <Td w='15%'>{ele}</Td>
             {nominees.map((ele) => {
                 return (
-                    <Td w="20%">{ele.name} - {ele.votes}</Td>
+                    <Td key={nominees.indexOf(ele)} w="20%">{ele.name} - {ele.votes}</Td>
                 )
             })}
           </Tr>
@@ -82,7 +80,7 @@ const ShowResults = (props) => {
     </Tbody>
   </Table>
 
-  <Table  colorScheme='gray' size='sm' w='30%'>
+  <Table variant='striped'  colorScheme='gray' size='sm' w='20%'>
     <Thead>
       <Tr>
         <Th fontSize='17px'>Winner</Th>

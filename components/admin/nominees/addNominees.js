@@ -23,7 +23,7 @@ const AddNominee = (props) => {
     // }
 
     useEffect(() => {
-      if(position.length < 1 || name.length < 1){
+      if(position.length < 2 || name.length < 2){
         setInputCheck(true)
       }
       else{
@@ -37,13 +37,11 @@ const AddNominee = (props) => {
       form.append('name', name)
       form.append('position', position)
       form.append('image', image)
-      form.append('user', props.user)
-      console.log(form)
+      form.append('user', props.user.email)
+      form.append('positions', JSON.stringify(props.positions))
+  
       const res = await fetch(`/api/admin/nominees/add`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
       body: form
     });
     const data = await res.json()

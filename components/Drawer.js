@@ -331,7 +331,14 @@ const DrawerComponent = (props) => {
 
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={BiReset} />
-                            <Link href='/resetVotes' target='_blank' fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Reset Votes</Link>
+                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.listNominees(false)
+                                actions.addDrawerState(false)
+                                actions.listCodes(false)
+                                actions.resetVotes(true)
+                            }}>
+                            Reset Votes
+                            </Button>
                             </HStack>
 
                             </AccordionPanel>

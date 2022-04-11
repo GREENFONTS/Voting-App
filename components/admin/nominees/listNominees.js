@@ -92,7 +92,7 @@ const NomineesList = (props) => {
       {props.nominees.map((ele) => {
         return(
         <Box key={props.nominees.indexOf(ele)} mb='2' display={ {md: 'inline-block'}} align='center' p='1' w={{base: "100%", md: "47%", lg:"32%" }} mr={{lg:'3'}} h={{base: "50vh", md: "30vh", lg:"40vh" }} borderLeft='1px' borderBottom='1px' borderColor='gray.200' boxShadow='base'>
-        <Image src='flag.png' alt='Nominee Image' objectFit='cover' boxSize={{base: "40vh", md: "20vh", lg:"25vh" }}/>
+        <Image src={ele.image} alt='Nominee Image' objectFit='cover' boxSize={{base: "40vh", md: "20vh", lg:"25vh" }}/>
         <Flex p='1' justify='space-between'>
           <VStack align='start'>
             <Text>Name: {ele.name}</Text>

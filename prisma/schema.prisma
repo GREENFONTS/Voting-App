@@ -30,6 +30,7 @@ model Nominee {
   id     String @id
   postNo Int
   user   String
+  image String
 }
 
 model Coupons {

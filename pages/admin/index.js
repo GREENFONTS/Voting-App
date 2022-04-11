@@ -13,6 +13,7 @@ import CodeList from '../../components/admin/codes/listCodes';
 import GenerateLink from '../../components/admin/election/generateLink';
 import EndElection from '../../components/admin/election/endElection';
 import ShowResults from '../../components/admin/election/showResults';
+import ResetVotes from '../../components/admin/election/resetVotes';
 
 const Admin = () => {
     const [state, actions] = useCounter();
@@ -50,6 +51,8 @@ const Admin = () => {
     <GenerateLink isClose={actions.generateLink} isOpen={state.generateLinkModal} user={state.user} />
     <GenerateCode generateCode={actions.generateCode} isOpen={state.generateCodeModal} refreshDrawer={actions.refreshDrawer} user={state.user} />
     <EndElection electionState={state.electionState} endElection={actions.electionState} user={state.user} isClose={actions.endElectionModal} refreshDrawer={actions.refreshDrawer} isOpen={state.endElectionModal}/>
+    <ResetVotes user={state.user} isClose={actions.resetVotes} refreshDrawer={actions.refreshDrawer} isOpen={state.resetVotesModal}/>
+    
     </Box>
     
     </>
