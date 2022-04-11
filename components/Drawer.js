@@ -155,6 +155,8 @@ const DrawerComponent = (props) => {
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.addPosition(true)
+                                actions.showResults(false)
+                                actions.showResults(false)
                             }}>
                             Add Position
                             </Button>
@@ -167,6 +169,7 @@ const DrawerComponent = (props) => {
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.listPositions(true)
+                                actions.showResults(false)
                             }}>
                             Show Positions
                             </Button>
@@ -198,6 +201,7 @@ const DrawerComponent = (props) => {
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.addNominee(true)
+                                actions.showResults(false)
                                 actions.listCodes(false)
                             }}>
                             Add Nominees
@@ -209,6 +213,7 @@ const DrawerComponent = (props) => {
                             <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
                                 actions.addDrawerState(false)
                                 actions.listNominees(true)
+                                actions.showResults(false)
                             }}>
                             Show Nominees
                             </Button>
@@ -221,6 +226,7 @@ const DrawerComponent = (props) => {
                                 actions.addDrawerState(false)
                                 actions.clearNominees(true)
                                 actions.listCodes(false)
+                                actions.showResults(false)
                             }}>
                             Clear Nominees
                             </Button>
@@ -251,6 +257,7 @@ const DrawerComponent = (props) => {
                                 actions.addDrawerState(false)
                                 actions.generateCode(true)
                                 actions.listCodes(false)
+                                actions.showResults(false)
                             }}>
                             Generate Codes
                             </Button>
@@ -262,6 +269,7 @@ const DrawerComponent = (props) => {
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.listCodes(true)
+                                actions.showResults(false)
                             }}>
                             Show Codes
                             </Button>
@@ -293,6 +301,7 @@ const DrawerComponent = (props) => {
                                 actions.addDrawerState(false)
                                 actions.listCodes(false)
                                 actions.generateLink(true)
+                                actions.showResults(false)
                             }}>
                             Generate Link
                             </Button>
@@ -310,7 +319,14 @@ const DrawerComponent = (props) => {
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaList} />
-                            <Link href='/showResults' target='_blank'   fontWeight='600' fontSize={{base: '15px', md: '18px', lg:'12px'}} >Show Result</Link>
+                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                                actions.listNominees(false)
+                                actions.addDrawerState(false)
+                                actions.listCodes(false)
+                                actions.showResults(true)
+                            }}>
+                            Show Results
+                            </Button>
                             </HStack>
 
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
