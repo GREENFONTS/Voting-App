@@ -1,9 +1,9 @@
-import {  useEffect, useState } from 'react';
+import {  useState } from 'react';
 import Link from 'next/link'
-import { Flex, Icon, Button, Box, Modal, ModalBody, ModalHeader, 
-  ModalCloseButton, ModalContent,  ModalFooter, useDisclosure} from '@chakra-ui/react';
+import { Flex, Icon, Box, Modal, ModalBody, ModalHeader, ModalCloseButton, ModalContent, useDisclosure} from '@chakra-ui/react';
 import {MdFileCopy} from 'react-icons/md';
 import {TiTick} from 'react-icons/ti';
+
 const GenerateLink = (props) => {
 let url = ''
 if(process.env.NODE_ENV == 'development'){
@@ -32,7 +32,6 @@ else{
     <>
     <Flex p='5'>
     <Modal size='3xl' isOpen={props.isOpen} onClose={onClose}>
-  {/* <ModalOverlay /> */}
    <ModalContent>
     <ModalHeader align='center'>Election Link</ModalHeader>
     <ModalCloseButton onClick={(e) => {props.isClose(false)
@@ -41,7 +40,7 @@ else{
         <Box>
             <Flex>
                 <Box border='1px solid black' borderRadius='2' borderRight='0px white' p='3'>
-                   {props.user ? <Link _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} href={link}>{link}</Link> : <></>}
+                   {props.user ? <Link _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} href={link} >{link}</Link> : <></>}
                 </Box>
                 <Box border='1px solid black'  borderRadius='2' p='2'>
                    {!copy ? <Icon fontSize='20px' as={MdFileCopy} onClick={() => {setCopy(true)

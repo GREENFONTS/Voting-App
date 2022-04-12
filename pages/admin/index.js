@@ -1,5 +1,4 @@
-import {  useEffect, useState } from 'react';
-import Link from "next/link";
+import {  useEffect } from 'react';
 import router from 'next/router';
 import { useCounter } from '../../services/state';
 import { Box } from '@chakra-ui/react';
@@ -44,7 +43,7 @@ const Admin = () => {
     {state.listNomineeModal ? <NomineesList isOpen={state.listNomineeModal} isClose={actions.listNominees} positions={state.positions} user={state.user} nominees={state.nominees} refreshDrawer={actions.refreshDrawer} /> : <></> }
     {state.listCodesModal ? <CodeList isOpen={state.listCodesModal} isClose={actions.listCodesModal} codes={state.codes} user={state.user} refreshDrawer={actions.refreshDrawer} /> : <></> }
     {state.showResultsModal ? <ShowResults isOpen={state.showResultsModal}  positions={state.positions} user={state.user} nominees={state.nominees} /> : <></> }
-    <AddPosition isOpen={state.addPositionModal} isClose={actions.addPosition} user={state.user} getPositions={actions.getPositions} refreshDrawer={actions.refreshDrawer}/>
+    <AddPosition isOpen={state.addPositionModal} isClose={actions.addPosition} user={state.user} getPositions={actions.getPositions} refreshDrawer={actions.refreshDrawer} /> 
     <PositionList isOpen={state.listPositionModal} isClose={actions.listPositions} user={state.user} positions={state.positions} refreshDrawer={actions.refreshDrawer}/>
     <AddNominee isOpen={state.addNomineeModal} listNomineeModal={actions.listNominees} positions={state.positions} isClose={actions.addNominee} user={state.user} refreshDrawer={actions.refreshDrawer}/>
     <ClearNominees clearNominees={actions.clearNominees} isOpen={state.clearNomineesModal} refreshDrawer={actions.refreshDrawer}/>

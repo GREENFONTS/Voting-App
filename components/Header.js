@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from "next/link";
-import {withRouter, router} from 'next/router';
-import { Box, Flex, HStack, Icon, LinkBox, Text, Button, useDisclosure, useMediaQuery, Tooltip} from '@chakra-ui/react';
+import {withRouter} from 'next/router';
+import { Box, Flex, HStack, Icon, LinkBox, Text, Button, useMediaQuery} from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { FaUser, FaVoteYea } from 'react-icons/fa';
 import { BiMoon } from 'react-icons/bi';
@@ -14,15 +14,12 @@ const Header = ({router}) => {
 
     const [isLargerThan900] = useMediaQuery('(min-width: 900px)')
     const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
-    const [isLargerThan400] = useMediaQuery('(min-width: 400px)')
     const { toggleColorMode } = useColorMode();
     const bgColor = useColorModeValue('#e8e8e8', 'gray.800')
     const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
     const textColor = useColorModeValue('themeLight.logo', 'themeDark.logo');
     const icon = useColorModeValue(BiMoon, ImSun)
-    const [isOpen, setIsOpen] = useState(false);
     const [userCheck, setUserCheck] = useState(false);
-    const [click, setClick] = useState(false);
     const [state, actions] = useCounter()
 
     useEffect(() => {
@@ -63,7 +60,6 @@ const Header = ({router}) => {
                 <Flex align="center" justify="space-between">
                 <Icon as={icon} onClick={toggleColorMode} mx={10} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
                     {isLargerThan900 && <>
-                    <Button bgColor={bgColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer", borderBottom: '1px solid purple'}} fontFamily="cursive"><Link  href='/about'  fontSize={{ base: '12px', md: '14px', lg: '16px' }} >About</Link></Button>
                     <Button bgColor={bgColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer", borderBottom: '1px solid purple'}} fontFamily="cursive"><Link  href='/register' fontSize={{ base: '12px', md: '14px', lg: '16px' }} >SignUp</Link></Button>
                     <Button bgColor={bgColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer", borderBottom: '1px solid purple'}} fontFamily="cursive"><Link  href='/login' fontSize={{ base: '12px', md: '14px', lg: '16px' }} >SignIn</Link></Button>
                 </>}

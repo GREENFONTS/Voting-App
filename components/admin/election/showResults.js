@@ -91,7 +91,7 @@ const ShowResults = (props) => {
         let winner = getWinner(ele)
         return(
             <Tr key={positions.indexOf(ele)} h='7vh' >            
-            <Td w="20%">{winner.name} - {winner.votes}</Td>
+            <Td w="20%">{winner ? winner.name - winner.votes : ''}</Td>
           </Tr>
         )
     })}    

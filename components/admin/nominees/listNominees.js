@@ -1,8 +1,9 @@
 import {  useEffect, useState} from 'react';
 import {FaEdit, FaTrash} from 'react-icons/fa'
-import { Flex, Box, Text, Icon, Alert, AlertIcon, CloseButton, Button, FormControl, FormLabel, Input,  Modal, ModalBody, 
+import { Flex, Box, Text, Icon, Button, FormControl, FormLabel, Input,  Modal, ModalBody, 
     ModalHeader,  ModalCloseButton, ModalContent,  ModalFooter, useDisclosure, Image, VStack, HStack, Select} from '@chakra-ui/react';
 import {MdArrowDropDown} from 'react-icons/md';
+import AlertComponent from '../../alert';
 
 const NomineesList = (props) => {
 
@@ -10,12 +11,10 @@ const NomineesList = (props) => {
     const [isAlertError, setAlertError] = useState(false);
     const [isAlertSuccess, setAlertSuccess] = useState(false);
     const [position, setPosition] = useState('');
-    const [updateCheck, setUpdateCheck] = useState(false);
     const [inputCheck, setInputCheck] = useState(false)
     const [response, setResponse] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState('');
-    const [nomineeName, setNomineeName] = useState('')
     const [currentState, setCurrentState] = useState(null)
 
     useEffect(() => {
@@ -54,11 +53,6 @@ const NomineesList = (props) => {
 
     }
 
-    const handleClose = () => {
-      setAlertError(false)
-      setAlertSuccess(false)
-    }
-
     const deleteHandler = async (ele) => {
         const res = await fetch(`/api/admin/nominees/delete?name=${ele.name}&position=${ele.post}&user=${props.user.email}`)
         const data = await res.json()
@@ -73,16 +67,7 @@ const NomineesList = (props) => {
 
   return (
     <>
-    {isAlertError ? <Alert status='error'> <AlertIcon />
-                        {response}
-                        <CloseButton position='absolute' right='8px' top='8px'  onClick={() => handleClose()}/>
-                    </Alert> : <></>}
-
-                    {isAlertSuccess ? <Alert status='success'> <AlertIcon />
-                        {response}
-                        <CloseButton position='absolute' right='8px' top='8px'  onClick={() => handleClose()}/>
-                    </Alert> : <></>}
-
+<AlertComponent isAlertError={isAlertError} isAlertSuccess={isAlertSuccess} setAlertError={setAlertError} setAlertSuccess={setAlertSuccess} response={response}/>
 
     <Box p='5'>
       <Box mb='1' align='center'>
@@ -91,8 +76,8 @@ const NomineesList = (props) => {
     <Flex display={{base: 'block'}}>
       {props.nominees.map((ele) => {
         return(
-        <Box key={props.nominees.indexOf(ele)} mb='2' display={ {md: 'inline-block'}} align='center' p='1' w={{base: "100%", md: "47%", lg:"32%" }} mr={{lg:'3'}} h={{base: "50vh", md: "30vh", lg:"40vh" }} borderLeft='1px' borderBottom='1px' borderColor='gray.200' boxShadow='base'>
-        <Image src={ele.image} alt='Nominee Image' objectFit='cover' boxSize={{base: "40vh", md: "20vh", lg:"25vh" }}/>
+        <Box key={props.nominees.indexOf(ele)} mb='2' display={ {md: 'inline-block'}} align='center' p='1' w={{base: "100%", md: "47%", lg:"32%" }} mr={{lg:'3'}} h={{base: "45vh", md: "30vh", lg:"40vh" }} borderLeft='1px' borderBottom='1px' borderColor='gray.200' boxShadow='base'>
+        <Image src={ele.image} alt='Nominee Image' objectFit='cover' boxSize={{base: "35vh", md: "20vh", lg:"25vh" }}/>
         <Flex p='1' justify='space-between'>
           <VStack align='start'>
             <Text>Name: {ele.name}</Text>
@@ -121,7 +106,6 @@ const NomineesList = (props) => {
     </Box>
 
     <Modal isOpen={isOpen} onClose={onClose}>
-  {/* <ModalOverlay /> */}
    <ModalContent>
     <ModalHeader align='center'>Update Nominee - {currentState != null ? currentState.name : ''}</ModalHeader>
     <ModalCloseButton onClick={(e) => setIsOpen(false)} />

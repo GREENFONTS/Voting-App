@@ -1,6 +1,5 @@
-import { Component, useEffect } from 'react';
 import Link from "next/link";
-import { Box,Text,Button,  useMediaQuery, Image, Center, VStack, Icon} from '@chakra-ui/react';
+import { Box,Text,Button,  useMediaQuery, Image, Center} from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
 import Bounce from 'react-reveal/Bounce';
 import Fade from 'react-reveal/Fade';
@@ -10,8 +9,7 @@ export default function Home() {
   const [isLargerThan900] = useMediaQuery('(min-width: 900px)')
     const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
     const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody')
-    const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
-    
+  
   return (
     <>
     <Box>
@@ -51,15 +49,12 @@ export default function Home() {
           </Box>
               
           </Center>
-            <Box mt='7' ml='10'>
+            <Box mt='7' align='center'>
               
-                <Button id='button' bgColor='purple.500' color='white' mr='10' borderRadius='25%' p='7' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
+                <Button id='button' bgColor='purple.500' color='white'  borderRadius='25%' p='7' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
                 <Link  href='/register'   fontWeight='500' fontSize={{ base: '12px', md: '14px', lg: '16px' }} >Get Started </Link>
                 </Button>
-
-                <Button id='button' bgColor='purple.500' color='white' mr='10' borderRadius='25%' p='7' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-                <Link  href='/about'   fontWeight='500' fontSize={{ base: '12px', md: '14px', lg: '16px' }} >About App </Link>
-                </Button>      
+     
             </Box>
            </Box>
 
@@ -73,7 +68,7 @@ export default function Home() {
         
       
       </Center>}
-    {isLesserThan900 && <Box align='center' mt={5} >
+    {isLesserThan900 && <Box mt={5} >
     <Box display='flex' height={{ base: '30vh', md: '35vh' }} w='95%' bg={bgColor} >
       <Box w={{base: '10%', md:'20%'}} mt='3'>
         <Socials spacing='2'/>
@@ -81,7 +76,7 @@ export default function Home() {
       <Box w={{base:'10%', md:'70'}}></Box>
       <Box w={{base:'70%'}} mt='2'>
         
-        <Center display='block'>
+        
         <Box fontSize={{base: '25px', md: '35px'}} fontWeight='700' fontFamily='sans-serif' display='flex'>
             <Text pr='2'>Create and </Text> 
             <Text color="purple.600">Host</Text> 
@@ -95,17 +90,14 @@ export default function Home() {
         <Text color='purple.600'>Election</Text> 
           </Box>
 
-          <Box mt='6' ml='-2'>
+          <Box mt='6'>
               
-              <Button id='button' bgColor='purple.500' color='white' mr='4' borderRadius='15%' p='2' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
+              <Button id='button' bgColor='purple.500' color='white'  borderRadius='15%' p='2' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
               <Link  href='/register'   fontWeight='500' fontSize={{ base: '11px', md: '14px' }} >Get Started </Link>
               </Button>
-
-              <Button id='button' bgColor='purple.500' color='white' mr='4' borderRadius='15%' p='2' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-              <Link  href='/about'   fontWeight='500' fontSize={{ base: '11px', md: '14px' }} >About App </Link>
-              </Button>      
+     
           </Box>
-        </Center>  
+  
       </Box>
       </Box>
 
@@ -118,10 +110,7 @@ export default function Home() {
       </Box>
 
     </Box> }
-      
-
-      
-      
+        
     </Box>
 
     </>

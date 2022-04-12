@@ -1,8 +1,7 @@
 import {  useEffect, useState } from 'react';
-import { Flex, Alert, AlertIcon, CloseButton, Button, FormControl, FormLabel, Input,  Modal, ModalBody, ModalHeader, 
+import { Flex, Button, FormControl, FormLabel, Input,  Modal, ModalBody, ModalHeader, 
   ModalCloseButton, ModalContent,  ModalFooter, useDisclosure, FormHelperText} from '@chakra-ui/react';
-import { sha1Generator } from '../../../services/sha';
-
+import AlertComponent from '../../alert';
 const GenerateCode = (props) => {
 
     const { onOpen, onClose } = useDisclosure();
@@ -50,26 +49,12 @@ const GenerateCode = (props) => {
 
     }
 
-    const handleClose = () => {
-      setAlertError(false)
-      setAlertSuccess(false)
-    }
-
   return (
     <>
-    {isAlertError ? <Alert status='error'> <AlertIcon />
-                        {response}
-                        <CloseButton position='absolute' right='8px' top='8px'  onClick={() => handleClose()}/>
-                    </Alert> : <></>}
-
-                    {isAlertSuccess ? <Alert status='success'> <AlertIcon />
-                        {response}
-                        <CloseButton position='absolute' right='8px' top='8px'  onClick={() => handleClose()}/>
-                    </Alert> : <></>}
-                    
+    <AlertComponent isAlertError={isAlertError} isAlertSuccess={isAlertSuccess} setAlertError={setAlertError} setAlertSuccess={setAlertSuccess} response={response}/>
+               
     <Flex p='5'>
     <Modal isOpen={props.isOpen} onClose={onClose}>
-  {/* <ModalOverlay /> */}
    <ModalContent>
     <ModalHeader align='center'>Generate Codes</ModalHeader>
     <ModalCloseButton onClick={(e) => props.generateCode(false)} />
@@ -92,9 +77,6 @@ const GenerateCode = (props) => {
     </ModalFooter>
   </ModalContent>
 </Modal> 
-
-
-
     </Flex>
     </>
   )

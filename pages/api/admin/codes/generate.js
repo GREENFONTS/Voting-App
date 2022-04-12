@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
     }
     catch(err){
-        console.log(err)
+       await prisma.$disconnect();
         res.status(404).send({msg: "Code Generation Request Unsuccessful"})
 
     }

@@ -1,6 +1,4 @@
-import {  useEffect, useState} from 'react';
-import {FaDownload} from 'react-icons/fa'
-import {Box, Text, Icon, useDisclosure, HStack, Table, TableContainer, Tr, Td, Th, Tbody, Tfoot, Thead, Button} from '@chakra-ui/react';
+import {Box, Text, Table, TableContainer, Tr, Td, Th, Tbody, Tfoot, Thead, Button} from '@chakra-ui/react';
 
 const CodeList = (props) => {
 
@@ -24,7 +22,7 @@ const CodeList = (props) => {
         return(
             <Tr key={props.codes.indexOf(ele)} p='4'>
             <Td>{props.codes.indexOf(ele) + 1}</Td>
-            <Td>{ele.codes}</Td>
+            <Td fontSize='20px'>{ele.codes}</Td>
           </Tr>
         )
     })}    

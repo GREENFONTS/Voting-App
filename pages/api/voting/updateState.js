@@ -28,10 +28,7 @@ export default async function handler(req, res) {
         console.log(err)
         await prisma.$disconnect()
         res.status(404).send(err)
-    }
-      
-        
-        
+    }     
     }    
 
   

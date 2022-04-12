@@ -1,6 +1,7 @@
 import {  useEffect, useState } from 'react';
-import { Flex, Alert, AlertIcon, CloseButton, Button, FormControl, FormLabel, Input,  Modal, ModalBody, ModalHeader, 
+import { Flex, Button, FormControl, FormLabel, Input,  Modal, ModalBody, ModalHeader, 
   ModalCloseButton, ModalContent,  ModalFooter, useDisclosure} from '@chakra-ui/react';
+import AlertComponent from '../../alert';
 
 const AddPosition = (props) => {
 
@@ -10,11 +11,7 @@ const AddPosition = (props) => {
     const [position, setPosition] = useState('');
     const [inputCheck, setInputCheck] = useState(false)
     const [response, setResponse] = useState('');
-     
-    let formBody = {
-      position,
-    }
-
+    
     useEffect(() => {
       if(position.length < 1){
         setInputCheck(true)
@@ -35,6 +32,7 @@ const AddPosition = (props) => {
     const data = await res.json()
 
     if(res.status == 404){
+      setPosition('')
       setAlertError(true)
       setResponse(data.msg)
     }
@@ -51,16 +49,11 @@ const AddPosition = (props) => {
 
     }
 
-    const handleClose = () => {
-      setAlertError(false)
-      setAlertSuccess(false)
-    }
 
   return (
     <>
     <Flex p='5'>
     <Modal isOpen={props.isOpen} onClose={onClose}>
-  {/* <ModalOverlay /> */}
    <ModalContent>
     <ModalHeader align='center'>Add Positions</ModalHeader>
     <ModalCloseButton onClick={(e) => props.isClose(false)} />
@@ -81,16 +74,8 @@ const AddPosition = (props) => {
     </ModalFooter>
   </ModalContent>
 </Modal> 
-{isAlertError ? <Alert status='error'> <AlertIcon />
-                        {response}
-                        <CloseButton position='absolute' right='8px' top='8px'  onClick={() => handleClose()}/>
-                    </Alert> : <></>}
 
-                    {isAlertSuccess ? <Alert status='success'> <AlertIcon />
-                        {response}
-                        <CloseButton position='absolute' right='8px' top='8px'  onClick={() => handleClose()}/>
-                    </Alert> : <></>}
-
+      <AlertComponent isAlertError={isAlertError} isAlertSuccess={isAlertSuccess} setAlertError={setAlertError} setAlertSuccess={setAlertSuccess} response={response}/>
 
     </Flex>
     </>

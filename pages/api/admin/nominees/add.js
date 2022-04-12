@@ -55,7 +55,7 @@ try{
 
   }
   catch(err){
-      console.log(err)
+    res.status(404).send({msg: "Nominee creation request failed"})
   }
   
 })

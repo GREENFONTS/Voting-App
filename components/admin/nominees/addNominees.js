@@ -1,8 +1,8 @@
 import {  useEffect, useState } from 'react';
-import { Flex, Alert, AlertIcon, CloseButton, Button, FormControl, FormLabel, Input,  Modal, ModalBody, ModalHeader, 
+import { Flex, Button, FormControl, FormLabel, Input,  Modal, ModalBody, ModalHeader, 
   ModalCloseButton, ModalContent,  ModalFooter, useDisclosure, Select} from '@chakra-ui/react';
-import { sha1Generator } from '../../../services/sha';
 import {MdArrowDropDown} from 'react-icons/md';
+import AlertComponent from '../../alert';
 
 const AddNominee = (props) => {
 
@@ -14,16 +14,9 @@ const AddNominee = (props) => {
     const [image, setImage] = useState(null);
     const [inputCheck, setInputCheck] = useState(false)
     const [response, setResponse] = useState('');
-     
-    // let formBody = {
-    //   name, 
-    //   position,
-    //   positions: props.positions,
-    //   user : props.user
-    // }
-
+    
     useEffect(() => {
-      if(position.length < 2 || name.length < 2){
+      if(position.length < 2 || name.length < 2 || image == null){
         setInputCheck(true)
       }
       else{
@@ -47,6 +40,8 @@ const AddNominee = (props) => {
     const data = await res.json()
 
     if(res.status == 404){
+      setName("")
+      setPosition('')
       setAlertError(true)
       setResponse(data.msg)
     }
@@ -61,26 +56,12 @@ const AddNominee = (props) => {
 
     }
 
-    const handleClose = () => {
-      setAlertError(false)
-      setAlertSuccess(false)
-    }
-
   return (
     <>
-    {isAlertError ? <Alert status='error'> <AlertIcon />
-                        {response}
-                        <CloseButton position='absolute' right='8px' top='8px'  onClick={() => handleClose()}/>
-                    </Alert> : <></>}
-
-                    {isAlertSuccess ? <Alert status='success'> <AlertIcon />
-                        {response}
-                        <CloseButton position='absolute' right='8px' top='8px'  onClick={() => handleClose()}/>
-                    </Alert> : <></>}
+<AlertComponent isAlertError={isAlertError} isAlertSuccess={isAlertSuccess} setAlertError={setAlertError} setAlertSuccess={setAlertSuccess} response={response}/>
                     
     <Flex p='5'>
     <Modal isOpen={props.isOpen} onClose={onClose}>
-  {/* <ModalOverlay /> */}
    <ModalContent>
     <ModalHeader align='center'>Add Nominee</ModalHeader>
     <ModalCloseButton onClick={(e) => props.isClose(false)} />
@@ -119,10 +100,7 @@ const AddNominee = (props) => {
     </ModalFooter>
   </ModalContent>
 </Modal> 
-
-
-
-    </Flex>
+</Flex>
     </>
   )
 }

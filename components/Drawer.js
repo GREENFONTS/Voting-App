@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import Link from "next/link";
 import { Drawer, DrawerBody, DrawerFooter, DrawerHeader,DrawerOverlay, DrawerContent, Text, Box, LinkBox, HStack,  Accordion, useDisclosure,
-    AccordionItem,  AccordionButton,  AccordionPanel,     AccordionIcon,
-    LinkOverlay, VStack, Icon, Button, Flex, Image, useColorModeValue} from '@chakra-ui/react'
+    AccordionItem,  AccordionButton,  AccordionPanel, AccordionIcon, Icon, Button, Flex, Image, useColorModeValue} from '@chakra-ui/react'
 import {VscGithub} from 'react-icons/vsc';
-import { FaInstagram, FaEdit, FaList, FaDownload, FaDoorClosed } from 'react-icons/fa';
+import { FaInstagram, FaEdit, FaList,  FaDoorClosed } from 'react-icons/fa';
 import { BsLinkedin, BsTwitter } from 'react-icons/bs';
 import {BiReset} from 'react-icons/bi';
 import Fade from 'react-reveal/Fade';
@@ -12,7 +11,7 @@ import { FaVoteYea } from 'react-icons/fa';
 import {AiOutlineClear} from 'react-icons/ai';
 import { useCounter } from '../services/state';
 
-const DrawerComponent = (props) => {
+const DrawerComponent = () => {
 
     const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody')
     const textColor = useColorModeValue('black', 'white');
@@ -21,11 +20,9 @@ const DrawerComponent = (props) => {
     const bgLinkedIn = useColorModeValue('#0077b5', 'white');
     const bgTwitter = useColorModeValue('#1DA1F2', 'white');
     const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
-    const [user, setUser] = useState({})
     const [userCheck, setUserCheck] = useState(true)
-    const [check, setCheck] = useState(true)
     const [state, actions] = useCounter();
-    const {isOpen, onOpen, onClose } = useDisclosure()
+    const { onClose } = useDisclosure()
     
     useEffect(async () => {
         if(state.user === null || state.user === undefined){
@@ -80,9 +77,9 @@ const DrawerComponent = (props) => {
                             <LinkBox>
                             <HStack _hover={{ cursor: "pointer" }}>
                         <Link href='/' _focus={{ outline: 'none' }}>
-                               <Icon as={FaVoteYea} w={{ base: '18px', md: '20px', lg: '35px' }} h={{ base: '18px', md: '20px', lg: '35px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}/> 
+                               <Icon as={FaVoteYea} w={{ base: '25px', md: '30px', lg: '40px' }} h={{ base: '18px', md: '20px', lg: '35px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}/> 
                            </Link>
-                        <Text fontWeight="bold"  fontSize={{ base: '14px', md: '16px', lg: '20px' }} fontFamily="cursive" color={textColor}>easy-vote</Text>
+                        <Text fontWeight="bold"  fontSize={{ base: '20px', md: '25px', lg: '30px' }} fontFamily="cursive" color={textColor}>easy-vote</Text>
 
                     </HStack>
                             </LinkBox>
@@ -94,10 +91,7 @@ const DrawerComponent = (props) => {
                 </DrawerHeader>
 
                 <DrawerBody>
-                <Link href='/' target='_blank' mb='10px' _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='500' >Home</Link>
-                    <Fade right>
-                        <Link href='/about' target='_blank' mb='10px' _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='500' >About</Link>
-                    </Fade>
+                <Link href='/' target='_blank' mb='10px' _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='600' fontSize='30px' >Home</Link>
                     <Fade bottom>
                         <Box  _hover={{ transform: 'scale(1.02)', cursor: "pointer" }}>
                             <Link href='/register' target='_blank' _hover={{ cursor: "pointer" }} fontWeight='500' >Sign Up</Link>
@@ -336,6 +330,7 @@ const DrawerComponent = (props) => {
                                 actions.addDrawerState(false)
                                 actions.listCodes(false)
                                 actions.resetVotes(true)
+                                actions.showResults(false)
                             }}>
                             Reset Votes
                             </Button>

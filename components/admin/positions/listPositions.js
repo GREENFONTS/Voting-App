@@ -1,7 +1,8 @@
 import {  useEffect, useState} from 'react';
 import {FaEdit, FaTrash} from 'react-icons/fa'
-import { Flex, Box, Text, Icon, Alert, AlertIcon, CloseButton, Button, FormControl, FormLabel, Input,  Modal, ModalBody, 
+import { Flex, Box, Text, Icon, Button, FormControl, FormLabel, Input,  Modal, ModalBody, 
     ModalHeader,  ModalCloseButton, ModalContent,  ModalFooter, useDisclosure} from '@chakra-ui/react';
+import AlertComponent from '../../alert';
 
 const PositionList = (props) => {
 
@@ -49,11 +50,6 @@ const PositionList = (props) => {
 
     }
 
-    const handleClose = () => {
-      setAlertError(false)
-      setAlertSuccess(false)
-    }
-
     const deleteHandler = async (name) => {
         const res = await fetch(`/api/admin/positions/delete?position=${name}&user=${props.user.email}`)
         const data = await res.json()
@@ -71,7 +67,6 @@ const PositionList = (props) => {
     <>
     <Flex p='5'>
     <Modal isOpen={props.isOpen} onClose={onClose}>
-  {/* <ModalOverlay /> */}
    <ModalContent>
     <ModalHeader align='center'>Positions</ModalHeader>
     <ModalCloseButton onClick={(e) => props.isClose(false)} />
@@ -84,7 +79,7 @@ const PositionList = (props) => {
                         <Text fontSize={{lg: '20px'}} fontFamily='cursive'>{ele.name}</Text>
                     </Box>
                     <Box w='20%' align='center' p='2'>
-                    <Icon mr='20px' as={FaEdit} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => { setPositionName(ele.name)
+                    <Icon mr={{base: '10px', md:'20px'}} as={FaEdit} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => { setPositionName(ele.name)
                         setIsOpen(true) }
                     }/>
                         <Icon as={FaTrash} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => deleteHandler(ele.name)}/>
@@ -116,11 +111,7 @@ const PositionList = (props) => {
          </>
             )
         })}
-            
                 </>
-                
-            
-        
     </ModalBody>
 
     <ModalFooter>
@@ -132,21 +123,13 @@ const PositionList = (props) => {
     </ModalFooter>
   </ModalContent>
 </Modal> 
-{isAlertError ? <Alert status='error'> <AlertIcon />
-                        {response}
-                        <CloseButton position='absolute' right='8px' top='8px'  onClick={() => handleClose()}/>
-                    </Alert> : <></>}
 
-                    {isAlertSuccess ? <Alert status='success'> <AlertIcon />
-                        {response}
-                        <CloseButton position='absolute' right='8px' top='8px'  onClick={() => handleClose()}/>
-                    </Alert> : <></>}
+<AlertComponent isAlertError={isAlertError} isAlertSuccess={isAlertSuccess} setAlertError={setAlertError} setAlertSuccess={setAlertSuccess} response={response}/>
 
 
     </Flex>
 
     <Modal isOpen={isOpen} onClose={onClose}>
-  {/* <ModalOverlay /> */}
    <ModalContent>
     <ModalHeader align='center'>Update Position - {positionName}</ModalHeader>
     <ModalCloseButton onClick={(e) => setIsOpen(false)} />
@@ -168,8 +151,6 @@ const PositionList = (props) => {
   </ModalContent>
 </Modal> 
     </>
-
-
   )
 }
 

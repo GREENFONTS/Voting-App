@@ -10,6 +10,7 @@ export default async function handler(req, res) {
       })
       if (position != null) {
         res.status(404).json({msg: "Nominee already exists"});
+        await prisma.$disconnect();
       }
       else {
         await prisma.position.create({

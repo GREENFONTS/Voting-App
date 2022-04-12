@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 export default async function handler(req, res) {
     const prisma = new PrismaClient()
 
-   
    let user = await prisma.admin.findFirst({
        where:{
            id: req.query.id

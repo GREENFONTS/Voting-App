@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       res.status(200).json({msg: `Nominee Deleted successfully`});
     }  
     catch(err){
-      console.log(err)
+      await prisma.$disconnect();
       res.status(404).json({msg: `Update Request Failed`});
     } 
       }
