@@ -10,7 +10,7 @@ if(process.env.NODE_ENV == 'development'){
   url = 'http://localhost:3000/voting'
 }
 else{
-  url = 'https://acol-elect.herokuapp.com'
+  url = 'https://vote-fast.herokuapp.com'
 }
     const { onOpen, onClose } = useDisclosure();
     const [copy, setCopy] = useState(false)

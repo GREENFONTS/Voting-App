@@ -19,7 +19,7 @@ model admin {
 }
 
 model position {
-  name String @id @unique
+  name String @id
   user String
 }
 

@@ -112,7 +112,7 @@ const Voting = ({router}) => {
          <Box w={{base: '100%', md: '5%'}} h={{ base: '200px', md: '250px', lg: '60vh' }}></Box>
          <Box   w={{base: '100%', md: '45%'}} h={{ base: '200px', md: '250px', lg: '50vh' }} mt={{lg: '12'}}>
               <Box align='center'>
-                  <Text fontSize={{md: '40px', lg:'50px'}}>Welcome To <br/> Tesla <br/> Elections</Text>
+                  <Text fontSize={{md: '40px', lg:'50px'}}>Welcome To <br/> {user.organization} <br/> Elections</Text>
               </Box>
 
               <Box mt='5'> 
