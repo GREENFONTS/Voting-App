@@ -209,6 +209,7 @@ const DrawerComponent = () => {
                                 actions.addDrawerState(false)
                                 actions.listNominees(true)
                                 actions.showResults(false)
+                                actions.listCodes(false)
                             }}>
                             Show Nominees
                             </Button>

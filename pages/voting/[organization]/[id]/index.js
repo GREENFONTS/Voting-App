@@ -46,7 +46,7 @@ const Voting = ({router}) => {
               body: email
           }) 
           const positionData = await positionsRes.json()
-          localStorage.setItem('positions', JSON.stringify(positionData))
+          actions.getPositions(positionData)
 
           const nomineesRes = await fetch('/api/admin/nominees/find', {
               method: 'POST',
@@ -67,7 +67,7 @@ const Voting = ({router}) => {
 
     const submitHandler = async () => {
       let positions = []
-      JSON.parse(localStorage.getItem('positions')).forEach((ele) => {
+      state.positions.forEach((ele) => {
         positions.push(ele.name)
       })
 
@@ -88,6 +88,7 @@ const Voting = ({router}) => {
         }
         if(res.status == 200){
             localStorage.setItem('codeToken', data.token)
+            console.log(positions)
             router.push(`/voting/${organization}/${id}/${positions[0]}`)
             positions.shift()
             actions.getPositions(positions)
@@ -144,7 +145,7 @@ const Voting = ({router}) => {
       
       </Center>}
     {isLesserThan900 && <Center h='100vh' w='100%'>
-        <Box height='100vh' w='95%'  px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} alignSelf="center">
+        <Box height='100vh' w='95%'  bg={bgColor} alignSelf="center">
       
               <Box align='center' mb='3'>
                   <Text fontSize='35px'>Welcome To <br/> {organization}  <br/> Elections</Text>

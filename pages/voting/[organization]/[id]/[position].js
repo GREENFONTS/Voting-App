@@ -26,12 +26,10 @@ const Posts = () => {
 
   let admin = localStorage.getItem('admin')
   let token = localStorage.getItem('codeToken')
-  actions.getPositions(JSON.parse(localStorage.getItem('positions')))
-
   let nominees = JSON.parse(localStorage.getItem('nominees'))
+ 
   let nomineesData = nominees.filter((ele) => ele.post === queryValue[2])
   actions.getNominees(nomineesData)
-  
   
     if(token === null){
       router.push(`/voting/${organization}/${id}`)
@@ -44,11 +42,6 @@ const Posts = () => {
         localStorage.setItem('admin', null)
         router.push(`/voting/${organization}/${id}/` )
     } 
-    if(state.positions.length != 0){
-      state.positions.forEach((ele) => {
-        positions.push(ele.name)
-      })
-    }  
   }
   
 
@@ -70,9 +63,8 @@ const Posts = () => {
     }
     if (res.status === 200){
       let positions = state.positions
-      positions.shift()
       if(positions.length > 0){
-        let nextPost = positions[0].name      
+        let nextPost = positions[0]      
         setPost(nextPost)
         router.push(`/voting/${organization}/${id}/${nextPost}`)
         positions.shift()
