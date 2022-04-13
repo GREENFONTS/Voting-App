@@ -4,7 +4,7 @@ This full stack project is a voting app platform enables its users(admin) to cre
 
 Leveraging the server side rendering vercel framework  [NextJs](https://nextjs.org/) and using many other npm libraries, a full user interface and backend apis was created to handle the various functionalities in the web app.
 
-##TECHNOLOGIES USED
+## TECHNOLOGIES USED
 - [NextJs](https://nextjs.org/)
 - [Chakra UI](https://chakra-ui.com/)
 - [React-Reveal](https://wwww.react-reveal.com/)
