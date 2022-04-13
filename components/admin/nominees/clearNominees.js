@@ -9,7 +9,7 @@ const ClearNominees = (props) => {
     const [response, setResponse] = useState('');
     
     const submitHandler = async () => {
-        const res = await fetch('/api/admin/nominees/deleteAll');
+        const res = await fetch(`/api/admin/nominees/deleteAll?user=${props.user.email}`);
         const data = await res.json()
 
         if(res.status == 404){

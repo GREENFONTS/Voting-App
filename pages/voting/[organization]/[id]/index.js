@@ -13,24 +13,25 @@ const Voting = ({router}) => {
   const [isLargerThan900] = useMediaQuery('(min-width: 900px)')
     const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
     const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody')
-    const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
     const [code, setCode] = useState('');
     const [isRequired, setIsRequired] = useState(true);
     const [alertMessage, setAlertMessage] = useState(null)
+    const [votingAlert, setVotingAlert] = useState(false)
     const user = router.query;
 
     useEffect(async () => {
-        const res = await fetch(`/api/voting/?user=${user.id}`);
+      console.log(user)
+        const res = await fetch(`/api/voting?id=${user.id}`);
         const data = await res.json()
         let email = data.user
 
         const electionRes = await fetch('/api/voting/state', {
           method: 'POST',
-          body: JSON.stringify({user: email})
+          body: email
       }) 
       const electionState = await electionRes.json()
       actions.electionState(electionState.state)
-      console.log(electionState.state, state.electionState)
+      console.log(electionState.state, email)
       
         if(res.status == 404){
             router.push('/404.js')
@@ -40,22 +41,22 @@ const Voting = ({router}) => {
 
             const positionsRes = await fetch('/api/admin/positions/find', {
               method: 'POST',
-              body: JSON.stringify({user: email})
+              body: email
           }) 
           const positionData = await positionsRes.json()
           localStorage.setItem('positions', JSON.stringify(positionData))
 
           const nomineesRes = await fetch('/api/admin/nominees/find', {
               method: 'POST',
-              body: JSON.stringify({user: email})
+              body: email
           }) 
           const nomineesData = await nomineesRes.json()
-          
           localStorage.setItem('nominees', JSON.stringify(nomineesData))
+
+          // console.log(positionData, nomineesData)
         }
     }, [])
 
-    console.log(state.electionState)
     useEffect(() => {
         if(code.length > 1){
             setIsRequired(false)
@@ -68,7 +69,6 @@ const Voting = ({router}) => {
         positions.push(ele.name)
       })
 
-      console.log(state)
       if(state.electionState == false){
         setAlertMessage('Voting has ended')
         setCode('')
@@ -82,6 +82,7 @@ const Voting = ({router}) => {
 
         if(res.status == 404){
             setAlertMessage(data.msg)
+            setCode('')
         }
         if(res.status == 200){
             localStorage.setItem('codeToken', data.token)
@@ -119,6 +120,11 @@ const Voting = ({router}) => {
               {alertMessage !== null ? <Alert status='error'> <AlertIcon />
                         {alertMessage}
                         <CloseButton position='absolute' right='8px' top='8px' onClick={(e) => setAlertMessage(null)} />
+                    </Alert> : <></>}
+
+                    {state.votingEnd  ? <Alert status='success'> <AlertIcon />
+                      Thanks for Voting
+                        <CloseButton position='absolute' right='8px' top='8px' onClick={(e) => actions.votingEnd(false)} />
                     </Alert> : <></>}
 
               <FormControl isRequired >

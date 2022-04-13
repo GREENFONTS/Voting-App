@@ -16,6 +16,7 @@ const NomineesList = (props) => {
     const [isOpen, setIsOpen] = useState(false);
     const [name, setName] = useState('');
     const [currentState, setCurrentState] = useState(null)
+    const [id, setId] = useState('')
 
     useEffect(() => {
       if(position.length < 1 || name.length < 1){
@@ -27,12 +28,12 @@ const NomineesList = (props) => {
     }, [position, name])
   
     const submitHandler = async () => {
-      const res = await fetch('/api/admin/nominees/update', {
+      const res = await fetch(`/api/admin/nominees/update?id=${id}`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({name, position, user: props.user.email, currentState})
+          body: JSON.stringify({name, position})
     });
     const data = await res.json()
 
@@ -53,8 +54,8 @@ const NomineesList = (props) => {
 
     }
 
-    const deleteHandler = async (ele) => {
-        const res = await fetch(`/api/admin/nominees/delete?name=${ele.name}&position=${ele.post}&user=${props.user.email}`)
+    const deleteHandler = async (Id) => {
+        const res = await fetch(`/api/admin/nominees/delete?id=${Id}`)
         const data = await res.json()
 
         if(res.status === 200){
@@ -86,9 +87,10 @@ const NomineesList = (props) => {
           <Box p='2'>
           <HStack>
           <Icon mr='10px' as={FaEdit} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => { setCurrentState(ele)
-                        setIsOpen(true) }
+                        setIsOpen(true) 
+                      setId(ele.id)}
                     }/>
-                        <Icon as={FaTrash} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => deleteHandler(ele)}/>
+                        <Icon as={FaTrash} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => deleteHandler(ele.id)}/>
           </HStack>
           </Box>
           

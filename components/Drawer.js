@@ -29,30 +29,31 @@ const DrawerComponent = () => {
             setUserCheck(false)
         }
         else{
+
             const positionsRes = await fetch('/api/admin/positions/find', {
                 method: 'POST',
-                body: JSON.stringify({user: state.user.email})
+                body: state.user.email
             }) 
             const positionData = await positionsRes.json()
             actions.getPositions(positionData) 
 
             const nomineesRes = await fetch('/api/admin/nominees/find', {
                 method: 'POST',
-                body: JSON.stringify({user: state.user.email})
+                body: state.user.email
             }) 
             const nomineesData = await nomineesRes.json()
             actions.getNominees(nomineesData)
         
             const codesRes = await fetch('/api/admin/codes/find', {
                 method: 'POST',
-                body: JSON.stringify({user: state.user.email})
+                body: state.user.email
             }) 
             const codesData = await codesRes.json()
             actions.getCodes(codesData)
 
         const electionRes = await fetch('/api/voting/state', {
             method: 'POST',
-            body: JSON.stringify({user: state.user.email})
+            body:  state.user.email
         }) 
         const electionState = await electionRes.json()
         actions.electionState(electionState.state)

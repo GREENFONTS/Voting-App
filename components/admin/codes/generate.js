@@ -31,7 +31,7 @@ const GenerateCode = (props) => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({number, user: props.user})
+      body: JSON.stringify({number, user: props.user.email})
     });
     const data = await res.json()
 

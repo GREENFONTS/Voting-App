@@ -16,6 +16,7 @@ const Posts = () => {
   
 
   useEffect(async () => {
+    actions.votingEnd(false)
     const queryValue = window.location.pathname.split('/').slice(2,)
     const organization = queryValue[0]
     setOrganization(queryValue[0])
@@ -68,11 +69,8 @@ const Posts = () => {
       console.log(data.msg)
     }
     if (res.status === 200){
-      console.log(state.positions)
       let positions = state.positions
-      // let nextPostIndex = data.nominee.postNo
-      // console.log(data, nextPostIndex)
-      // console.log(positions[nextPostIndex])
+      positions.shift()
       if(positions.length > 0){
         let nextPost = positions[0].name      
         setPost(nextPost)
@@ -82,6 +80,7 @@ const Posts = () => {
       }
      else{
        localStorage.setItem('codeToken', null)
+       actions.votingEnd(true)
       router.push(`/voting/${organization}/${id}`)
      }
       
@@ -97,7 +96,7 @@ const Posts = () => {
       {state.nominees.length > 0 ? state.nominees.map((ele) => {
         return(
         <Box mb='2' display={ {md: 'inline-block'}} key={ele.id} align='center' p='1' w={{base: "100%", md: "47%", lg:"32%" }} mr={{lg:'3'}} h={{base: "40vh", md: "35vh", lg:"40vh" }} borderLeft='1px' borderBottom='1px' borderColor='gray.200' boxShadow='base'>
-        <Image src='flag.png' alt='Nominee Image' objectFit='cover' boxSize={{base: "27vh", md: "20vh", lg:"25vh" }}/>
+        <Image src={ele.image} alt='Nominee Image' objectFit='cover' boxSize={{base: "27vh", md: "20vh", lg:"25vh" }}/>
         <Flex p='1' justify='space-between'>
           <VStack align='start' spacing='2'>
             <Text>Name: {ele.name}</Text>

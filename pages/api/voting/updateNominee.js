@@ -4,11 +4,9 @@ export default async function handler(req, res) {
     const prisma = new PrismaClient()
     let nominee = JSON.parse(req.query.nominee)
     try{
-        await prisma.nominee.updateMany({
+        await prisma.nominee.update({
             where: {
-                name: nominee.name,
-                post: nominee.post,
-                user: nominee.user
+                id: nominee.id
             },
             data:{
                 votes: parseInt(nominee.votes) + 1

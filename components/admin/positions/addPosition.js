@@ -22,12 +22,14 @@ const AddPosition = (props) => {
     }, [position])
   
     const submitHandler = async () => {
+      console.log(props.user, props.user.email)
+      const user = props.user.email
       const res = await fetch('/api/admin/positions/add', {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({position, user: props.user.email})
+          body: JSON.stringify({position, user: user})
     });
     const data = await res.json()
 

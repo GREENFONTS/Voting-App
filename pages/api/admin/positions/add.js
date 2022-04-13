@@ -1,11 +1,12 @@
 import { PrismaClient } from "@prisma/client";
+const {v4} = require('uuid');
 
 export default async function handler(req, res) {
   const prisma = new PrismaClient();
     const position = await prisma.position.findFirst({
         where: {
           name: req.body.position,
-          user: req.body.email       
+          user: req.body.user      
         }
       })
       if (position != null) {
@@ -15,6 +16,7 @@ export default async function handler(req, res) {
       else {
         await prisma.position.create({
           data: {
+            id: v4(),
             name: req.body.position,
             user: req.body.user
           }

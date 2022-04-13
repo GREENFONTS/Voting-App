@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     let codeList = []
     try{
         for(let i = 0; i < number; i++){
-            codeList.push({codes: nanoid(12), user: req.body.user.email, used: false})
+            codeList.push({codes: nanoid(12), user: req.body.user, used: false})
              
          }
      

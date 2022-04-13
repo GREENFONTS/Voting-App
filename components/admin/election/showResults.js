@@ -1,6 +1,4 @@
-import {  useEffect, useState} from 'react';
-import {FaDownload} from 'react-icons/fa'
-import {Box, Text, Icon, useDisclosure, HStack, Table, TableContainer, Tr, Td, Th, Tbody, Tfoot, Thead, Button} from '@chakra-ui/react';
+import {Box, Text, Table, TableContainer, Tr, Td, Th, Tbody, Thead, Button} from '@chakra-ui/react';
 
 const ShowResults = (props) => {
 

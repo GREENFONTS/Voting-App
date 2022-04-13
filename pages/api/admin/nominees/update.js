@@ -3,11 +3,9 @@ import { PrismaClient } from "@prisma/client";
 export default async function handler(req, res) {
   const prisma = new PrismaClient();
     try{
-      await prisma.nominee.updateMany({
+      await prisma.nominee.update({
         where: {
-          name: req.body.currentState.name,
-          post: req.body.currentState.post,
-          user: req.body.email  
+          id: req.query.id 
         },
         data: {
           name: req.body.name,

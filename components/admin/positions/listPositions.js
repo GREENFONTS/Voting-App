@@ -10,11 +10,10 @@ const PositionList = (props) => {
     const [isAlertError, setAlertError] = useState(false);
     const [isAlertSuccess, setAlertSuccess] = useState(false);
     const [position, setPosition] = useState('');
-    const [updateCheck, setUpdateCheck] = useState(false);
+    const [id, setId] = useState('');
     const [inputCheck, setInputCheck] = useState(false)
     const [response, setResponse] = useState('');
     const [isOpen, setIsOpen] = useState(false);
-    const [positionName, setPositionName] = useState(null)
     
     useEffect(() => {
         if(position.length < 1){
@@ -26,18 +25,19 @@ const PositionList = (props) => {
       }, [position])
   
     const submitHandler = async () => {
-      const res = await fetch('/api/admin/positions/update', {
+      const res = await fetch(`/api/admin/positions/update?id=${id}`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({positionName, position, user: props.user.email})
+          body: JSON.stringify({position})
     });
     const data = await res.json()
 
     if(res.status == 404){
     setPosition('')
       setAlertError(true)
+      props.isClose(false)
       setResponse(data.msg)
     }
     else{
@@ -50,8 +50,8 @@ const PositionList = (props) => {
 
     }
 
-    const deleteHandler = async (name) => {
-        const res = await fetch(`/api/admin/positions/delete?position=${name}&user=${props.user.email}`)
+    const deleteHandler = async (Id) => {
+        const res = await fetch(`/api/admin/positions/delete?id=${Id}`)
         const data = await res.json()
 
         if(res.status === 200){
@@ -71,47 +71,29 @@ const PositionList = (props) => {
     <ModalHeader align='center'>Positions</ModalHeader>
     <ModalCloseButton onClick={(e) => props.isClose(false)} />
     <ModalBody>
-        <>{props.positions.map((ele) => {
-            return (
-                <>
-                <Flex bg='#e9e9e9' p='1' borderRadius='2px' mb='2' key={props.positions.indexOf(ele)}>
-                    <Box w='80%'>
-                        <Text fontSize={{lg: '20px'}} fontFamily='cursive'>{ele.name}</Text>
-                    </Box>
-                    <Box w='20%' align='center' p='2'>
-                    <Icon mr={{base: '10px', md:'20px'}} as={FaEdit} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => { setPositionName(ele.name)
-                        setIsOpen(true) }
-                    }/>
-                        <Icon as={FaTrash} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => deleteHandler(ele.name)}/>
-                    </Box>
+      <>{props.positions.length == 0 ?  <Text>No Positions added yet</Text> : 
+      <>{props.positions.map((ele) => {
+        
+        return (
+            <>
+            <Flex bg='#e9e9e9' p='1' borderRadius='2px' mb='2' key={props.positions.indexOf(ele)}>
+                <Box w='80%'>
+                    <Text fontSize={{lg: '20px'}} fontFamily='cursive'>{ele.name}</Text>
+                </Box>
+                <Box w='20%' align='center' p='2'>
+                <Icon mr={{base: '10px', md:'20px'}} as={FaEdit} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => {  setIsOpen(true) 
+                  setId(ele.id)}
+                }/>
+                    <Icon as={FaTrash} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => deleteHandler(ele.id)}/>
+                </Box>
+        
             
-                
-                </Flex>
-                {updateCheck ?
-                <Flex p='1'>
-                    <Box w='70%'>
-                    <FormControl isRequired >
-                    <FormLabel htmlFor='position'>Update Position</FormLabel>
-                    <Input id='position' type='position' value={position} onChange={(e) => setPosition(e.target.value)} />
-                    
-                </FormControl>
-                    </Box>
-                <Box w='30%' align='center' p='2'>
-                <br />
-                <Button disabled={inputCheck} bg='#e8e8e8' mr={3} onClick={() => {setUpdateCheck(false)
-                submitHandler()
-      }}>
-        Submit
-      </Button></Box>
-                
-                </Flex>
-                
-                
-         : <></>}
-         </>
-            )
-        })}
-                </>
+            </Flex>
+     </>
+        )
+    })}
+            </>} </>
+        
     </ModalBody>
 
     <ModalFooter>
@@ -131,7 +113,7 @@ const PositionList = (props) => {
 
     <Modal isOpen={isOpen} onClose={onClose}>
    <ModalContent>
-    <ModalHeader align='center'>Update Position - {positionName}</ModalHeader>
+    <ModalHeader align='center'>Update Position </ModalHeader>
     <ModalCloseButton onClick={(e) => setIsOpen(false)} />
     <ModalBody>
         <FormControl isRequired >
@@ -143,7 +125,7 @@ const PositionList = (props) => {
     <ModalFooter>
       <Button disabled={inputCheck} bg='#e8e8e8' mr={3} onClick={() => {
           setIsOpen(false)
-          submitHandler(positionName)
+          submitHandler()
       }}>
         Submit
       </Button>

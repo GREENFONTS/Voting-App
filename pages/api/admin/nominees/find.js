@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   if(req.body != null || req.body != undefined){
     const nominees = await prisma.nominee.findMany({
       where:{
-      user: req.body.user
+      user: req.body
       }
     })
       await prisma.$disconnect();

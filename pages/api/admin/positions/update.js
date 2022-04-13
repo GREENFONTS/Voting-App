@@ -8,16 +8,15 @@ export default async function handler(req, res) {
           name: req.body.position,
         },
         where: {
-          name: req.body.positionName,
-          user: req.body.email  
+          id: req.query.id
         }
       })
       await prisma.$disconnect();
-      res.status(200).json({msg: `${req.body.positionName} Updated successfully`});
+      res.status(200).json({msg: `Position Updated successfully`});
     }  
     catch(err){
       console.log(err)
-      res.status(200).json({msg: `Update Request Failed`});
+      res.status(404).json({msg: `Update Request Failed`});
     } 
       }
       

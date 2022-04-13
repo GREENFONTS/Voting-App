@@ -3,14 +3,13 @@ import { PrismaClient } from "@prisma/client";
 export default async function handler(req, res) {
   const prisma = new PrismaClient();
     try{
-      await prisma.position.deleteMany({
+      await prisma.position.delete({
         where: {
-          name: req.query.position,
-          user: req.query.user  
+          id: req.query.id 
         }
       })
       await prisma.$disconnect();
-      res.status(200).json({msg: `${req.query.position} Deleted successfully`});
+      res.status(200).json({msg: `Position Deleted successfully`});
     }  
     catch(err){
       console.log(err)

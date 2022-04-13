@@ -46,7 +46,7 @@ const Admin = () => {
     <AddPosition isOpen={state.addPositionModal} isClose={actions.addPosition} user={state.user} getPositions={actions.getPositions} refreshDrawer={actions.refreshDrawer} /> 
     <PositionList isOpen={state.listPositionModal} isClose={actions.listPositions} user={state.user} positions={state.positions} refreshDrawer={actions.refreshDrawer}/>
     <AddNominee isOpen={state.addNomineeModal} listNomineeModal={actions.listNominees} positions={state.positions} isClose={actions.addNominee} user={state.user} refreshDrawer={actions.refreshDrawer}/>
-    <ClearNominees clearNominees={actions.clearNominees} isOpen={state.clearNomineesModal} refreshDrawer={actions.refreshDrawer}/>
+    <ClearNominees clearNominees={actions.clearNominees} isOpen={state.clearNomineesModal} refreshDrawer={actions.refreshDrawer} user={state.user}/>
     <GenerateLink isClose={actions.generateLink} isOpen={state.generateLinkModal} user={state.user} />
     <GenerateCode generateCode={actions.generateCode} isOpen={state.generateCodeModal} refreshDrawer={actions.refreshDrawer} user={state.user} />
     <EndElection electionState={state.electionState} endElection={actions.electionState} user={state.user} isClose={actions.endElectionModal} refreshDrawer={actions.refreshDrawer} isOpen={state.endElectionModal}/>

@@ -35,7 +35,7 @@ const Register = () => {
     }
 
 useEffect(() => {
-    if(userName === '' || email === '' || organization === ''){
+    if(userName === '' || email === '' || organization === '' || isPasswordLengthError || isPasswordMatchError){
         setIsRequired(true)
     }
     else{
