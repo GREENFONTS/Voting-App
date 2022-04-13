@@ -48,7 +48,7 @@ const AddNominee = (props) => {
     else{
       setName("")
       setPosition('')
-      props.refreshDrawer(true)
+      props.refreshDrawer()
       props.listNomineeModal(true)
       setAlertSuccess(true)
       setResponse(data.msg)  

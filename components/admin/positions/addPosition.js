@@ -40,7 +40,7 @@ const AddPosition = (props) => {
     }
     else{
       setPosition('')
-      props.refreshDrawer(true)
+      props.refreshDrawer()
       setAlertSuccess(true)
       setResponse(data.msg)  
 

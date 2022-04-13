@@ -145,7 +145,7 @@ const DrawerComponent = () => {
                             <AccordionPanel ml='4' p='2px' display='block' >
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
-                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                            <Button bg={bgColor}  onClick={(e) => { 
                                 actions.listCodes(false)
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
@@ -159,7 +159,7 @@ const DrawerComponent = () => {
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaList} />
-                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                            <Button bg={bgColor}  onClick={(e) => { 
                                 actions.listCodes(false)
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
@@ -192,7 +192,7 @@ const DrawerComponent = () => {
                             <AccordionPanel ml='4' p={2} display='block' >
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
-                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                            <Button bg={bgColor}  onClick={(e) => { 
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.addNominee(true)
@@ -205,7 +205,7 @@ const DrawerComponent = () => {
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaList} />
-                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                            <Button bg={bgColor}  onClick={(e) => { 
                                 actions.addDrawerState(false)
                                 actions.listNominees(true)
                                 actions.showResults(false)
@@ -216,7 +216,7 @@ const DrawerComponent = () => {
                             
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={AiOutlineClear} />
-                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                            <Button bg={bgColor}  onClick={(e) => { 
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.clearNominees(true)
@@ -247,7 +247,7 @@ const DrawerComponent = () => {
                             <AccordionPanel ml='4' p='2px' display='block' >
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
-                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                            <Button bg={bgColor} onClick={(e) => { 
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.generateCode(true)
@@ -260,7 +260,7 @@ const DrawerComponent = () => {
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaList} />
-                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                            <Button bg={bgColor} onClick={(e) => { 
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.listCodes(true)
@@ -291,7 +291,7 @@ const DrawerComponent = () => {
                             <AccordionPanel ml='4' p='1px' display='block' >
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaEdit} />
-                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                            <Button bg={bgColor}  onClick={(e) => { 
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.listCodes(false)
@@ -304,7 +304,7 @@ const DrawerComponent = () => {
 
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaDoorClosed} />
-                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                            <Button bg='white' onClick={(e) => { 
                                 actions.endElectionModal(true)
                                 actions.addDrawerState(false)
                             }}>
@@ -314,7 +314,7 @@ const DrawerComponent = () => {
 
                            <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={FaList} />
-                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                            <Button bg={bgColor}  onClick={(e) => { 
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.listCodes(false)
@@ -326,7 +326,7 @@ const DrawerComponent = () => {
 
                             <HStack _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Icon as={BiReset} />
-                            <Button bg='white' _hover={{ bg: 'white'}} onClick={(e) => { 
+                            <Button bg={bgColor}  onClick={(e) => { 
                                 actions.listNominees(false)
                                 actions.addDrawerState(false)
                                 actions.listCodes(false)

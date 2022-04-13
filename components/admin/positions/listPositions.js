@@ -42,7 +42,7 @@ const PositionList = (props) => {
     }
     else{
     setPosition('')
-      props.refreshDrawer(true)
+      props.refreshDrawer()
       props.isClose(false)
       setAlertSuccess(true)
       setResponse(data.msg)  
