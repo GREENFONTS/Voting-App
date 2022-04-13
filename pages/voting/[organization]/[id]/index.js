@@ -10,18 +10,21 @@ import Fade from 'react-reveal/Fade';
 
 const Voting = ({router}) => {
   const [state, actions] = useCounter();
-  const [isLargerThan900] = useMediaQuery('(min-width: 900px)')
-    const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
+  const [isLargerThan900] = useMediaQuery('(min-width: 800px)')
+    const [isLesserThan900] = useMediaQuery('(max-width: 800px)')
     const bgColor = useColorModeValue('themeLight.bg', 'themeDark.bgBody')
     const [code, setCode] = useState('');
     const [isRequired, setIsRequired] = useState(true);
     const [alertMessage, setAlertMessage] = useState(null)
-    const [votingAlert, setVotingAlert] = useState(false)
-    const user = router.query;
-
+    const [organization, setOrganization] = useState('');
+    const [id, setId] = useState('')
+    
     useEffect(async () => {
-      console.log(user)
-        const res = await fetch(`/api/voting?id=${user.id}`);
+      const queryValue = window.location.pathname.split('/').slice(2,)
+      const userId = queryValue[1]
+      setId(queryValue[1])
+      setOrganization(queryValue[0])
+        const res = await fetch(`/api/voting?id=${userId}`);
         const data = await res.json()
         let email = data.user
 
@@ -31,7 +34,6 @@ const Voting = ({router}) => {
       }) 
       const electionState = await electionRes.json()
       actions.electionState(electionState.state)
-      console.log(electionState.state, email)
       
         if(res.status == 404){
             router.push('/404.js')
@@ -86,7 +88,7 @@ const Voting = ({router}) => {
         }
         if(res.status == 200){
             localStorage.setItem('codeToken', data.token)
-            router.push(`/voting/${user.organization}/${user.id}/${positions[0]}`)
+            router.push(`/voting/${organization}/${id}/${positions[0]}`)
             positions.shift()
             actions.getPositions(positions)
         }
@@ -95,9 +97,8 @@ const Voting = ({router}) => {
  
   return (
       <>
-    <Box w='100%' h='100vh'  bgGradient='linear(to-r, gray.200, white, gray.100)'>
-    <>
-    </>
+    <Box w='100%' h='100vh'  bgGradient='linear(to-r, gray.200, white, gray.200)'>
+
     {isLargerThan900 && <Center h='90vh' w='100%'>
         <Box height={{ base: '230px', md: '300px', lg: '80vh' }} w='95%' display={{ md: 'flex'}} px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} alignSelf="center">
       
@@ -113,8 +114,51 @@ const Voting = ({router}) => {
          <Box w={{base: '100%', md: '5%'}} h={{ base: '200px', md: '250px', lg: '60vh' }}></Box>
          <Box   w={{base: '100%', md: '45%'}} h={{ base: '200px', md: '250px', lg: '50vh' }} mt={{lg: '12'}}>
               <Box align='center'>
-                  <Text fontSize={{md: '40px', lg:'50px'}}>Welcome To <br/> {user.organization} <br/> Elections</Text>
+                  <Text fontSize={{md: '40px', lg:'50px'}} color='black'>Welcome To <br/> {organization} <br/> Elections</Text>
               </Box>
+
+              <Box mt='5'> 
+              {alertMessage !== null ? <Alert status='error'> <AlertIcon />
+                        {alertMessage}
+                        <CloseButton position='absolute' right='8px' top='8px' onClick={(e) => setAlertMessage(null)} />
+                    </Alert> : <></>}
+
+                    {state.votingEnd  ? <Alert status='success'> <AlertIcon />
+                      Thanks for Voting
+                        <CloseButton position='absolute' right='8px' top='8px' onClick={(e) => actions.votingEnd(false)} />
+                    </Alert> : <></>}
+
+              <FormControl isRequired >
+                    <FormLabel htmlFor='code' color='black'>Enter code to Vote: </FormLabel>
+                    <Input id='code' type='text' value={code} onChange={(e) => setCode(e.target.value)} />
+                    </FormControl>
+              </Box>
+
+              <Box mt='5'>
+                       <Button id='button' isDisabled={isRequired} _hover={{ transform: 'scale(1.05)', cursor: "pointer" }} onClick={(e) => submitHandler()}>Submit</Button>
+                </Box>
+      </Box>
+      
+      </Box>
+        
+      
+      </Center>}
+    {isLesserThan900 && <Center h='100vh' w='100%'>
+        <Box height='100vh' w='95%'  px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} alignSelf="center">
+      
+              <Box align='center' mb='3'>
+                  <Text fontSize='35px'>Welcome To <br/> {organization}  <br/> Elections</Text>
+              </Box>
+
+              <Box h='35vh'>    
+     
+              <Fade right> <Bounce bottom>
+              <Image src='/votingbg.png' alt='Topic' h='35vh'  width='100%' />    </Bounce>     
+              </Fade>
+       
+        </Box>
+        <Box h='2vh'></Box> 
+        
 
               <Box mt='5'> 
               {alertMessage !== null ? <Alert status='error'> <AlertIcon />
@@ -136,55 +180,11 @@ const Voting = ({router}) => {
               <Box mt='5'>
                        <Button id='button' isDisabled={isRequired} _hover={{ transform: 'scale(1.05)', cursor: "pointer" }} onClick={(e) => submitHandler()}>Submit</Button>
                 </Box>
-      </Box>
       
       </Box>
         
       
-      </Center>}
-    {isLesserThan900 && <Box align='center' mt={5} >
-    <Box display='flex' height={{ base: '30vh', md: '35vh' }} w='95%' bg={bgColor} >
-      <Box w={{base: '10%', md:'20%'}} mt='3'>
-      </Box>
-      <Box w={{base:'10%', md:'70'}}></Box>
-      <Box w={{base:'70%'}} mt='2'>
-        
-        <Center display='block'>
-        <Box fontSize={{base: '25px', md: '35px'}} fontWeight='700' fontFamily='sans-serif' display='flex'>
-            <Text pr='2'>Create and </Text> 
-            <Text color="purple.600">Host</Text> 
-           </Box>
-           <Box fontSize={{base: '25px', md: '35px'}} fontWeight='700' fontFamily='sans-serif' display='flex' letterSpacing='5'>
-           <Text color='purple.500' pr='2'>an Online </Text> 
-           <Text > Voting</Text>
-           </Box>
-          <Box fontSize={{base: '25px', md: '35px'}} fontWeight='700' fontFamily='sans-serif' display='flex' letterSpacing='5'>
-          <Text pr='2'> for Easy</Text> 
-        <Text color='purple.600'>Election</Text> 
-          </Box>
-
-          <Box mt='6' ml='-2'>
-              
-              <Button id='button' bgColor='purple.500' color='white' mr='4' borderRadius='15%' p='2' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-              <Link  href='/register'   fontWeight='500' fontSize={{ base: '11px', md: '14px' }} >Get Started </Link>
-              </Button>
-
-              <Button id='button' bgColor='purple.500' color='white' mr='4' borderRadius='15%' p='2' _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
-              <Link  href='/about'   fontWeight='500' fontSize={{ base: '11px', md: '14px' }} >About App </Link>
-              </Button>      
-          </Box>
-        </Center>  
-      </Box>
-      </Box>
-
-      <Box>
-              <Box display="block">
-         <Bounce left>         
-         <Image src='/images/votingbg.png' alt='Topic' h={{ base: '65vh', md: '55vh'  }}  width='100%' />         
-         </Bounce>
-         </Box>  
-      </Box>
-      </Box>
+      </Center>
 
  }
  </Box>

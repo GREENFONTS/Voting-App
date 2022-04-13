@@ -100,7 +100,7 @@ const Posts = () => {
         <Flex p='1' justify='space-between'>
           <VStack align='start' spacing='2'>
             <Text>Name: {ele.name}</Text>
-            <Button onClick={() => submitHandler(ele)}>Vote</Button>
+            <Button color='blackAlpha.800' onClick={() => submitHandler(ele)}>Vote</Button>
           </VStack>
           
         </Flex>
