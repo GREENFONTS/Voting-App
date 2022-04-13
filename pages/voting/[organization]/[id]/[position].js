@@ -31,6 +31,7 @@ const Posts = () => {
   let nomineesData = nominees.filter((ele) => ele.post === queryValue[2])
   actions.getNominees(nomineesData)
   
+  
     if(token === null){
       router.push(`/voting/${organization}/${id}`)
     }
@@ -64,7 +65,8 @@ const Posts = () => {
     if (res.status === 200){
       let positions = state.positions
       if(positions.length > 0){
-        let nextPost = positions[0]      
+        let nextPost = positions[0]  
+        console.log(nextPost)    
         setPost(nextPost)
         router.push(`/voting/${organization}/${id}/${nextPost}`)
         positions.shift()
