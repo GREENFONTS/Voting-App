@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import router from 'next/router';
+import { auth, provider, signInWithPopup } from '../firebase/config';
 import { Box,Text,Button, useMediaQuery, Image, Center, FormControl, Input, FormLabel, Alert, Icon, AlertIcon, CloseButton} from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
 import Bounce from 'react-reveal/Bounce';
@@ -32,6 +33,29 @@ const Login = ({users}) => {
             setIsRequired(false)
         }
     }, [email, password])
+
+    const SignInWithFirebase = () => {
+        signInWithPopup(auth, provider)
+        .then( async (result) => {
+            const email = result.user.email
+
+            const res = await fetch(`/api/googleSignIn?email=${email}`)
+            const datas = await res.json()
+
+            if(res.status == 404){
+                setAlertMessage(datas[0].msg)
+            }            
+            
+            localStorage.setItem('user', JSON.stringify(datas.user))
+            localStorage.setItem('token', JSON.stringify(datas.token))
+            actions.addUser(datas.user)
+            router.push('/admin')
+            })
+        .catch((error) => {
+             console.log(error)
+        });
+     
+    }
 
     const submitHandler = async () => {
         const res = await fetch('/api/login', {
@@ -65,20 +89,29 @@ const Login = ({users}) => {
                 </Bounce>
                </Box>
                 <Box w='5%'></Box>
-               <Box w='30%' mt='7' >
+               <Box w='30%' mt='5' >
                    <Box align='center'>
-                       <Icon as={FaUserLock} color='gray.300'  w='120px' h='120px' />
+                       <Icon as={FaUserLock} color='gray.300'  w='120px' h='100px' />
                    </Box>
                    <Box>
-                       <Text fontSize='30px' fontFamily='sans-serif' mb='9' fontWeight='700'>Login</Text>
+                       <Text fontSize='30px' fontFamily='sans-serif' mb='6' fontWeight='700'>Login</Text>
                        <Text fontSize='15px' fontFamily='sans-serif' mb='2' color='gray.500'>Welcome back, lets get back to business </Text>
                    </Box>
-                   
-                   {alertMessage !== null ? <Alert status='error'> <AlertIcon />
+
+                    <Box>
+                        <Button _hover={{ transform: 'scale(1.05)', cursor: "pointer" }} onClick={SignInWithFirebase} w='100%' borderRadius='20'>Sign In with Google</Button>
+                    </Box>
+
+                    <Box pt='2' align='center'>
+                        <Text fontWeight='600' fontSize='20px'>or</Text>
+                        <Text fontWeight='600' fontSize='20px'>Login with Email</Text>
+                    </Box>
+                    
+                    {alertMessage !== null ? <Alert status='error'> <AlertIcon />
                         {alertMessage}
                         <CloseButton position='absolute' right='8px' top='8px' onClick={(e) => setAlertMessage(null)} />
                     </Alert> : <></>}
-                    
+
                    <FormControl isRequired >
                    <FormLabel htmlFor='email'>Email</FormLabel>
                     <Input id='email' type='email' value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -119,7 +152,18 @@ const Login = ({users}) => {
                        <Text fontSize='12px' fontFamily='sans-serif' mb='2' color='gray.500'>Welcome back, lets get back to business </Text>
                    </Box>
                    
-                   {alertMessage !== null ? <Alert status='error'> <AlertIcon />
+                   
+
+                    <Box align='center'>
+                        <Button _hover={{ transform: 'scale(1.05)', cursor: "pointer" }} onClick={SignInWithFirebase} w='80%' borderRadius='20'>Sign In with Google</Button>
+                    </Box>
+
+                    <Box pt='3' align='center'>
+                        <Text fontWeight='600' fontSize='20px'>or</Text>
+                        <Text fontWeight='600' fontSize='20px'>Login with Email</Text>
+                    </Box>
+
+                    {alertMessage !== null ? <Alert status='error'> <AlertIcon />
                         {alertMessage}
                         <CloseButton position='absolute' right='8px' top='8px' onClick={(e) => setAlertMessage(null)} />
                     </Alert> : <></>}

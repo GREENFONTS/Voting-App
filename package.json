@@ -10,7 +10,9 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "heroku-postbuild": "npm run build",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cypress": "cypress open",
+    "test": "start-server-and-test start http://localhost:3000 cypress"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.1.7",
@@ -25,6 +27,7 @@
     "babel-plugin-macros": "^3.1.0",
     "cloudinary": "^1.29.0",
     "dotenv": "^16.0.0",
+    "firebase": "^9.6.11",
     "framer-motion": "^6.2.6",
     "jsonwebtoken": "^8.5.1",
     "multiparty": "^4.2.3",
@@ -39,9 +42,11 @@
     "react-parallax-tilt": "^1.6.1",
     "react-reveal": "^1.2.2",
     "react-sweet-state": "^2.6.0",
+    "start-server-and-test": "^1.14.0",
     "uuidv4": "^6.2.12"
   },
   "devDependencies": {
+    "cypress": "^9.5.4",
     "eslint": "8.9.0",
     "eslint-config-next": "12.1.0"
   }

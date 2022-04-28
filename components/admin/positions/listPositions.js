@@ -62,7 +62,6 @@ const PositionList = (props) => {
         }
         
     }
-
   return (
     <>
     <Flex p='5'>
@@ -76,13 +75,16 @@ const PositionList = (props) => {
         
         return (
             <>
-            <Flex bg='#e9e9e9' p='1' borderRadius='2px' mb='2' key={props.positions.indexOf(ele)}>
+            <Flex  p='1' borderRadius='2px' mb='2' key={props.positions.indexOf(ele)}>
                 <Box w='80%'>
                     <Text fontSize={{lg: '20px'}} fontFamily='cursive'>{ele.name}</Text>
                 </Box>
                 <Box w='20%' align='center' p='2'>
                 <Icon mr={{base: '10px', md:'20px'}} as={FaEdit} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => {  setIsOpen(true) 
-                  setId(ele.id)}
+                  setId(ele.id) 
+                  props.isClose(false)
+                  setPosition(ele.name)}
+                  
                 }/>
                     <Icon as={FaTrash} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => deleteHandler(ele.id)}/>
                 </Box>

@@ -40,12 +40,14 @@ const AddPosition = (props) => {
     }
     else{
       setPosition('')
-      props.refreshDrawer()
       setAlertSuccess(true)
       setResponse(data.msg)  
 
-      const res = await fetch('/api/admin/positions/find')
-      const datas = await res.json()
+      const res = await fetch('/api/admin/positions/find', {
+        method: 'POST',
+        body: props.user.email
+    }) 
+    const datas = await res.json() 
       props.getPositions(datas)
     }
 

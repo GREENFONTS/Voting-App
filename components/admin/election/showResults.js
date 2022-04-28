@@ -29,17 +29,6 @@ const ShowResults = (props) => {
       return nominees
     }
 
-    const getWinner = (post) => {
-        let nominees = getNominees(post)
-        let votes = []
-        nominees.forEach((ele) => {
-            votes.push(ele.votes)        })
-
-       let highestVote = Math.max(...votes)
-       let winner = nominees.filter((ele) => ele.votes == highestVote)[0]
-       return winner
-    }
-
     maxNomineePerpost()
   return (
       <>
@@ -71,25 +60,6 @@ const ShowResults = (props) => {
                     <Td key={nominees.indexOf(ele)} w="20%">{ele.name} - {ele.votes}</Td>
                 )
             })}
-          </Tr>
-        )
-    })}    
-      
-    </Tbody>
-  </Table>
-
-  <Table variant='striped'  colorScheme='gray' size='sm' w='20%'>
-    <Thead>
-      <Tr>
-        <Th fontSize='17px'>Winner</Th>
-      </Tr>
-    </Thead>
-    <Tbody>
-    {positions.map((ele) => {
-        let winner = getWinner(ele)
-        return(
-            <Tr key={positions.indexOf(ele)} h='7vh' >            
-            <Td w="20%">{winner ? winner.name - winner.votes : ''}</Td>
           </Tr>
         )
     })}    

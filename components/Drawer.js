@@ -151,7 +151,6 @@ const DrawerComponent = () => {
                                 actions.addDrawerState(false)
                                 actions.addPosition(true)
                                 actions.showResults(false)
-                                actions.showResults(false)
                             }}>
                             Add Position
                             </Button>
@@ -210,6 +209,7 @@ const DrawerComponent = () => {
                                 actions.listNominees(true)
                                 actions.showResults(false)
                                 actions.listCodes(false)
+                                actions.landingPage(false)
                             }}>
                             Show Nominees
                             </Button>
@@ -266,6 +266,7 @@ const DrawerComponent = () => {
                                 actions.addDrawerState(false)
                                 actions.listCodes(true)
                                 actions.showResults(false)
+                                actions.landingPage(false)
                             }}>
                             Show Codes
                             </Button>
@@ -320,6 +321,7 @@ const DrawerComponent = () => {
                                 actions.addDrawerState(false)
                                 actions.listCodes(false)
                                 actions.showResults(true)
+                                actions.landingPage(false)
                             }}>
                             Show Results
                             </Button>

@@ -23,6 +23,7 @@ const Store = createStore({
     showResultsModal : false,
     resetVotesModal: false,
     votingEnd: false,
+    landingPage: true,
 
   },
   // actions that trigger store mutation
@@ -168,6 +169,13 @@ const Store = createStore({
       ({ setState, getState }) => {
         setState({
           votingEnd: value,
+        });
+      },
+      landingPage: 
+      (value) =>
+      ({ setState, getState }) => {
+        setState({
+          landingPage: value,
         });
       },
 

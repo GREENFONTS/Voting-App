@@ -16,7 +16,7 @@ const AddNominee = (props) => {
     const [response, setResponse] = useState('');
     
     useEffect(() => {
-      if(position.length < 2 || name.length < 2 || image == null){
+      if(name.length < 2 || image == null){
         setInputCheck(true)
       }
       else{
@@ -48,13 +48,21 @@ const AddNominee = (props) => {
     else{
       setName("")
       setPosition('')
-      props.refreshDrawer()
-      props.listNomineeModal(true)
+      
       setAlertSuccess(true)
       setResponse(data.msg)  
-    }
+
+      const res = await fetch('/api/admin/nominees/find', {
+        method: 'POST',
+        body: props.user.email
+    }) 
+    const datas = await res.json()
+    props.getNominees(datas)
+
+    props.listNomineeModal(true)
 
     }
+  }
 
   return (
     <>

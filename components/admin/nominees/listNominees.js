@@ -77,8 +77,8 @@ const NomineesList = (props) => {
     <Flex display={{base: 'block'}}>
       {props.nominees.map((ele) => {
         return(
-        <Box key={props.nominees.indexOf(ele)} mb='2' display={ {md: 'inline-block'}} align='center' p='1' w={{base: "100%", md: "47%", lg:"32%" }} mr={{lg:'3'}} h={{base: "45vh", md: "30vh", lg:"40vh" }} borderLeft='1px' borderBottom='1px' borderColor='gray.200' boxShadow='base'>
-        <Image src={ele.image} alt='Nominee Image' objectFit='cover' boxSize={{base: "35vh", md: "20vh", lg:"25vh" }}/>
+        <Box key={props.nominees.indexOf(ele)} mb='2' display={ {md: 'inline-block'}} align='center' p='1' w={{base: "100%", md: "47%", lg:"32%" }} mr={{lg:'3'}} h={{base: "45vh", md: "30vh", lg:"40vh" }} border='1px' borderColor='gray.200' boxShadow='base'>
+        <Image src={ele.image} alt='Nominee Image' w='95%' h='70%'/>
         <Flex p='1' justify='space-between'>
           <VStack align='start'>
             <Text>Name: {ele.name}</Text>
@@ -88,6 +88,8 @@ const NomineesList = (props) => {
           <HStack>
           <Icon mr='10px' as={FaEdit} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => { setCurrentState(ele)
                         setIsOpen(true) 
+                        setName(ele.name)
+                        setPosition(ele.post)
                       setId(ele.id)}
                     }/>
                         <Icon as={FaTrash} _hover={{ transform: 'scale(1.1)', cursor: "pointer" }} onClick={() => deleteHandler(ele.id)}/>
@@ -119,7 +121,7 @@ const NomineesList = (props) => {
 
         <FormControl isRequired >
             <FormLabel htmlFor='position'>Position</FormLabel>
-            <Select icon={<MdArrowDropDown />} placeholder='Select Nominee Position' onChange={(e) => setPosition(e.target.value)}>
+            <Select icon={<MdArrowDropDown />} placeholder='Select Nominee Position' value={position} onChange={(e) => setPosition(e.target.value)}>
             {props.positions.map((ele) => {
             return (
             <option key={props.positions.indexOf(ele)} value={ele.name}>{ele.name}</option>
