@@ -43,7 +43,7 @@ const Login = ({users}) => {
             const datas = await res.json()
 
             if(res.status == 404){
-                setAlertMessage(datas[0].msg)
+                setAlertMessage(datas.msg)
             }            
             
             localStorage.setItem('user', JSON.stringify(datas.user))
