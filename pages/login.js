@@ -43,7 +43,7 @@ const Login = ({users}) => {
             const datas = await res.json()
 
             if(res.status == 404){
-                setAlertMessage(datas.msg)
+                setAlertMessage('Email is not found')
             }            
             
             localStorage.setItem('user', JSON.stringify(datas.user))
@@ -52,6 +52,7 @@ const Login = ({users}) => {
             router.push('/admin')
             })
         .catch((error) => {
+            setAlertMessage('Request Error')
              console.log(error)
         });
      
