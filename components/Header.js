@@ -66,7 +66,7 @@ const Header = ({router}) => {
                    
                 </Flex>
 
-               {isLesserThan900 && <HamburgerIcon onClick={() => actions.addDrawerState(true)} ml={4} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />} 
+               {isLesserThan900 && <HamburgerIcon id='hamburgerIcon' onClick={() => actions.addDrawerState(true)} ml={4} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />} 
                 <DrawerComponent />
             </Flex> </> : 
             <>
@@ -87,7 +87,7 @@ const Header = ({router}) => {
                          
                     <Button bgColor={bgColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer", borderBottom: '1px solid purple'}} fontFamily="cursive" fontSize={{ base: '11px', md: '15px', lg: '17px' }}  onClick={(e) => signOutHandler()}>SignOut</Button>
                     <Icon as={FaUser} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} mx={3}  color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
-                    <HamburgerIcon onClick={() => actions.addDrawerState(true)}  _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
+                    <HamburgerIcon className='drawer' onClick={() => actions.addDrawerState(true)}  _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
                         <DrawerComponent  user={state.user} />
                 </Flex>
 

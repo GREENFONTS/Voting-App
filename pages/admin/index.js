@@ -76,7 +76,7 @@ const Admin = () => {
                  <Box align='center' justify='center'  p={4} w={{ base: '95%', md: '50%', lg: '45%' }}>
                     <Box p={8} wrap='wrap' align='center' justify='center'>
                         <Text textAlign='center' fontStyle='italic' fontFamily='Georgia' p='5' fontSize={{ base: '25px', md: '35px', lg: '40px' }}>Hello {state.user === null || undefined ? " " : state.user.userName}</Text>
-                        <Text textAlign='center' fontSize={{ base: '14px', md: '16px', lg: '18px' }} fontFamily='Georgia'>Welcome to your dashboard😊</Text>
+                        <Text textAlign='center' id='dashboard' fontSize={{ base: '14px', md: '16px', lg: '18px' }} fontFamily='Georgia'>Welcome to your dashboard😊</Text>
                     </Box>
                     
                 </Box>

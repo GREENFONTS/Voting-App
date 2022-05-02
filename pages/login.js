@@ -108,7 +108,7 @@ const Login = ({users}) => {
                         <Text fontWeight='600' fontSize='20px'>Login with Email</Text>
                     </Box>
                     
-                    {alertMessage !== null ? <Alert status='error'> <AlertIcon />
+                    {alertMessage !== null ? <Alert status='error' id='alert'> <AlertIcon />
                         {alertMessage}
                         <CloseButton position='absolute' right='8px' top='8px' onClick={(e) => setAlertMessage(null)} />
                     </Alert> : <></>}
