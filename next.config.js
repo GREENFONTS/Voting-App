@@ -22,4 +22,5 @@ withPWA({
       API_KEY : "441632273511282",
       API_SECRET : "QZ_pdgzLjbs90_CinCMIkUYAxis"
   }
+
 })
