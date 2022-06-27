@@ -16,7 +16,6 @@
     "test": "start-server-and-test start http://localhost:3000 cypress"
   },
   "dependencies": {
-    "@chakra-ui/icons": "^2.0.2",
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",

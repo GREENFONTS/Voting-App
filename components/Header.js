@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import {withRouter} from 'next/router';
 import { Box, Flex, HStack, Icon, LinkBox, Text, Button, useMediaQuery} from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { GiHamburgerMenu } from 'react-icons/gi';
 import { FaUser, FaVoteYea } from 'react-icons/fa';
 import { BiMoon } from 'react-icons/bi';
 import { ImSun } from 'react-icons/im';
@@ -66,7 +66,7 @@ const Header = ({router}) => {
                    
                 </Flex>
 
-               {isLesserThan900 && <HamburgerIcon id='hamburgerIcon' onClick={() => actions.addDrawerState(true)} ml={4} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />} 
+               {isLesserThan900 && <Icon as={GiHamburgerMenu} id='hamburgerIcon' onClick={() => actions.addDrawerState(true)} ml={4} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />} 
                 <DrawerComponent />
             </Flex> </> : 
             <>
@@ -85,9 +85,10 @@ const Header = ({router}) => {
                 <Flex align="center" >
                 <Icon as={icon} onClick={toggleColorMode} mx={3} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
                          
-                    <Button bgColor={bgColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer", borderBottom: '1px solid purple'}} fontFamily="cursive" fontSize={{ base: '11px', md: '15px', lg: '17px' }}  onClick={(e) => signOutHandler()}>SignOut</Button>
+                    <Button bgColor={bgColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer", borderBottom: '1px solid purple'}} fontFamily="cursive" fontSize={{ base: '11px', md: '15px', lg: '17px' }} 
+                     onClick={(e) => signOutHandler()}>SignOut</Button>
                     <Icon as={FaUser} w={{ base: '18px', md: '20px', lg: '22px' }} h={{ base: '18px', md: '20px', lg: '22px' }} mx={3}  color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
-                    <HamburgerIcon className='drawer' onClick={() => actions.addDrawerState(true)}  _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
+                    <Icon as={GiHamburgerMenu} id='hamburgerIcon' onClick={() => actions.addDrawerState(true)} ml={4} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }} />
                         <DrawerComponent  user={state.user} />
                 </Flex>
 
