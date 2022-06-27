@@ -88,7 +88,6 @@ const Voting = ({router}) => {
         }
         if(res.status == 200){
             localStorage.setItem('codeToken', data.token)
-            console.log(positions)
             router.push(`/voting/${organization}/${id}/${positions[0]}`)
             positions.shift()
             actions.getPositions(positions)

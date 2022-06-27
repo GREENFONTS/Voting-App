@@ -1,7 +1,6 @@
 import {  useEffect, useState} from 'react';
-import {FaDownload} from 'react-icons/fa';
 import {withRouter, useRouter} from 'next/router';
-import {Box, Text, Icon, Flex, VStack, Image, Button} from '@chakra-ui/react';
+import {Box, Text, Flex, VStack, Image, Button} from '@chakra-ui/react';
 import { useCounter } from '../../../../services/state';
 
 const Posts = () => {
@@ -11,10 +10,6 @@ const Posts = () => {
   const [organization, setOrganization] = useState('');
   const [id, setId] = useState('')
   
- let positions = []
- let nominees = []
-  
-
   useEffect(async () => {
     actions.votingEnd(false)
     const queryValue = window.location.pathname.split('/').slice(2,)
@@ -22,9 +17,8 @@ const Posts = () => {
     setOrganization(queryValue[0])
     const id = queryValue[1]
     setId(queryValue[1])
-    setPost(queryValue[2])
+    setPost(queryValue[2].split('%20').join(' '))
 
-  let admin = localStorage.getItem('admin')
   let token = localStorage.getItem('codeToken')
   let nominees = JSON.parse(localStorage.getItem('nominees'))
  
@@ -37,7 +31,6 @@ const Posts = () => {
     }
     else{
       const res = await fetch(`/api/voting/auth/?token=${token}`);
-      const data = await res.json()
       if(res.status === 403){  
         
         localStorage.setItem('admin', null)
@@ -66,7 +59,6 @@ const Posts = () => {
       let positions = state.positions
       if(positions.length > 0){
         let nextPost = positions[0]  
-        console.log(nextPost)    
         setPost(nextPost)
         router.push(`/voting/${organization}/${id}/${nextPost}`)
         positions.shift()
