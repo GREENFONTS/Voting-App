@@ -1,8 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-const jwt = require('jsonwebtoken');
-
+import { prisma } from "../../../services/Prisma"
 export default async function handler(req, res) {
-    const prisma = new PrismaClient()
     let state = await prisma.election.findFirst({
             where: {
                 user: req.body

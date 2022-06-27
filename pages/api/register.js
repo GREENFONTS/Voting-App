@@ -1,8 +1,7 @@
-const {PrismaClient} = require("@prisma/client");
+import { prisma } from '../../services/Prisma';
 const {v4} = require('uuid');
 
 export default async function handler(req, res) {
-  const prisma = new PrismaClient();
     let error = []
   
     let user = await prisma.admin.findUnique({

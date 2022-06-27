@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../../../services/Prisma";
 import middleware from "../../../../middleware";
 const {v4 : uuidv4}= require('uuid');
 import nextConnect from "next-connect";
@@ -7,7 +7,6 @@ import cloudinary from '../../../../config/cloudinary';
 const handler = nextConnect() 
 handler.use(middleware)
 handler.post(async (req,res) => {
-    const prisma = new PrismaClient();
     let name = req.body.name[0]
     let position = req.body.position[0]
     let user = req.body.user[0]

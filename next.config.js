@@ -6,7 +6,8 @@ const nextConfig = {
   reactStrictMode: true,
 }
 
-module.exports = withPWA({
+module.exports = 
+withPWA({
   nextConfig,
   pwa: {
     dest: "public",
@@ -20,5 +21,5 @@ module.exports = withPWA({
       CLOUD_NAME : "elevio",
       API_KEY : "441632273511282",
       API_SECRET : "QZ_pdgzLjbs90_CinCMIkUYAxis"
-  },
+  }
 })

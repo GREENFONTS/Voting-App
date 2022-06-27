@@ -1,8 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../../../services/Prisma";
 
 export default async function handler(req, res) {
-  const prisma = new PrismaClient();
-
   const positions = await prisma.position.findMany({
     where: {
       user: req.body

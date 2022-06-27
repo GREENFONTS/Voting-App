@@ -1,7 +1,7 @@
 import React from 'react';
 import { VStack, Icon} from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
-import Fade from 'react-reveal/Fade';
+//import {Fade} from 'react-awesome-reveal';
 import {VscGithub} from 'react-icons/vsc';
 import { FaInstagram } from 'react-icons/fa';
 import { BsLinkedin, BsTwitter } from 'react-icons/bs';
@@ -10,8 +10,8 @@ const Socials = (props) => {
     const iconColor = useColorModeValue('themeLight.icon', 'themeLight.icon');
 
       return (
-        <Fade bottom>
-            <VStack spacing={props.spacing}>
+
+            <VStack spacing={props.spacing} animation="bounceFromBottom 1s">
         <a href='https://www.linkedin.com/in/godwill-onyewuchi-6746621b4/' target='_blank' rel="noreferrer" _hover={{ transform: 'scale(1.05)', cursor: "pointer" }}>
              <Icon as={BsLinkedin} w={{ base: '18px', md: '20px', lg: '35px' }} h={{ base: '18px', md: '20px', lg: '35px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}/> 
           </a>
@@ -28,7 +28,7 @@ const Socials = (props) => {
              <Icon as={VscGithub} w={{ base: '18px', md: '20px', lg: '35px' }} h={{ base: '18px', md: '20px', lg: '35px' }} color={iconColor} _hover={{ transform: 'scale(1.15)', cursor: "pointer" }}/> 
           </a>
       </VStack>
-        </Fade>
+      //   </Fade>
         
       )
 }

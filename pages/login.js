@@ -4,7 +4,6 @@ import router from 'next/router';
 import { auth, provider, signInWithPopup } from '../firebase/config';
 import { Box,Text,Button, useMediaQuery, Image, Center, FormControl, Input, FormLabel, Alert, Icon, AlertIcon, CloseButton} from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
-import Bounce from 'react-reveal/Bounce';
 import { FaUserLock } from 'react-icons/fa';
 import { useCounter } from '../services/state';
 
@@ -84,10 +83,8 @@ const Login = ({users}) => {
         <Box >
         <Center>
         {isLargerThan900 && <Box display={{md : 'flex'}} height={{ base: '70vh', md: '90vh' }} w='95%' px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} >
-               <Box w={{base: '100%', md: '55%'}} h={{ lg: '85vh' }} mt='5'>
-                <Bounce left>         
-                    <Image src='Login.png' alt='Topic' h='70vh'  width='100%' />         
-                </Bounce>
+               <Box w={{base: '100%', md: '55%'}} h={{ lg: '85vh' }} mt='5'>        
+                    <Image src='Login.png' alt='Topic' h='70vh'  width='100%' animation="bounceFromBottomLeft 0.5s"/>         
                </Box>
                 <Box w='5%'></Box>
                <Box w='30%' mt='5' >
@@ -139,10 +136,8 @@ const Login = ({users}) => {
 
 {isLesserThan900 && <Box h='100vh' w='100%' px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} pb='5'>
 
-               <Box w='100%' mt='2'>                
-                <Bounce left>         
-                    <Image src='Login.png' alt='Topic' h='35vh'  width='100%' />         
-                </Bounce>
+               <Box w='100%' mt='2'>                       
+                    <Image src='Login.png' alt='Topic' h='35vh'  width='100%' animation="bounceFromBottomLeft 0.5s"/>  
                </Box>
                <Box>
                    <Box align='center'>

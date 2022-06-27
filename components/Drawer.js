@@ -6,7 +6,6 @@ import {VscGithub} from 'react-icons/vsc';
 import { FaInstagram, FaEdit, FaList,  FaDoorClosed } from 'react-icons/fa';
 import { BsLinkedin, BsTwitter } from 'react-icons/bs';
 import {BiReset} from 'react-icons/bi';
-import Fade from 'react-reveal/Fade';
 import { FaVoteYea } from 'react-icons/fa';
 import {AiOutlineClear} from 'react-icons/ai';
 import { useCounter } from '../services/state';
@@ -24,39 +23,42 @@ const DrawerComponent = () => {
     const [state, actions] = useCounter();
     const { onClose } = useDisclosure()
     
-    useEffect(async () => {
+    const GetData = async () => {
+        const positionsRes = await fetch('/api/admin/positions/find', {
+            method: 'POST',
+            body: state.user.email
+        }) 
+        const positionData = await positionsRes.json()
+        actions.getPositions(positionData) 
+
+        const nomineesRes = await fetch('/api/admin/nominees/find', {
+            method: 'POST',
+            body: state.user.email
+        }) 
+        const nomineesData = await nomineesRes.json()
+        actions.getNominees(nomineesData)
+    
+        const codesRes = await fetch('/api/admin/codes/find', {
+            method: 'POST',
+            body: state.user.email
+        }) 
+        const codesData = await codesRes.json()
+        actions.getCodes(codesData)
+
+    const electionRes = await fetch('/api/voting/state', {
+        method: 'POST',
+        body:  state.user.email
+    }) 
+    const electionState = await electionRes.json()
+    actions.electionState(electionState.state)
+    }
+
+    useEffect(() => {
         if(state.user === null || state.user === undefined){
             setUserCheck(false)
         }
         else{
-
-            const positionsRes = await fetch('/api/admin/positions/find', {
-                method: 'POST',
-                body: state.user.email
-            }) 
-            const positionData = await positionsRes.json()
-            actions.getPositions(positionData) 
-
-            const nomineesRes = await fetch('/api/admin/nominees/find', {
-                method: 'POST',
-                body: state.user.email
-            }) 
-            const nomineesData = await nomineesRes.json()
-            actions.getNominees(nomineesData)
-        
-            const codesRes = await fetch('/api/admin/codes/find', {
-                method: 'POST',
-                body: state.user.email
-            }) 
-            const codesData = await codesRes.json()
-            actions.getCodes(codesData)
-
-        const electionRes = await fetch('/api/voting/state', {
-            method: 'POST',
-            body:  state.user.email
-        }) 
-        const electionState = await electionRes.json()
-        actions.electionState(electionState.state)
+            GetData()            
         }
                   
     }, [state.refreshDrawer])
@@ -93,16 +95,15 @@ const DrawerComponent = () => {
 
                 <DrawerBody>
                 <Link href='/' target='_blank' mb='10px' _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='600' fontSize='30px' >Home</Link>
-                    <Fade bottom>
-                        <Box  _hover={{ transform: 'scale(1.02)', cursor: "pointer" }}>
+                   <Box animation="bounceFromBottom 1s">
+                   <Box  _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} >
                             <Link href='/register' target='_blank' _hover={{ cursor: "pointer" }} fontWeight='500' >Sign Up</Link>
                         </Box>
-                    </Fade>
-                    <Fade left>
                         <Box mb='10px' _hover={{ transform: 'scale(1.02)', cursor: "pointer" }}>
                             <Link href='/login' target='_blank' _hover={{ cursor: "pointer" }} fontWeight='500' >Sign In</Link>
                         </Box>
-                    </Fade>
+                   </Box>
+                    
                 </DrawerBody>
                 </> : <>
                 <DrawerHeader pt='0' pb='0'>
@@ -129,8 +130,7 @@ const DrawerComponent = () => {
                         <Text  _hover={{ transform: 'scale(1.02)', cursor: "pointer" }} fontWeight='700' fontSize={{base: '15px', md: '18px', lg:'25px'}} color='purple.300'>MENU</Text>
                     </Box>
 
-                    <Box>
-                    <Fade right>
+                    <Box animation="bounceFromBottom 0.7s">
                     <Accordion defaultIndex={[0]} allowMultiple>
                         <AccordionItem>
                             <AccordionButton pt='0.5' pb='0.5'>
@@ -173,10 +173,6 @@ const DrawerComponent = () => {
                         </AccordionItem>
                         </Accordion>                   
                         
-                    </Fade>
-
-
-                    <Fade left>
                     <Accordion allowMultiple>
                         <AccordionItem>
                             <AccordionButton pt='0.5' pb='0.5'>
@@ -230,10 +226,7 @@ const DrawerComponent = () => {
                             </AccordionPanel>
                         </AccordionItem>
                         </Accordion>                   
-                        
-                    </Fade>
-
-                    <Fade bottom>
+       
                     <Accordion allowMultiple>
                         <AccordionItem>
                             <AccordionButton pt='0.5' pb='0.5'>
@@ -275,10 +268,7 @@ const DrawerComponent = () => {
                             </AccordionPanel>
                         </AccordionItem>
                         </Accordion>           
-                        
-                    </Fade>
-
-                    <Fade bottom>
+    
                     <Accordion allowMultiple>
                         <AccordionItem>
                             <AccordionButton pt='0.5' pb='0.5'>
@@ -343,9 +333,6 @@ const DrawerComponent = () => {
                             </AccordionPanel>
                         </AccordionItem>
                         </Accordion>                   
-                        
-                    </Fade>
-
                     </Box>
                    
                 </DrawerBody>

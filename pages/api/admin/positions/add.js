@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../../../services/Prisma";
 const {v4} = require('uuid');
 
 export default async function handler(req, res) {
-  const prisma = new PrismaClient();
     const position = await prisma.position.findFirst({
         where: {
           name: req.body.position,

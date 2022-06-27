@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from '../../services/Prisma';
 const jwt = require('jsonwebtoken');
 
 export default async function handler(req, res) {
-  const prisma = new PrismaClient();
     let error = []
     const email = req.body.email
     const password = req.body.password

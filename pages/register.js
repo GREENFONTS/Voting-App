@@ -3,7 +3,6 @@ import Link from "next/link";
 import router from 'next/router';
 import { Box,Text,Button, useMediaQuery, Image, Center, FormControl, Input, FormLabel, FormHelperText, Alert, AlertIcon, CloseButton} from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
-import Bounce from 'react-reveal/Bounce';
 
 const Register = () => {
     const [isLesserThan900] = useMediaQuery('(max-width: 900px)')
@@ -89,9 +88,8 @@ useEffect(() => {
         <Center>
         {isLargerThan900 && <Box display={{md : 'flex'}} height={{ base: '70vh', md: '90vh' }} w='95%' px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} >
                <Box w={{base: '100%', md: '35%'}} h={{ lg: '85vh' }} mt='5'>
-                <Bounce left>         
-                    <Image src='signup.png' alt='Topic' h='70vh'  width='100%' />         
-                </Bounce>
+                      
+                    <Image src='signup.png' alt='Topic' h='70vh'  width='100%' animation="bounceFromBottomLeft 0.5s"/>         
                </Box>
                 <Box w='5%'></Box>
                <Box w='60%'>
@@ -174,10 +172,8 @@ useEffect(() => {
 }
 
 {isLesserThan900 && <Box display={{md : 'flex'}} w='100%' px={{ base: '24px', md: '27px', lg: '30px' }} py={4}  bg={bgColor} >
-               <Box>
-                <Bounce left>         
-                    <Image src='signup.png' alt='Topic' h='30vh'  width='100%' />         
-                </Bounce>
+               <Box>       
+                    <Image src='signup.png' alt='Topic' h='30vh'  width='100%' animation="bounceFromBottomLeft 0.5s"/>         
                </Box>
                <Box w='100%'>
                    <Box>

@@ -9,6 +9,20 @@
     box-shadow: 2px 2px 4px #c5c5c5, -2px -2px 4px #ffffff;
 }
 
+@keyframes bounceFromBottomLeft { 
+    0%, 20% {transform: translate(-60px, 60px);} 
+    40% {transform: translate(-30px, 30px);} 
+    60% {transform: translate(0px, 0px);} 
+    80% {transform: translate(0px, 20px);} 
+    100% {transform: translate(0px, 0px);} 
+ }
+
+ @keyframes bounceFromBottom { 
+    0%, 20%, 40% {opacity: 0; transform: translateY(60px);} 
+    60% {opacity: 0.5;transform: translateY(30px);} 
+    100% {opacity: 1; transform: translateY(0px);} 
+ }
+
 @media screen and (max-width: 900px) {
     #button{
         color: #090909;

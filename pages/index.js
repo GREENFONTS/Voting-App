@@ -2,8 +2,7 @@ import Link from "next/link";
 import Head from 'next/head';
 import { Box,Text,Button,  useMediaQuery, Image, Center} from '@chakra-ui/react';
 import { useColorModeValue } from '@chakra-ui/react';
-import Bounce from 'react-reveal/Bounce';
-import Fade from 'react-reveal/Fade';
+//import {Bounce, Fade} from 'react-awesome-reveal';
 import Socials from '../components/social';
 
 export default function Home() {
@@ -31,9 +30,7 @@ export default function Home() {
       
       <Box w={{base: '100%', md: '45%'}} h={{ base: '200px', md: '250px', lg: '75vh' }}>    
      
-      <Fade right> <Bounce bottom>
-      <Image src='votingbg.png' alt='Topic' h={{ base: '200px', md: '250px', lg: '75vh' }}  width='100%' />    </Bounce>     
-      </Fade>
+      <Image src='votingbg.png' alt='Topic' h={{ base: '200px', md: '250px', lg: '75vh' }}  width='100%' animation="bounceFromBottomLeft 0.5s" />
         
          </Box>
          
@@ -115,10 +112,8 @@ export default function Home() {
       </Box>
 
       <Box>
-              <Box display="block">
-         <Bounce left>         
-         <Image src='votingbg.png' alt='Topic' h={{ base: '65vh', md: '55vh'  }}  width='100%' />         
-         </Bounce>
+              <Box display="block">        
+         <Image src='votingbg.png' alt='Topic' h={{ base: '65vh', md: '55vh'  }}  width='100%' animation="bounceFromBottomLeft 0.5s"/>         
          </Box>  
       </Box>
 

@@ -13,3 +13,13 @@ Leveraging the server side rendering vercel framework  [NextJs](https://nextjs.o
 - [Heroku](https://www.heroku.com/)
 
 Live Link(https://vote-fast.herokuapp.com/) to the Project
+
+
+     "@chakra-ui/icons": "^1.1.7",
+    "@fortawesome/fontawesome-svg-core": "^6.1.0",
+    "@fortawesome/free-regular-svg-icons": "^6.1.0",
+    "@fortawesome/free-solid-svg-icons": "^6.1.0",
+    "@fortawesome/react-fontawesome": "^0.1.18",
+    
+      "dotenv": "^16.0.0",
+     "uuidv4": "^6.2.12"

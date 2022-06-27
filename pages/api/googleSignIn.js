@@ -1,8 +1,7 @@
-import {  PrismaClient } from "@prisma/client";
+import { prisma } from '../../services/Prisma';
 const jwt = require('jsonwebtoken');
 
 export default async function handler(req, res) {
-  const prisma = new PrismaClient()
   const email = req.query.email
 
   const user = await prisma.admin.findUnique({

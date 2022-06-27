@@ -9,8 +9,17 @@ const Posts = () => {
   const [post, setPost] = useState('');
   const [organization, setOrganization] = useState('');
   const [id, setId] = useState('')
+
+  const verifyToken = async (token) => {
+    const res = await fetch(`/api/voting/auth/?token=${token}`);
+      if(res.status === 403){  
+        
+        localStorage.setItem('admin', null)
+        router.push(`/voting/${organization}/${id}/` )
+    } 
+  }
   
-  useEffect(async () => {
+  useEffect(() => {
     actions.votingEnd(false)
     const queryValue = window.location.pathname.split('/').slice(2,)
     const organization = queryValue[0]
@@ -22,20 +31,16 @@ const Posts = () => {
   let token = localStorage.getItem('codeToken')
   let nominees = JSON.parse(localStorage.getItem('nominees'))
  
-  let nomineesData = nominees.filter((ele) => ele.post === queryValue[2])
+  let nomineesData = nominees.filter((ele) => ele.post === queryValue[2].split('%20').join(' '))
   actions.getNominees(nomineesData)
   
   
+  console.log(state, nomineesData, nominees, queryValue[2].split('%20').join(' '))
     if(token === null){
       router.push(`/voting/${organization}/${id}`)
     }
     else{
-      const res = await fetch(`/api/voting/auth/?token=${token}`);
-      if(res.status === 403){  
-        
-        localStorage.setItem('admin', null)
-        router.push(`/voting/${organization}/${id}/` )
-    } 
+      verifyToken(token)
   }
   
 

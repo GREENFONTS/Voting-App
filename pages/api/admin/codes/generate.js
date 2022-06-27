@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../../../../services/Prisma";
 import { nanoid } from 'nanoid';
 
 export default async function handler(req, res) {
-    const prisma = new PrismaClient();
     let number = parseInt(req.body.number)
     let codeList = []
     try{
