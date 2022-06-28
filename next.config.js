@@ -6,8 +6,8 @@ const nextConfig = {
   reactStrictMode: true,
 }
 
-module.exports = 
-withPWA({
+module.exports =
+ withPWA({
   nextConfig,
   pwa: {
     dest: "public",
