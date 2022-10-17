@@ -63,7 +63,6 @@ const Login = () => {
       })
       .catch((error) => {
         setAlertMessage("Request Error");
-        console.log(error);
       });
   };
 
