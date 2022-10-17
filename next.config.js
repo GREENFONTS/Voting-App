@@ -6,12 +6,12 @@ const nextConfig = {
   reactStrictMode: true,
 }
 
-module.exports =
- withPWA({
-  nextConfig,
-  pwa: {
-    dest: "public",
-    register: true,
-    skipWaiting: true,
-  }
-})
+module.exports = nextConfig;
+//  withPWA({
+//   nextConfig,
+//   pwa: {
+//     dest: "public",
+//     register: true,
+//     skipWaiting: true,
+//   }
+// })

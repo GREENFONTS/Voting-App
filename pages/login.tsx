@@ -53,12 +53,13 @@ const Login = () => {
 
         if (res.status == 404) {
           setAlertMessage("Email is not found");
-        }
+        }else{
 
         localStorage.setItem("user", JSON.stringify(datas.user));
         localStorage.setItem("token", JSON.stringify(datas.token));
         actions.addUser(datas.user);
         router.push("/admin");
+        }
       })
       .catch((error) => {
         setAlertMessage("Request Error");

@@ -19,7 +19,7 @@
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
-    "@prisma/client": "^3.15.2",
+    "@prisma/client": "^4.4.0",
     "@types/node": "^18.0.0",
     "@types/react": "^17.0.47",
     "babel-plugin-macros": "^3.1.0",
@@ -33,7 +33,6 @@
     "next": "^12.1.2",
     "next-connect": "^0.12.2",
     "next-pwa": "^5.5.4",
-    "prisma": "^3.15.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.29.0",
@@ -46,6 +45,7 @@
   "devDependencies": {
     "cypress": "^9.5.4",
     "eslint": "8.9.0",
-    "eslint-config-next": "12.1.0"
+    "eslint-config-next": "12.1.0",
+    "prisma": "^4.4.0"
   }
 }
