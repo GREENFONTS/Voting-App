@@ -68,7 +68,7 @@ const Header = ({ router }) => {
               <Box alignItems="center">
                 <LinkBox>
                   <HStack _hover={{ cursor: "pointer" }}>
-                    <Link href="/">
+                    <Link href="/" passHref>
                       <Icon
                         as={FaVoteYea}
                         _focus={{ outline: "none" }}
@@ -155,7 +155,7 @@ const Header = ({ router }) => {
               <Box alignItems="center">
                 <LinkBox>
                   <HStack _hover={{ cursor: "pointer" }} spacing="4">
-                    <Link href="/">
+                    <Link href="/" passHref>
                       <Icon
                         as={FaVoteYea}
                         _focus={{ outline: "none" }}

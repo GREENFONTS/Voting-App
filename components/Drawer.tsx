@@ -97,7 +97,7 @@ const DrawerComponent = ({ user }) => {
                 <Box alignItems="center">
                   <LinkBox>
                     <HStack _hover={{ cursor: "pointer" }}>
-                      <Link href="/">
+                      <Link href="/" passHref>
                         <Icon
                           _focus={{ outline: "none" }}
                           as={FaVoteYea}
@@ -136,35 +136,36 @@ const DrawerComponent = ({ user }) => {
             <DrawerBody>
               <Box animation="bounceFromBottom 1s">
                 <Box>
-                <Button bg="inherit" _hover={{ transform: "scale(1.2)", cursor: "pointer" }} 
-                fontSize="17px" fontWeight="400">
-              <Link
-                href="/"     
-              > Home
-              </Link>
-              </Button>
+                  <Button
+                    bg="inherit"
+                    _hover={{ transform: "scale(1.2)", cursor: "pointer" }}
+                    fontSize="17px"
+                    fontWeight="400"
+                  >
+                    <Link href="/"> Home</Link>
+                  </Button>
                 </Box>
 
                 <Box>
-                <Button bg="inherit" _hover={{ transform: "scale(1.2)", cursor: "pointer" }} 
-                fontSize="17px" fontWeight="400">
-              <Link
-                href="/register"     
-              > Sign Up
-              </Link>
-              </Button>
-
+                  <Button
+                    bg="inherit"
+                    _hover={{ transform: "scale(1.2)", cursor: "pointer" }}
+                    fontSize="17px"
+                    fontWeight="400"
+                  >
+                    <Link href="/register"> Sign Up</Link>
+                  </Button>
                 </Box>
-              <Box>
-              <Button bg="inherit" _hover={{ transform: "scale(1.2)", cursor: "pointer" }} 
-                fontSize="17px" fontWeight="400">
-              <Link
-                href="/login"     
-              > Sign In
-              </Link>
-              </Button>
+                <Box>
+                  <Button
+                    bg="inherit"
+                    _hover={{ transform: "scale(1.2)", cursor: "pointer" }}
+                    fontSize="17px"
+                    fontWeight="400"
+                  >
+                    <Link href="/login"> Sign In</Link>
+                  </Button>
                 </Box>
-                  
               </Box>
             </DrawerBody>
           </>
@@ -175,9 +176,9 @@ const DrawerComponent = ({ user }) => {
                 <Box alignItems="center">
                   <LinkBox>
                     <HStack _hover={{ cursor: "pointer" }}>
-                      <Link href="/" >
+                      <Link href="/" passHref>
                         <Icon
-                        _focus={{ outline: "none" }}
+                          _focus={{ outline: "none" }}
                           as={FaVoteYea}
                           w={{ base: "18px", md: "20px", lg: "35px" }}
                           h={{ base: "18px", md: "20px", lg: "35px" }}
@@ -533,7 +534,7 @@ const DrawerComponent = ({ user }) => {
             <Flex paddingLeft="10px" align="center" justify="center">
               <Text paddingRight="10px">© 2022</Text>
               <Box w="15px" h="15px" marginRight="10px">
-                <Image w="100%" h="100%" src="flag.png" />
+                <Image w="100%" h="100%" src="flag.png" alt="image" />
               </Box>
             </Flex>
             <Text>Godwill Onyewuchi Humphrey</Text>
@@ -545,9 +546,13 @@ const DrawerComponent = ({ user }) => {
                 <a
                   href="https://github.com/GREENFONTS"
                   target="_blank"
-                  rel="noreferrer"                  
+                  rel="noreferrer"
                 >
-                  <Icon _focus={{ outline: "none" }} as={VscGithub} color={bgGithub} />
+                  <Icon
+                    _focus={{ outline: "none" }}
+                    as={VscGithub}
+                    color={bgGithub}
+                  />
                 </a>
               </Box>
               <Box
@@ -559,7 +564,11 @@ const DrawerComponent = ({ user }) => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Icon  _focus={{ outline: "none" }} as={FaInstagram} color={bgInstagram} />
+                  <Icon
+                    _focus={{ outline: "none" }}
+                    as={FaInstagram}
+                    color={bgInstagram}
+                  />
                 </a>
               </Box>
               <Box
@@ -569,9 +578,13 @@ const DrawerComponent = ({ user }) => {
                 <a
                   href="https://twitter.com/GODWILLONYEWUC1"
                   target="_blank"
-                  rel="noreferrer"                  
+                  rel="noreferrer"
                 >
-                  <Icon as={BsTwitter} _focus={{ outline: "none" }} color={bgTwitter} />
+                  <Icon
+                    as={BsTwitter}
+                    _focus={{ outline: "none" }}
+                    color={bgTwitter}
+                  />
                 </a>
               </Box>
               <Box
@@ -581,9 +594,13 @@ const DrawerComponent = ({ user }) => {
                 <a
                   href="https://www.linkedin.com/in/godwill-onyewuchi-6746621b4/"
                   target="_blank"
-                  rel="noreferrer"                  
+                  rel="noreferrer"
                 >
-                  <Icon as={BsLinkedin} _focus={{ outline: "none" }} color={bgLinkedIn} />
+                  <Icon
+                    as={BsLinkedin}
+                    _focus={{ outline: "none" }}
+                    color={bgLinkedIn}
+                  />
                 </a>
               </Box>
             </Flex>
