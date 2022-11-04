@@ -9,31 +9,31 @@ import {
   useMediaQuery,
   Image,
   Center,
-  FormControl,
-  Input,
-  FormLabel,
   Alert,
   Icon,
   AlertIcon,
   CloseButton,
 } from "@chakra-ui/react";
+import FormInput from "../components/Elements/FormInput";
 import { useColorModeValue } from "@chakra-ui/react";
 import { FaUserLock } from "react-icons/fa";
-import { useCounter } from "../services/state";
+import { useSelector } from "react-redux";
+import { dispatch } from "../redux/store";
+import {
+  selectAuthState,
+  UserGoogleLogin,
+  UserLogin,
+} from "../redux/features/Users/auth";
 
 const Login = () => {
+  const { token } = useSelector(selectAuthState);
   const [isLesserThan900] = useMediaQuery("(max-width: 900px)");
   const [isLargerThan900] = useMediaQuery("(min-width: 900px)");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [isRequired, setIsRequired] = useState<boolean>(false);
-  const [state, actions] = useCounter();
   const bgColor = useColorModeValue("themeLight.bg", "themeDark.bgBody");
-  const formBody = {
-    email,
-    password,
-  };
 
   useEffect(() => {
     if (email === "" || password === "") {
@@ -43,50 +43,34 @@ const Login = () => {
     }
   }, [email, password]);
 
+  useEffect(() => {
+    if (token !== null) {
+      localStorage.setItem("token", token);
+      router.push("/admin");
+    }
+  }, [token]);
+
   const SignInWithFirebase = () => {
     signInWithPopup(auth, provider)
       .then(async (result) => {
-        const email : string = result.user.email;
+        const email: string = result.user.email;
 
-        const res = await fetch(`/api/googleSignIn?email=${email}`);
-        const datas = await res.json();
-
-        if (res.status == 404) {
-          setAlertMessage("Email is not found");
-        }else{
-
-        localStorage.setItem("user", JSON.stringify(datas.user));
-        localStorage.setItem("token", JSON.stringify(datas.token));
-        actions.addUser(datas.user);
-        router.push("/admin");
+        if (email !== null) {
+          dispatch(UserGoogleLogin(email));
         }
       })
-      .catch((error) => {
-        setAlertMessage("Request Error");
-      });
+      .catch((err) => console.log(err));
   };
 
   const submitHandler = async () => {
-    const res = await fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formBody),
-    });
-    const data = await res.json();
-    if (res.status == 404) {
-      setAlertMessage(data.msg);
-    }
-    if (res.status == 200) {
-      let users = data.user;
-      let token = data.token;
-      localStorage.setItem("user", JSON.stringify(users));
-      localStorage.setItem("token", JSON.stringify(token));
-      actions.addUser(users);
-      router.push("/admin");
-    }
+    const formBody = {
+      email,
+      password,
+    };
+
+    dispatch(UserLogin(formBody));
   };
+
   return (
     <>
       <Box>
@@ -155,8 +139,8 @@ const Login = () => {
                 <Box>
                   <Center pt="2">
                     <Text fontWeight="600" fontSize="20px">
-                  Login with Email
-                  </Text>
+                      Login with Email
+                    </Text>
                   </Center>
                 </Box>
 
@@ -176,25 +160,19 @@ const Login = () => {
                   <></>
                 )}
 
-                <FormControl isRequired>
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </FormControl>
+                <FormInput
+                  label="Email"
+                  value={email}
+                  name="email"
+                  onChange={setEmail}
+                />
 
-                <FormControl isRequired>
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </FormControl>
+                <FormInput
+                  label="Password"
+                  name="password"
+                  value={password}
+                  onChange={setPassword}
+                />
 
                 <Box mt="5">
                   <Button
@@ -242,21 +220,20 @@ const Login = () => {
                 />
               </Box>
               <Box>
-               <Center>
+                <Center>
                   <Icon as={FaUserLock} color="gray.300" w="80px" h="80px" />
                 </Center>
                 <Box mt="2">
                   <Center>
-                  <Text
-                    fontSize="12px"
-                    fontFamily="sans-serif"
-                    mb="2"
-                    color="gray.500"
-                  >
-                    Welcome back, lets get back to business{" "}
-                  </Text>
+                    <Text
+                      fontSize="12px"
+                      fontFamily="sans-serif"
+                      mb="2"
+                      color="gray.500"
+                    >
+                      Welcome back, lets get back to business{" "}
+                    </Text>
                   </Center>
-                  
                 </Box>
 
                 <Center>
@@ -271,19 +248,19 @@ const Login = () => {
                 </Center>
 
                 <Box pt="3">
-                <Center >
-                  <Text fontWeight="600" fontSize="20px">
-                    or
-                  </Text>
+                  <Center>
+                    <Text fontWeight="600" fontSize="20px">
+                      or
+                    </Text>
                   </Center>
                 </Box>
 
                 <Box pt="3">
-                <Center >
-                  <Text fontWeight="600" fontSize="20px">
-                    Login with Email
-                  </Text>
-                </Center>
+                  <Center>
+                    <Text fontWeight="600" fontSize="20px">
+                      Login with Email
+                    </Text>
+                  </Center>
                 </Box>
 
                 {alertMessage !== null ? (
@@ -302,25 +279,19 @@ const Login = () => {
                   <></>
                 )}
 
-                <FormControl isRequired>
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </FormControl>
+                <FormInput
+                  label="Email"
+                  value={email}
+                  name="email"
+                  onChange={setEmail}
+                />
 
-                <FormControl isRequired>
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </FormControl>
+                <FormInput
+                  label="Password"
+                  name="password"
+                  value={password}
+                  onChange={setPassword}
+                />
 
                 <Box mt="5">
                   <Button

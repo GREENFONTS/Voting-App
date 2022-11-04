@@ -1,5 +1,5 @@
 import { prisma } from "../../../services/Prisma";
-import User from "../../../models/User";
+import User from "../../../models/auth/User";
 import ElectionState from "../../../models/ElectionState";
 
 export default async function handler(req, res) {
@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     await prisma.$disconnect();
     res.status(404);
   } else {
-    let state : ElectionState = await prisma.election.findUnique({
+    let state: ElectionState = await prisma.election.findUnique({
       where: {
         user: user.email,
       },

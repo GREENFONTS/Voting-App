@@ -1,86 +1,90 @@
-import {  useEffect, useState } from 'react';
-import { Flex, Button, FormControl, FormLabel, Input,  Modal, ModalBody, ModalHeader, 
-  ModalCloseButton, ModalContent,  ModalFooter, useDisclosure, Center} from '@chakra-ui/react';
-import AlertComponent from '../../alert';
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Flex,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Modal,
+  ModalBody,
+  ModalHeader,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  useDisclosure,
+  Center,
+} from "@chakra-ui/react";
+import { dispatch } from "../../../redux/store";
+import { addPosition } from "../../../redux/features/Users/election";
+import Position from "../../../models/election/positions";
 
-const AddPosition = (props) => {
-    const { onOpen, onClose } = useDisclosure();
-    const [isAlertError, setAlertError] = useState<boolean>(false);
-    const [isAlertSuccess, setAlertSuccess] = useState<boolean>(false);
-    const [position, setPosition] = useState<string>('');
-    const [inputCheck, setInputCheck] = useState<boolean>(false)
-    const [response, setResponse] = useState<string>('');
-    
-    useEffect(() => {
-      if(position.length < 1){
-        setInputCheck(true)
-      }
-      else{
-        setInputCheck(false)
-    }
-    }, [position])
-  
-    const submitHandler = async () => {
-      const user = props.user.email
-      const res = await fetch('/api/admin/positions/add', {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({position, user: user})
-    });
-    const data = await res.json()
+type Props = {
+  email: string;
+  isOpen: boolean;
+  setModalState: Dispatch<SetStateAction<Boolean>>;
+};
 
-    if(res.status == 404){
-      setPosition('')
-      setAlertError(true)
-      setResponse(data.msg)
-    }
-    else{
-      setPosition('')
-      setAlertSuccess(true)
-      setResponse(data.msg)  
+const AddPosition: React.FC<Props> = ({ email, isOpen, setModalState }) => {
+  const { onClose } = useDisclosure();
+  const [position, setPosition] = useState<string>("");
+  const [inputCheck, setInputCheck] = useState<boolean>(false);
 
-      const res = await fetch('/api/admin/positions/find', {
-        method: 'POST',
-        body: props.user.email
-    }) 
-    const datas = await res.json() 
-      props.getPositions(datas)
+  useEffect(() => {
+    if (position.length < 1) {
+      setInputCheck(true);
+    } else {
+      setInputCheck(false);
     }
+  }, [position]);
 
-    }
-    
+  const submitHandler = async () => {
+    const formBody: Position = {
+      id: "",
+      name: position,
+      user: email,
+    };
+    dispatch(addPosition(formBody));
+  };
+
   return (
     <>
-    <Flex p='2'>
-    <Modal isOpen={props.isOpen} onClose={onClose}>
-   <ModalContent>
-    <ModalHeader>
-      <Center>Add Positions</Center></ModalHeader>
-    <ModalCloseButton onClick={(e) => props.isClose(false)} />
-    <ModalBody>
-        <FormControl isRequired >
-            <FormLabel htmlFor='position'>Position</FormLabel>
-            <Input id='position' type='position' value={position} onChange={(e) => setPosition(e.target.value)} />
-        </FormControl>
-    </ModalBody>
+      <Flex p="2">
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalContent>
+            <ModalHeader>
+              <Center>Add Positions</Center>
+            </ModalHeader>
+            <ModalCloseButton onClick={(e) => setModalState(false)} />
+            <ModalBody>
+              <FormControl isRequired>
+                <FormLabel htmlFor="position">Position</FormLabel>
+                <Input
+                  id="position"
+                  type="position"
+                  value={position}
+                  onChange={(e) => setPosition(e.target.value)}
+                />
+              </FormControl>
+            </ModalBody>
 
-    <ModalFooter>
-      <Button disabled={inputCheck} bg='#e8e8e8' mr={3} onClick={() => {
-          props.isClose(false)
-          submitHandler()
-      }}>
-        Submit
-      </Button>
-    </ModalFooter>
-  </ModalContent>
-</Modal> 
-
-      <AlertComponent isAlertError={isAlertError} isAlertSuccess={isAlertSuccess} setAlertError={setAlertError} setAlertSuccess={setAlertSuccess} response={response}/>
-
-    </Flex>
+            <ModalFooter>
+              <Button
+                disabled={inputCheck}
+                bg="#e8e8e8"
+                mr={3}
+                onClick={() => {
+                  setModalState(false);
+                  submitHandler();
+                }}
+              >
+                Submit
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Flex>
     </>
-  )
-}
+  );
+};
+
 export default AddPosition;

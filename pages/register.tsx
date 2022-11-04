@@ -14,13 +14,16 @@ import {
   FormHelperText,
   Alert,
   AlertIcon,
-  CloseButton
+  CloseButton,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/react";
-import User from "../models/User";
-import { useCounter } from "../services/state";
+import User from "../models/auth/User";
+import { dispatch } from "../redux/store";
+import { selectAuthState, UserRegister } from "../redux/features/Users/auth";
+import { useSelector } from "react-redux";
 
 const Register = () => {
+  const {token} = useSelector(selectAuthState)
   const [isLesserThan900] = useMediaQuery("(max-width: 900px)");
   const [isLargerThan900] = useMediaQuery("(min-width: 900px)");
   const [firstName, setFirstName] = useState<string>("");
@@ -38,19 +41,8 @@ const Register = () => {
   const [isRequired, setIsRequired] = useState<boolean>(false);
   const [formError, setFormError] = useState<string>("");
   const [alertMessage, setAlertMessage] = useState<boolean>(null);
-  const [state, actions] = useCounter();
 
   const bgColor = useColorModeValue("themeLight.bg", "themeDark.bgBody");
-  const formBody: User = {
-    firstName,
-    lastName,
-    userName,
-    email,
-    tel,
-    organization,
-    password,
-    id: "",
-  };
 
   useEffect(() => {
     if (
@@ -77,7 +69,7 @@ const Register = () => {
   }, [password]);
 
   useEffect(() => {
-    if (password1.length > 1 && password != password1) {
+    if (password1.length > 3 && password != password1) {
       setFormError("Passwords don't match");
       setIsPasswordMatchError(true);
     } else {
@@ -86,26 +78,27 @@ const Register = () => {
     }
   }, [password1]);
 
-  const submitHandler = async () => {
-    const res = await fetch("/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formBody),
-    });
-    const data = await res.json();
-    if (res.status == 404) {
-      setAlertMessage(data.msg);
-    }
-    if (res.status === 200) {
-      let users = data.user;
-      let token = data.token;
-      localStorage.setItem("user", JSON.stringify(users));
-      localStorage.setItem("token", JSON.stringify(token));
-      actions.addUser(users);
+  useEffect(() => {
+    if (token !== null) {
+      localStorage.setItem("token", token)
       router.push("/admin");
     }
+  }, [token]);
+
+  const submitHandler = async () => {
+    const formBody : User = {
+      firstName,
+      lastName,
+      organization,
+      tel,
+      userName,
+      email,
+      password,
+      id: ""
+    };
+    console.log(formBody)
+
+    dispatch(UserRegister(formBody));
   };
 
   return (

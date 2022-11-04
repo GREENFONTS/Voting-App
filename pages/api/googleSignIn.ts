@@ -1,8 +1,10 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../services/Prisma';
 const jwt = require('jsonwebtoken');
 
-export default async function handler(req, res) {
-  const {email} = req.query
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log(req.query)
+  const email = req.query.email as string
 
   const user = await prisma.admin.findUnique({
     where:{

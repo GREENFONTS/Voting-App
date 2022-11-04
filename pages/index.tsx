@@ -9,7 +9,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/react";
-import Socials from "../components/social";
+import Socials from "../components/shared/social";
 
 export default function Home() {
   const [isLargerThan900] = useMediaQuery("(min-width: 900px)");

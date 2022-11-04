@@ -1,14 +1,17 @@
+import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../../services/Prisma";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res:NextApiResponse) {
+  const id = req.query.id as string
     try{
-      await prisma.position.delete({
+      const position = await prisma.position.delete({
         where: {
-          id: req.query.id 
+          id: id 
         }
       })
+
       await prisma.$disconnect();
-      res.status(200).json({msg: `Position Deleted successfully`});
+      res.status(200).json(position);
     }  
     catch(err){
       console.log(err)
