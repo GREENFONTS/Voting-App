@@ -63,7 +63,7 @@ const DrawerComponent = ({ user }) => {
                 <Box alignItems="center">
                   <LinkBox>
                     <HStack _hover={{ cursor: "pointer" }}>
-                      <Link href="/">
+                      <Link href="/" passHref>
                         <Icon
                           _focus={{ outline: "none" }}
                           as={FaVoteYea}
@@ -400,7 +400,7 @@ const DrawerComponent = ({ user }) => {
             <Flex paddingLeft="10px" align="center" justify="center">
               <Text paddingRight="10px">© 2022</Text>
               <Box w="15px" h="15px" marginRight="10px">
-                <Image w="100%" h="100%" src="flag.png" />
+                <Image w="100%" h="100%" src="flag.png" alt="image" />
               </Box>
             </Flex>
             <Text>Godwill Onyewuchi Humphrey</Text>
