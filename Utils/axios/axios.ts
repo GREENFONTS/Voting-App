@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:3000/api";
+const baseURL = "https://voting-app-virid.vercel.app/api";
 
 const headers = {
   "Access-Control-Allow-Origin": "*",
