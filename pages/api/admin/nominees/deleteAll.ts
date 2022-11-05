@@ -1,10 +1,12 @@
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../../services/Prisma";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const user = req.query.user as string
     try{
       await prisma.nominee.deleteMany({
         where: {
-          user: req.query.user
+          user: user
         }
       })
       await prisma.$disconnect();

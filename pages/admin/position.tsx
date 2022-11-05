@@ -1,18 +1,18 @@
 import { Flex, Box, Text, Center, Button } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import AddPosition from "../../../components/admin/positions/addPosition";
-import PositionList from "../../../components/admin/positions/listPositions";
-import { selectAuthState } from "../../../redux/features/Users/auth";
+import AddPosition from "../../components/admin/positions/addPosition";
+import PositionList from "../../components/admin/positions/listPositions";
+import { selectAuthState } from "../../redux/features/Users/auth";
 import {
   GetPositions,
   selectElectState,
-} from "../../../redux/features/Users/election";
-import { dispatch } from "../../../redux/store";
+} from "../../redux/features/Users/election";
+import { dispatch } from "../../redux/store";
 
 const PositionPage = () => {
   const { user } = useSelector(selectAuthState);
-  const { positions} = useSelector(selectElectState);
+  const { positions } = useSelector(selectElectState);
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const PositionPage = () => {
         </Text>
       </Flex>
 
-      <Flex  mb="5">
+      <Flex mb="5">
         <Button onClick={() => setModal(true)}>Add Position</Button>
         {modal && (
           <AddPosition
@@ -47,7 +47,7 @@ const PositionPage = () => {
           </Text>
         ) : (
           <Box>
-            <PositionList positions={positions} user={user.email}/>
+            <PositionList positions={positions} user={user.email} />
           </Box>
         )}
       </Box>

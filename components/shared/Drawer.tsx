@@ -251,84 +251,21 @@ const DrawerComponent = ({ user }) => {
                   </Text>
                 </Link>
 
-                <Accordion allowMultiple>
-                  <AccordionItem>
-                    <AccordionButton pt="0.5" pb="0.5">
-                      <Box flex="1" textAlign="left">
-                        <Text
-                          _hover={{
-                            transform: "scale(1.02)",
-                            cursor: "pointer",
-                          }}
-                          fontWeight="700"
-                          fontSize={{ base: "15px", md: "18px", lg: "20px" }}
-                          color="gray.500"
-                        >
-                          Nominees
-                        </Text>
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
+                <Link href="/admin/nominee" onClick={() => dispatch(setDrawerState(false))}>
+                  <Text
+                    _hover={{
+                      transform: "scale(1.02)",
+                      cursor: "pointer",
+                    }}
+                    fontWeight="700"
+                    fontSize={{ base: "15px", md: "18px", lg: "20px" }}
+                    color="gray.500"
+                  >
+                    Nominees
+                  </Text>
+                </Link>
 
-                    <AccordionPanel ml="4" p={2} display="block">
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={FaEdit} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            // actions.listNominees(false);
-                            // actions.addDrawerState(false);
-                            // actions.addNominee(true);
-                            // actions.showResults(false);
-                            // actions.listCodes(false);
-                          }}
-                        >
-                          Add Nominees
-                        </Button>
-                      </HStack>
-
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={FaList} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            // actions.addDrawerState(false);
-                            // actions.listNominees(true);
-                            // actions.showResults(false);
-                            // actions.listCodes(false);
-                            // actions.landingPage(false);
-                          }}
-                        >
-                          Show Nominees
-                        </Button>
-                      </HStack>
-
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={AiOutlineClear} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            // actions.listNominees(false);
-                            // actions.addDrawerState(false);
-                            // actions.clearNominees(true);
-                            // actions.listCodes(false);
-                            // actions.showResults(false);
-                          }}
-                        >
-                          Clear Nominees
-                        </Button>
-                      </HStack>
-                    </AccordionPanel>
-                  </AccordionItem>
-                </Accordion>
-
-                <Accordion allowMultiple>
+               <Accordion allowMultiple>
                   <AccordionItem>
                     <AccordionButton pt="0.5" pb="0.5">
                       <Box flex="1" textAlign="left">

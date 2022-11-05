@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse) 
     }  
     catch(err){
       console.log(err)
-      res.status(404).json({msg: `Update Request Failed`});
+      res.status(404).json({msg: `Delete Request Failed`});
     } 
       }
       

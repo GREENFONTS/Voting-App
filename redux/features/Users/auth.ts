@@ -6,7 +6,7 @@ import { dispatch, RootState } from "../../store";
 import UserService from "../../../Utils/axios/apis/auth";
 import { ErrorHandler } from "../../../Utils/Error";
 import User from "../../../models/auth/User";
-import { setPositions } from "./election";
+import { setNominees, setPositions } from "./election";
 
 const initialState: Auth = {
   token: null,
@@ -66,12 +66,13 @@ export const verifyToken = (token: string) => async () => {
       })
     );
     dispatch(setPositions(res.data.positions))
+    dispatch(setNominees(res.data.nominees))
     dispatch(setLoading(false));
   } catch (err) {
-    console.log(err);
     localStorage.clear();
     dispatch(setAuthenticated({ state: false, data: null }));
     dispatch(setLoading(false));
+    dispatch(createResponse(ErrorHandler(err)));
   }
 };
 
@@ -96,7 +97,7 @@ const AuthSlice = createSlice({
       state.response.type = action.payload.type;
       state.response.title = action.payload.title;
     },
-    // reset: () => initialState,
+    reset: () => initialState,
     setAuthenticated: (state, action) => {
       state.authenticated = action.payload.state;
       state.user = action.payload.data;
@@ -115,7 +116,7 @@ const AuthSlice = createSlice({
   },
 });
 
-export const { setLoading, createResponse, setAuthenticated, AddUserData } =
+export const { setLoading, createResponse, setAuthenticated, AddUserData, reset } =
   AuthSlice.actions;
 
 export const selectAuthState = (state: RootState) => state.auth;

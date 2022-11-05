@@ -19,6 +19,7 @@ import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import DrawerComponent from "./Drawer";
 import { dispatch } from "../../redux/store";
 import { setDrawerState } from "../../redux/features/Utils/utils";
+import { reset, setLoading } from "../../redux/features/Users/auth";
 
 const Header = ({ user }) => {
   const router = useRouter()
@@ -31,8 +32,10 @@ const Header = ({ user }) => {
   const icon = useColorModeValue(BiMoon, ImSun);
 
   const signOutHandler = () => {
-    localStorage.clear();
-    router.push("/login");
+    
+    dispatch(reset())
+    localStorage.clear()
+    router.push("/login")
   };
 
   return (

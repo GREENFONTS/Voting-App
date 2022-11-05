@@ -8,4 +8,11 @@ type Nominee = {
   image: string;
 };
 
+export type UpdateNomineeData = {
+  name: string;
+  position: string;
+  user: string;
+  id: string
+}
+
 export default Nominee;

@@ -20,10 +20,12 @@ import { FaUserLock } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { dispatch } from "../redux/store";
 import {
+  createResponse,
   selectAuthState,
   UserGoogleLogin,
   UserLogin,
 } from "../redux/features/Users/auth";
+import { ErrorTypes } from "../models/auth/stateModel";
 
 const Login = () => {
   const { token } = useSelector(selectAuthState);
@@ -59,7 +61,14 @@ const Login = () => {
           dispatch(UserGoogleLogin(email));
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err)
+        dispatch(createResponse({
+          type: ErrorTypes.Error,
+          title: "Error",
+          message: "Something went wrong, Check your network",
+        }));
+      });
   };
 
   const submitHandler = async () => {

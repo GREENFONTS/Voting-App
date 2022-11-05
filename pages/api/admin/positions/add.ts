@@ -6,7 +6,6 @@ const {v4} = require('uuid');
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
   const {name, user} = JSON.parse(req.body) as Position
-  console.log(name, user)
     const position : Position = await prisma.position.findFirst({
         where: {
           name: name,
