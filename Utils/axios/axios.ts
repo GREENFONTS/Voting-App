@@ -1,8 +1,6 @@
 import axios from "axios";
 
 const baseURL = "http://localhost:3000/api";
-//"https://localhost:7178/api"
-//"https://bankapis-production.up.railway.app/api"
 
 const headers = {
   "Access-Control-Allow-Origin": "*",

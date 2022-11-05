@@ -47,44 +47,6 @@ const DrawerComponent = ({ user }) => {
   const iconColor = useColorModeValue("themeLight.icon", "themeLight.icon");
   const { onClose } = useDisclosure();
 
-  // const GetData = async () => {
-  //   const positionsRes = await fetch("/api/admin/positions/find", {
-  //     method: "POST",
-  //     body: user.email,
-  //   });
-  //   const positionData = await positionsRes.json();
-  //   actions.getPositions(positionData);
-
-  //   const nomineesRes = await fetch("/api/admin/nominees/find", {
-  //     method: "POST",
-  //     body: user.email,
-  //   });
-  //   const nomineesData = await nomineesRes.json();
-  //   actions.getNominees(nomineesData);
-
-  //   const codesRes = await fetch("/api/admin/codes/find", {
-  //     method: "POST",
-  //     body: state.user.email,
-  //   });
-  //   const codesData = await codesRes.json();
-  //   actions.getCodes(codesData);
-
-  //   const electionRes = await fetch("/api/voting/state", {
-  //     method: "POST",
-  //     body: state.user.email,
-  //   });
-  //   const electionState = await electionRes.json();
-  //   actions.electionState(electionState.state);
-  // };
-
-  // useEffect(() => {
-  //   if (user === null || user === undefined) {
-  //     setUserCheck(false);
-  //   } else {
-  //     GetData();
-  //   }
-  // }, [refreshDrawer]);
-
   return (
     <Drawer
       onClose={onClose}
