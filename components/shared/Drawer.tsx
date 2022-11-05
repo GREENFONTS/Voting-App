@@ -35,6 +35,7 @@ import {
   setDrawerState,
 } from "../../redux/features/Utils/utils";
 import { dispatch } from "../../redux/store";
+import { useCounter } from "../../services/state";
 
 const DrawerComponent = ({ user }) => {
   const { drawerState } = useSelector(selectUtilState);
@@ -46,6 +47,7 @@ const DrawerComponent = ({ user }) => {
   const bgTwitter = useColorModeValue("#1DA1F2", "white");
   const iconColor = useColorModeValue("themeLight.icon", "themeLight.icon");
   const { onClose } = useDisclosure();
+  const [state, actions] = useCounter()
 
   return (
     <Drawer
@@ -254,11 +256,11 @@ const DrawerComponent = ({ user }) => {
                         <Button
                           bg={bgColor}
                           onClick={(e) => {
-                            // actions.listNominees(false);
-                            // actions.addDrawerState(false);
-                            // actions.generateCode(true);
-                            // actions.listCodes(false);
-                            // actions.showResults(false);
+                            actions.listNominees(false);
+                            actions.addDrawerState(false);
+                            actions.generateCode(true);
+                            actions.listCodes(false);
+                            actions.showResults(false);
                           }}
                         >
                           Generate Codes
@@ -313,11 +315,11 @@ const DrawerComponent = ({ user }) => {
                         <Button
                           bg={bgColor}
                           onClick={(e) => {
-                            // actions.listNominees(false);
-                            // actions.addDrawerState(false);
-                            // actions.listCodes(false);
-                            // actions.generateLink(true);
-                            // actions.showResults(false);
+                            actions.listNominees(false);
+                            actions.addDrawerState(false);
+                            actions.listCodes(false);
+                            actions.generateLink(true);
+                            actions.showResults(false);
                           }}
                         >
                           Generate Link
@@ -331,13 +333,13 @@ const DrawerComponent = ({ user }) => {
                         <Button
                           bg="white"
                           onClick={(e) => {
-                            // actions.endElectionModal(true);
-                            // actions.addDrawerState(false);
+                            actions.endElectionModal(true);
+                            actions.addDrawerState(false);
                           }}
                         >
-                          {/* {state.electionState
+                          {state.electionState
                             ? "End Election"
-                            : "Start Election"} */}
+                            : "Start Election"}
                         </Button>
                       </HStack>
 
@@ -348,11 +350,11 @@ const DrawerComponent = ({ user }) => {
                         <Button
                           bg={bgColor}
                           onClick={(e) => {
-                            // actions.listNominees(false);
-                            // actions.addDrawerState(false);
-                            // actions.listCodes(false);
-                            // actions.showResults(true);
-                            // actions.landingPage(false);
+                            actions.listNominees(false);
+                            actions.addDrawerState(false);
+                            actions.listCodes(false);
+                            actions.showResults(true);
+                            actions.landingPage(false);
                           }}
                         >
                           Show Results
@@ -366,11 +368,11 @@ const DrawerComponent = ({ user }) => {
                         <Button
                           bg={bgColor}
                           onClick={(e) => {
-                            // actions.listNominees(false);
-                            // actions.addDrawerState(false);
-                            // actions.listCodes(false);
-                            // actions.resetVotes(true);
-                            // actions.showResults(false);
+                            actions.listNominees(false);
+                            actions.addDrawerState(false);
+                            actions.listCodes(false);
+                            actions.resetVotes(true);
+                            actions.showResults(false);
                           }}
                         >
                           Reset Votes

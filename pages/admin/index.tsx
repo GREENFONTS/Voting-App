@@ -109,18 +109,7 @@ const Admin = () => {
           <></>
         )}
         <>
-          {state.listNomineeModal ? (
-            <NomineesList
-              isOpen={state.listNomineeModal}
-              isClose={actions.listNominees}
-              positions={state.positions}
-              user={state.user}
-              nominees={state.nominees}
-              refreshDrawer={actions.refreshDrawer}
-            />
-          ) : (
-            <></>
-          )}
+          
           {state.listCodesModal ? (
             <CodeList
               isOpen={state.listCodesModal}
@@ -143,21 +132,6 @@ const Admin = () => {
             <></>
           )}
           
-       
-          <AddNominee
-            isOpen={state.addNomineeModal}
-            listNomineeModal={actions.listNominees}
-            positions={state.positions}
-            isClose={actions.addNominee}
-            user={state.user}
-            getNominees={actions.getNominees}
-          />
-          <ClearNominees
-            clearNominees={actions.clearNominees}
-            isOpen={state.clearNomineesModal}
-            refreshDrawer={actions.refreshDrawer}
-            user={state.user}
-          />
           <GenerateLink
             isClose={actions.generateLink}
             isOpen={state.generateLinkModal}

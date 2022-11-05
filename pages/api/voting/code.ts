@@ -1,5 +1,6 @@
 import { prisma } from "../../../services/Prisma";
-import Code from "../../../models/election/Codes";
+import Code from  '../../../models/election/Codes';
+
 const jwt = require("jsonwebtoken");
 
 export default async function handler(req, res) {

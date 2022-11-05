@@ -11,8 +11,8 @@ import {
   Button,
   Center,
 } from "@chakra-ui/react";
-import Nominee from "../../../models/Nominee";
-import Position from "../../../models/positions";
+import Nominee from "../../../models/election/Nominee";
+import Position from "../../../models/election/positions";
 
 const ShowResults = (props) => {
   const positions: string[] = [];

@@ -1,6 +1,7 @@
 import { prisma } from "../../../services/Prisma";
 import User from "../../../models/auth/User";
-import ElectionState from "../../../models/ElectionState";
+import ElectionState from '../../../models/election/ElectionState';
+
 
 export default async function handler(req, res) {
   let user: User = await prisma.admin.findFirst({

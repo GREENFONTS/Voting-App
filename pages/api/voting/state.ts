@@ -1,5 +1,5 @@
 import { prisma } from "../../../services/Prisma";
-import ElectionState from "../../../models/ElectionState";
+import ElectionState from '../../../models/election/ElectionState';
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
