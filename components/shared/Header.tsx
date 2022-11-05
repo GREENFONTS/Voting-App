@@ -19,7 +19,7 @@ import { useColorMode, useColorModeValue } from "@chakra-ui/react";
 import DrawerComponent from "./Drawer";
 import { dispatch } from "../../redux/store";
 import { setDrawerState } from "../../redux/features/Utils/utils";
-import { reset, setLoading } from "../../redux/features/Users/auth";
+import { reset } from "../../redux/features/Users/auth";
 
 const Header = ({ user }) => {
   const router = useRouter()
