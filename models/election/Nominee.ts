@@ -15,4 +15,11 @@ export type UpdateNomineeData = {
   id: string
 }
 
+export type CreateNomineeData = {
+  name: string;
+  post: string;
+  user: string;
+  image: string
+}
+
 export default Nominee;

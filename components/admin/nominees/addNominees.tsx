@@ -18,9 +18,7 @@ import {
 import { MdArrowDropDown } from "react-icons/md";
 import Position from "../../../models/election/positions";
 import { dispatch } from "../../../redux/store";
-import {
-  GetNominees,
-} from "../../../redux/features/Users/election";
+import { GetNominees } from "../../../redux/features/Users/election";
 import { createResponse, setLoading } from "../../../redux/features/Users/auth";
 import { ErrorHandler } from "../../../Utils/Error";
 
@@ -59,18 +57,17 @@ const AddNomineeModal: React.FC<Props> = ({
     form.append("user", email);
 
     try {
-      dispatch(setLoading(true))
+      dispatch(setLoading(true));
       const res = await fetch("/api/admin/nominees/add", {
         method: "POST",
         body: form,
-        
       });
       if (res.ok) {
         dispatch(GetNominees(email));
       }
     } catch (err) {
-      dispatch(createResponse(ErrorHandler(err)))
-      dispatch(setLoading(false))
+      dispatch(createResponse(ErrorHandler(err)));
+      dispatch(setLoading(false));
     }
     setName("");
     setImage(null);
