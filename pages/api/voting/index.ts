@@ -1,6 +1,7 @@
 import { prisma } from "../../../services/Prisma";
-import User from "../../../models/User";
-import ElectionState from "../../../models/ElectionState";
+import User from "../../../models/auth/User";
+import ElectionState from '../../../models/election/ElectionState';
+
 
 export default async function handler(req, res) {
   let user: User = await prisma.admin.findFirst({
@@ -12,7 +13,7 @@ export default async function handler(req, res) {
     await prisma.$disconnect();
     res.status(404);
   } else {
-    let state : ElectionState = await prisma.election.findUnique({
+    let state: ElectionState = await prisma.election.findUnique({
       where: {
         user: user.email,
       },

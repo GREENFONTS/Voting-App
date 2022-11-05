@@ -1,59 +1,49 @@
-import { prisma } from '../../services/Prisma';
-import {NextApiRequest, NextApiResponse} from 'next';
-import User from "../../models/User";
-const {v4} = require('uuid');
-const jwt = require('jsonwebtoken');
+import { prisma } from "../../services/Prisma";
+import { NextApiRequest, NextApiResponse } from "next";
+const { v4 } = require("uuid");
+const jwt = require("jsonwebtoken");
+import User from "../../models/auth/User";
 
-export default async function handler(req:NextApiRequest, res:NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const userData = JSON.parse(req.body) as User;
+  userData.id = v4();
+  let user: User = await prisma.admin.findUnique({
+    where: {
+      email: userData.email,
+    },
+  });
 
-  let email = req.body.email
-  let id = v4()
-    let user : User = await prisma.admin.findUnique({
-        where: {
-          email: req.body.email      
+  if (user != null) {
+    res.status(404).send({
+      msg: "Admin already exists found",
+    });
+  } else {
+    try {
+      await prisma.admin.create({
+        data: userData,
+      });
+
+      await prisma.election.create({
+        data: {
+          user: userData.email,
+          state: true,
         },
       });
-  
-      if (user != null) {
-        res.status(404).send({
-          msg: "Admin already exists found"
-        })
-      }
-      else {
-        try{
-          await prisma.admin.create({
-            data: {
-              firstName: req.body.firstName,
-              lastName: req.body.lastName,
-              userName: req.body.userName,
-              tel: req.body.tel,
-              organization: req.body.organization,
-              email: req.body.email,
-              password: req.body.password,
-              id
-            }
-          })
 
-          await prisma.election.create({
-            data:{
-              user: req.body.email,
-              state: true
-            }
-          })
- 
-          const token = jwt.sign(
-            { user_id: id, email },
-            process.env.TOKEN_KEY,
-            {
-              expiresIn: "2h"
-            }
-          )
-          await prisma.$disconnect();
-          return res.status(200).send({token : token, user : req.body})
+      const token = jwt.sign(
+        { user_id: userData.id, email: userData.email },
+        process.env.TOKEN_KEY,
+        {
+          expiresIn: "2h",
         }
-        catch(err){
-          throw err
-        }
-      }
+      );
+      await prisma.$disconnect();
+      return res.status(200).send({ token: token, user: req.body });
+    } catch (err) {
+      throw err;
+    }
   }
-  
+}

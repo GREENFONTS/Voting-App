@@ -29,9 +29,16 @@ import { BsLinkedin, BsTwitter } from "react-icons/bs";
 import { BiReset } from "react-icons/bi";
 import { FaVoteYea } from "react-icons/fa";
 import { AiOutlineClear } from "react-icons/ai";
-import { useCounter } from "../services/state";
+import { useSelector } from "react-redux";
+import {
+  selectUtilState,
+  setDrawerState,
+} from "../../redux/features/Utils/utils";
+import { dispatch } from "../../redux/store";
+import { useCounter } from "../../services/state";
 
 const DrawerComponent = ({ user }) => {
+  const { drawerState } = useSelector(selectUtilState);
   const bgColor = useColorModeValue("themeLight.bg", "themeDark.bgBody");
   const textColor = useColorModeValue("black", "white");
   const bgInstagram = useColorModeValue("red", "white");
@@ -39,58 +46,19 @@ const DrawerComponent = ({ user }) => {
   const bgLinkedIn = useColorModeValue("#0077b5", "white");
   const bgTwitter = useColorModeValue("#1DA1F2", "white");
   const iconColor = useColorModeValue("themeLight.icon", "themeLight.icon");
-  const [userCheck, setUserCheck] = useState<boolean>(true);
-  const [state, actions] = useCounter();
   const { onClose } = useDisclosure();
-
-  const GetData = async () => {
-    const positionsRes = await fetch("/api/admin/positions/find", {
-      method: "POST",
-      body: state.user.email,
-    });
-    const positionData = await positionsRes.json();
-    actions.getPositions(positionData);
-
-    const nomineesRes = await fetch("/api/admin/nominees/find", {
-      method: "POST",
-      body: state.user.email,
-    });
-    const nomineesData = await nomineesRes.json();
-    actions.getNominees(nomineesData);
-
-    const codesRes = await fetch("/api/admin/codes/find", {
-      method: "POST",
-      body: state.user.email,
-    });
-    const codesData = await codesRes.json();
-    actions.getCodes(codesData);
-
-    const electionRes = await fetch("/api/voting/state", {
-      method: "POST",
-      body: state.user.email,
-    });
-    const electionState = await electionRes.json();
-    actions.electionState(electionState.state);
-  };
-
-  useEffect(() => {
-    if (state.user === null || state.user === undefined) {
-      setUserCheck(false);
-    } else {
-      GetData();
-    }
-  }, [state.refreshDrawer]);
+  const [state, actions] = useCounter()
 
   return (
     <Drawer
       onClose={onClose}
-      isOpen={state.drawerState}
+      isOpen={drawerState}
       placement="right"
       isFullHeight={false}
     >
       <DrawerOverlay />
       <DrawerContent backgroundColor={bgColor}>
-        {!userCheck ? (
+        {user === null ? (
           <>
             <DrawerHeader>
               <Flex w="100%" align="center" justify="space-between">
@@ -126,7 +94,7 @@ const DrawerComponent = ({ user }) => {
                   w={10}
                   variant="unstyled"
                   m={3}
-                  onClick={() => actions.addDrawerState(false)}
+                  onClick={() => dispatch(setDrawerState(false))}
                 >
                   x
                 </Button>
@@ -142,7 +110,13 @@ const DrawerComponent = ({ user }) => {
                     fontSize="17px"
                     fontWeight="400"
                   >
-                    <Link href="/"> Home</Link>
+                    <Link
+                      onClick={() => dispatch(setDrawerState(false))}
+                      href="/"
+                    >
+                      {" "}
+                      Home
+                    </Link>
                   </Button>
                 </Box>
 
@@ -153,7 +127,13 @@ const DrawerComponent = ({ user }) => {
                     fontSize="17px"
                     fontWeight="400"
                   >
-                    <Link href="/register"> Sign Up</Link>
+                    <Link
+                      onClick={() => dispatch(setDrawerState(false))}
+                      href="/register"
+                    >
+                      {" "}
+                      Sign Up
+                    </Link>
                   </Button>
                 </Box>
                 <Box>
@@ -163,7 +143,13 @@ const DrawerComponent = ({ user }) => {
                     fontSize="17px"
                     fontWeight="400"
                   >
-                    <Link href="/login"> Sign In</Link>
+                    <Link
+                      onClick={() => dispatch(setDrawerState(false))}
+                      href="/login"
+                    >
+                      {" "}
+                      Sign In
+                    </Link>
                   </Button>
                 </Box>
               </Box>
@@ -176,7 +162,7 @@ const DrawerComponent = ({ user }) => {
                 <Box alignItems="center">
                   <LinkBox>
                     <HStack _hover={{ cursor: "pointer" }}>
-                      <Link href="/" passHref>
+                      <Link href="/">
                         <Icon
                           _focus={{ outline: "none" }}
                           as={FaVoteYea}
@@ -195,7 +181,7 @@ const DrawerComponent = ({ user }) => {
                         fontFamily="cursive"
                         color={textColor}
                       >
-                        {state.user === null ? "" : state.user.organization}
+                        {user === null ? "" : user.organization}
                       </Text>
                     </HStack>
                   </LinkBox>
@@ -205,163 +191,45 @@ const DrawerComponent = ({ user }) => {
                   w={10}
                   variant="unstyled"
                   m={3}
-                  onClick={() => actions.addDrawerState(false)}
+                  onClick={() => dispatch(setDrawerState(false))}
                 >
                   x
                 </Button>
               </Flex>
             </DrawerHeader>
 
-            <DrawerBody pt="0" pb="0">
-              <Box>
-                <Text
-                  _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                  fontWeight="700"
-                  fontSize={{ base: "15px", md: "18px", lg: "25px" }}
-                  color="purple.300"
-                >
-                  MENU
-                </Text>
-              </Box>
+            <DrawerBody pt="5" pb="0">              
 
               <Box animation="bounceFromBottom 0.7s">
-                <Accordion defaultIndex={[0]} allowMultiple>
-                  <AccordionItem>
-                    <AccordionButton pt="0.5" pb="0.5">
-                      <Box flex="1" textAlign="left">
-                        <Text
-                          _hover={{
-                            transform: "scale(1.02)",
-                            cursor: "pointer",
-                          }}
-                          fontWeight="700"
-                          fontSize={{ base: "15px", md: "18px", lg: "20px" }}
-                          color="gray.500"
-                        >
-                          Positions
-                        </Text>
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
+                <Link href="/admin/position/" onClick={() => dispatch(setDrawerState(false))}>
+                  <Text
+                    _hover={{
+                      transform: "scale(1.02)",
+                      cursor: "pointer",
+                    }}
+                    fontWeight="700"
+                    fontSize={{ base: "15px", md: "18px", lg: "20px" }}
+                    color="gray.500"
+                  >
+                    Positions
+                  </Text>
+                </Link>
 
-                    <AccordionPanel ml="4" p="2px" display="block">
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={FaEdit} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            actions.listCodes(false);
-                            actions.listNominees(false);
-                            actions.addDrawerState(false);
-                            actions.addPosition(true);
-                            actions.showResults(false);
-                          }}
-                        >
-                          Add Position
-                        </Button>
-                      </HStack>
+                <Link href="/admin/nominee" onClick={() => dispatch(setDrawerState(false))}>
+                  <Text
+                    _hover={{
+                      transform: "scale(1.02)",
+                      cursor: "pointer",
+                    }}
+                    fontWeight="700"
+                    fontSize={{ base: "15px", md: "18px", lg: "20px" }}
+                    color="gray.500"
+                  >
+                    Nominees
+                  </Text>
+                </Link>
 
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={FaList} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            actions.listCodes(false);
-                            actions.listNominees(false);
-                            actions.addDrawerState(false);
-                            actions.listPositions(true);
-                            actions.showResults(false);
-                          }}
-                        >
-                          Show Positions
-                        </Button>
-                      </HStack>
-                    </AccordionPanel>
-                  </AccordionItem>
-                </Accordion>
-
-                <Accordion allowMultiple>
-                  <AccordionItem>
-                    <AccordionButton pt="0.5" pb="0.5">
-                      <Box flex="1" textAlign="left">
-                        <Text
-                          _hover={{
-                            transform: "scale(1.02)",
-                            cursor: "pointer",
-                          }}
-                          fontWeight="700"
-                          fontSize={{ base: "15px", md: "18px", lg: "20px" }}
-                          color="gray.500"
-                        >
-                          Nominees
-                        </Text>
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-
-                    <AccordionPanel ml="4" p={2} display="block">
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={FaEdit} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            actions.listNominees(false);
-                            actions.addDrawerState(false);
-                            actions.addNominee(true);
-                            actions.showResults(false);
-                            actions.listCodes(false);
-                          }}
-                        >
-                          Add Nominees
-                        </Button>
-                      </HStack>
-
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={FaList} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            actions.addDrawerState(false);
-                            actions.listNominees(true);
-                            actions.showResults(false);
-                            actions.listCodes(false);
-                            actions.landingPage(false);
-                          }}
-                        >
-                          Show Nominees
-                        </Button>
-                      </HStack>
-
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={AiOutlineClear} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            actions.listNominees(false);
-                            actions.addDrawerState(false);
-                            actions.clearNominees(true);
-                            actions.listCodes(false);
-                            actions.showResults(false);
-                          }}
-                        >
-                          Clear Nominees
-                        </Button>
-                      </HStack>
-                    </AccordionPanel>
-                  </AccordionItem>
-                </Accordion>
-
-                <Accordion allowMultiple>
+               <Accordion allowMultiple>
                   <AccordionItem>
                     <AccordionButton pt="0.5" pb="0.5">
                       <Box flex="1" textAlign="left">
@@ -406,11 +274,11 @@ const DrawerComponent = ({ user }) => {
                         <Button
                           bg={bgColor}
                           onClick={(e) => {
-                            actions.listNominees(false);
-                            actions.addDrawerState(false);
-                            actions.listCodes(true);
-                            actions.showResults(false);
-                            actions.landingPage(false);
+                            // actions.listNominees(false);
+                            // actions.addDrawerState(false);
+                            // actions.listCodes(true);
+                            // actions.showResults(false);
+                            // actions.landingPage(false);
                           }}
                         >
                           Show Codes

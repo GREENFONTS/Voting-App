@@ -1,13 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import Position from "../../../../models/positions";
+import Position from "../../../../models/election/positions";
 import { prisma } from "../../../../services/Prisma";
 const {v4} = require('uuid');
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
+
+  const {name, user} = JSON.parse(req.body) as Position
     const position : Position = await prisma.position.findFirst({
         where: {
-          name: req.body.position,
-          user: req.body.user      
+          name: name,
+          user: user     
         }
       })
       if (position != null) {
@@ -18,11 +20,11 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         await prisma.position.create({
           data: {
             id: v4(),
-            name: req.body.position,
-            user: req.body.user
+            name: name,
+            user: user
           }
         })
         await prisma.$disconnect();
-        res.status(200).json({msg: `${req.body.position} added successfully`});
+        res.status(201).json({msg: `${name} added successfully`});
       }   
 }

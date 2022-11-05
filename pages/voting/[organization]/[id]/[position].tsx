@@ -2,7 +2,7 @@ import {  useEffect, useState} from 'react';
 import {withRouter, useRouter} from 'next/router';
 import {Box, Text, Flex, VStack, Image, Button, Center} from '@chakra-ui/react';
 import { useCounter } from '../../../../services/state';
-import Nominee from '../../../../models/Nominee';
+import Nominee from '../../../../models/election/Nominee';
 
 const Posts = () => {
   const router = useRouter()

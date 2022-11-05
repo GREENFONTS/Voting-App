@@ -13,33 +13,13 @@ import GenerateLink from "../../components/admin/election/generateLink";
 import EndElection from "../../components/admin/election/endElection";
 import ShowResults from "../../components/admin/election/showResults";
 import ResetVotes from "../../components/admin/election/resetVotes";
-import User from "../../models/User";
+import User from "../../models/auth/User";
+import { useSelector } from "react-redux";
+import { selectAuthState } from "../../redux/features/Users/auth";
 
 const Admin = () => {
   const [state, actions] = useCounter();
-
-  const tokenCheck = async (token : string, users : User) => {
-    if (token === null) {
-      router.push("/login");
-    } 
-    else {
-      const res = await fetch(`/api/admin/?token=${token}`);
-      const data = await res.json();
-       if (res.status === 403) {
-         localStorage.setItem("user", null);
-         router.push("/login");
-      } else if (data.email === users.email) {
-        actions.addUser(users);
-       }
-    }
-  }
-
-  useEffect(() => {
-    let token = JSON.parse(localStorage.getItem("token"));
-    let users = JSON.parse(localStorage.getItem("user"));
-
-    tokenCheck(token, users)    
-  }, []);
+  const {user} = useSelector(selectAuthState)
 
   if (
     state.listNomineeModal ||
@@ -82,74 +62,54 @@ const Admin = () => {
                 },
               }}
             >
-              <Box
-                h={{ base: "150px", md: "250px", lg: "350px" }}
-                ml="5"
-              >
+              <Box h={{ base: "150px", md: "250px", lg: "350px" }} ml="5">
                 <Center>
-                <Image
-                  src="/landing.png"
-                  w="inherit"
-                  h="inherit"
-                  alt="Welcome"
-                />
-                </Center>               
+                  <Image
+                    src="/landing.png"
+                    w="inherit"
+                    h="inherit"
+                    alt="Welcome"
+                  />
+                </Center>
               </Box>
-              <Box
-                p={5}
-                w={{ base: "95%", md: "50%", lg: "45%" }}
-              >
-                    
-                    <Box mt='5'>
-                    <Center>
+              <Box p={5} w={{ base: "95%", md: "50%", lg: "45%" }}>
+                <Box mt="5">
+                  <Center>
                     <Text
-                    textAlign="center"
-                    fontStyle="italic"
-                    fontFamily="Georgia"
-                    p="5"
-                    fontSize={{ base: "25px", md: "35px", lg: "40px" }}
-                  >
-                    Hello{" "}
-                    {state.user === null || undefined
-                      ? " "
-                      : state.user.userName}
-                  </Text>
+                      textAlign="center"
+                      fontStyle="italic"
+                      fontFamily="Georgia"
+                      p="5"
+                      fontSize={{ base: "25px", md: "35px", lg: "40px" }}
+                    >
+                      Hello{" "}
+                      {user === null || undefined
+                        ? " "
+                        : user.userName}
+                    </Text>
                   </Center>
-                    </Box>
-                  
-                  <Box mt='5'>
-                    <Center>
-                    <Text
-                    textAlign="center"
-                    id="dashboard"
-                    fontSize={{ base: "14px", md: "16px", lg: "18px" }}
-                    fontFamily="Georgia"
-                  >
-                    Welcome to your dashboard😊
-                  </Text>
-                    </Center>
-                  
-                  </Box>                        
                 </Box>
-                               
+
+                <Box mt="5">
+                  <Center>
+                    <Text
+                      textAlign="center"
+                      id="dashboard"
+                      fontSize={{ base: "14px", md: "16px", lg: "18px" }}
+                      fontFamily="Georgia"
+                    >
+                      Welcome to your dashboard😊
+                    </Text>
+                  </Center>
+                </Box>
+              </Box>
             </Box>
           </Container>
         ) : (
           <></>
         )}
         <>
-          {state.listNomineeModal ? (
-            <NomineesList
-              isOpen={state.listNomineeModal}
-              isClose={actions.listNominees}
-              positions={state.positions}
-              user={state.user}
-              nominees={state.nominees}
-              refreshDrawer={actions.refreshDrawer}
-            />
-          ) : (
-            <></>
-          )}
+          
           {state.listCodesModal ? (
             <CodeList
               isOpen={state.listCodesModal}
@@ -171,34 +131,7 @@ const Admin = () => {
           ) : (
             <></>
           )}
-          <AddPosition
-            isOpen={state.addPositionModal}
-            isClose={actions.addPosition}
-            user={state.user}
-            getPositions={actions.getPositions}
-            getNominees={actions.getNominees}
-          />
-          <PositionList
-            isOpen={state.listPositionModal}
-            isClose={actions.listPositions}
-            user={state.user}
-            positions={state.positions}
-            refreshDrawer={actions.refreshDrawer}
-          />
-          <AddNominee
-            isOpen={state.addNomineeModal}
-            listNomineeModal={actions.listNominees}
-            positions={state.positions}
-            isClose={actions.addNominee}
-            user={state.user}
-            getNominees={actions.getNominees}
-          />
-          <ClearNominees
-            clearNominees={actions.clearNominees}
-            isOpen={state.clearNomineesModal}
-            refreshDrawer={actions.refreshDrawer}
-            user={state.user}
-          />
+          
           <GenerateLink
             isClose={actions.generateLink}
             isOpen={state.generateLinkModal}

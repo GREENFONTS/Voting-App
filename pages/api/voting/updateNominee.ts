@@ -1,5 +1,5 @@
 import { prisma } from "../../../services/Prisma";
-import Nominee from "../../../models/Nominee";
+import Nominee from "../../../models/election/Nominee";
 
 export default async function handler(req, res) {
     let nominee : Nominee = JSON.parse(req.query.nominee)
