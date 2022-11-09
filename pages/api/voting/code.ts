@@ -1,11 +1,15 @@
 import { prisma } from "../../../services/Prisma";
-import Code from  '../../../models/election/Codes';
+import Code from "../../../models/election/Codes";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const jwt = require("jsonwebtoken");
 
-export default async function handler(req, res) {
-  const code: string = req.query.code;
-  const email: string = req.query.user;
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  let code = req.query.code as string;
+  let email = req.query.email as string;
 
   let codeData: Code[] = await prisma.coupons.findMany({
     where: {
@@ -38,6 +42,6 @@ export default async function handler(req, res) {
       }
     );
     await prisma.$disconnect();
-    res.status(200).json({ token });
+    res.status(200).json(token);
   }
 }

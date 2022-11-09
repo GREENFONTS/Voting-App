@@ -47,7 +47,7 @@ const DrawerComponent = ({ user }) => {
   const bgTwitter = useColorModeValue("#1DA1F2", "white");
   const iconColor = useColorModeValue("themeLight.icon", "themeLight.icon");
   const { onClose } = useDisclosure();
-  const [state, actions] = useCounter()
+  const [state, actions] = useCounter();
 
   return (
     <Drawer
@@ -162,7 +162,7 @@ const DrawerComponent = ({ user }) => {
                 <Box alignItems="center">
                   <LinkBox>
                     <HStack _hover={{ cursor: "pointer" }}>
-                      <Link href="/">
+                      <Link href="/" passHref>
                         <Icon
                           _focus={{ outline: "none" }}
                           as={FaVoteYea}
@@ -198,11 +198,11 @@ const DrawerComponent = ({ user }) => {
               </Flex>
             </DrawerHeader>
 
-            <DrawerBody pt="5" pb="0">              
-
+            <DrawerBody pt="5" pb="0">
               <Box animation="bounceFromBottom 0.7s">
-                <Link href="/admin/position/" onClick={() => dispatch(setDrawerState(false))}>
+                <Link passHref href="/admin/position/">
                   <Text
+                    onClick={() => dispatch(setDrawerState(false))}
                     _hover={{
                       transform: "scale(1.02)",
                       cursor: "pointer",
@@ -215,8 +215,9 @@ const DrawerComponent = ({ user }) => {
                   </Text>
                 </Link>
 
-                <Link href="/admin/nominee" onClick={() => dispatch(setDrawerState(false))}>
+                <Link passHref href="/admin/nominee">
                   <Text
+                    onClick={() => dispatch(setDrawerState(false))}
                     _hover={{
                       transform: "scale(1.02)",
                       cursor: "pointer",
@@ -229,158 +230,35 @@ const DrawerComponent = ({ user }) => {
                   </Text>
                 </Link>
 
-               <Accordion allowMultiple>
-                  <AccordionItem>
-                    <AccordionButton pt="0.5" pb="0.5">
-                      <Box flex="1" textAlign="left">
-                        <Text
-                          _hover={{
-                            transform: "scale(1.02)",
-                            cursor: "pointer",
-                          }}
-                          fontWeight="700"
-                          fontSize={{ base: "15px", md: "18px", lg: "20px" }}
-                          color="gray.500"
-                        >
-                          Codes
-                        </Text>
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
+                <Link passHref href="/admin/codes">
+                  <Text
+                    onClick={() => dispatch(setDrawerState(false))}
+                    _hover={{
+                      transform: "scale(1.02)",
+                      cursor: "pointer",
+                    }}
+                    fontWeight="700"
+                    fontSize={{ base: "15px", md: "18px", lg: "20px" }}
+                    color="gray.500"
+                  >
+                    Codes
+                  </Text>
+                </Link>
 
-                    <AccordionPanel ml="4" p="2px" display="block">
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={FaEdit} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            actions.listNominees(false);
-                            actions.addDrawerState(false);
-                            actions.generateCode(true);
-                            actions.listCodes(false);
-                            actions.showResults(false);
-                          }}
-                        >
-                          Generate Codes
-                        </Button>
-                      </HStack>
-
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={FaList} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            // actions.listNominees(false);
-                            // actions.addDrawerState(false);
-                            // actions.listCodes(true);
-                            // actions.showResults(false);
-                            // actions.landingPage(false);
-                          }}
-                        >
-                          Show Codes
-                        </Button>
-                      </HStack>
-                    </AccordionPanel>
-                  </AccordionItem>
-                </Accordion>
-
-                <Accordion allowMultiple>
-                  <AccordionItem>
-                    <AccordionButton pt="0.5" pb="0.5">
-                      <Box flex="1" textAlign="left">
-                        <Text
-                          _hover={{
-                            transform: "scale(1.02)",
-                            cursor: "pointer",
-                          }}
-                          fontWeight="700"
-                          fontSize={{ base: "15px", md: "18px", lg: "20px" }}
-                          color="gray.500"
-                        >
-                          Election
-                        </Text>
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-
-                    <AccordionPanel ml="4" p="1px" display="block">
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={FaEdit} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            actions.listNominees(false);
-                            actions.addDrawerState(false);
-                            actions.listCodes(false);
-                            actions.generateLink(true);
-                            actions.showResults(false);
-                          }}
-                        >
-                          Generate Link
-                        </Button>
-                      </HStack>
-
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={FaDoorClosed} />
-                        <Button
-                          bg="white"
-                          onClick={(e) => {
-                            actions.endElectionModal(true);
-                            actions.addDrawerState(false);
-                          }}
-                        >
-                          {state.electionState
-                            ? "End Election"
-                            : "Start Election"}
-                        </Button>
-                      </HStack>
-
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={FaList} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            actions.listNominees(false);
-                            actions.addDrawerState(false);
-                            actions.listCodes(false);
-                            actions.showResults(true);
-                            actions.landingPage(false);
-                          }}
-                        >
-                          Show Results
-                        </Button>
-                      </HStack>
-
-                      <HStack
-                        _hover={{ transform: "scale(1.02)", cursor: "pointer" }}
-                      >
-                        <Icon as={BiReset} />
-                        <Button
-                          bg={bgColor}
-                          onClick={(e) => {
-                            actions.listNominees(false);
-                            actions.addDrawerState(false);
-                            actions.listCodes(false);
-                            actions.resetVotes(true);
-                            actions.showResults(false);
-                          }}
-                        >
-                          Reset Votes
-                        </Button>
-                      </HStack>
-                    </AccordionPanel>
-                  </AccordionItem>
-                </Accordion>
+                <Link passHref href="/admin/election">
+                  <Text
+                    onClick={() => dispatch(setDrawerState(false))}
+                    _hover={{
+                      transform: "scale(1.02)",
+                      cursor: "pointer",
+                    }}
+                    fontWeight="700"
+                    fontSize={{ base: "15px", md: "18px", lg: "20px" }}
+                    color="gray.500"
+                  >
+                    Election
+                  </Text>
+                </Link>
               </Box>
             </DrawerBody>
           </>

@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import User from "../../../models/auth/User";
+import Code from "../../../models/election/Codes";
 import Nominee from "../../../models/election/Nominee";
 import Position from "../../../models/election/positions";
 import ensureAuthenticated from "../../../services/auth";
@@ -32,7 +33,13 @@ export default async function handler(
         user: user.email
       }
     })
+
+    let codes : Code[] = await prisma.coupons.findMany({
+      where: {
+        user: user.email
+      }
+    })
     await prisma.$disconnect();
-    res.status(200).send({user, positions, nominees});
+    res.status(200).send({user, positions, nominees, codes});
   }
 }

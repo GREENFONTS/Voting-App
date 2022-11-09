@@ -6,7 +6,7 @@ import { dispatch, RootState } from "../../store";
 import UserService from "../../../Utils/axios/apis/auth";
 import { ErrorHandler } from "../../../Utils/Error";
 import User from "../../../models/auth/User";
-import { setNominees, setPositions } from "./election";
+import { setCodes, setNominees, setPositions } from "./election";
 
 const initialState: Auth = {
   token: null,
@@ -67,6 +67,7 @@ export const verifyToken = (token: string) => async () => {
     );
     dispatch(setPositions(res.data.positions))
     dispatch(setNominees(res.data.nominees))
+    dispatch(setCodes(res.data.codes))
     dispatch(setLoading(false));
   } catch (err) {
     localStorage.clear();

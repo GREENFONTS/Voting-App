@@ -14,17 +14,27 @@ import {
 import Nominee from "../../../models/election/Nominee";
 import Position from "../../../models/election/positions";
 
-const ShowResults = (props) => {
+interface Props {
+  Positions: Position[];
+  Nominees: Nominee[];
+  electionStatus: Boolean;
+}
+
+const ShowResults: React.FC<Props> = ({
+  Positions,
+  Nominees,
+  electionStatus,
+}) => {
   const positions: string[] = [];
   let list = [];
-  props.positions.map((ele: Position) => {
+  Positions.map((ele: Position) => {
     positions.push(ele.name);
   });
 
   const maxNomineePerpost = () => {
     let counts: number[] = [];
     for (let i = 0; i < positions.length; i++) {
-      const nomineesCount = props.nominees.filter(
+      const nomineesCount = Nominees.filter(
         (ele: Nominee) => ele.post == positions[i]
       );
       counts.push(nomineesCount.length);
@@ -38,7 +48,7 @@ const ShowResults = (props) => {
   };
 
   const getNominees = (post: string) => {
-    let nominees: Nominee[] = props.nominees.filter(
+    let nominees: Nominee[] = Nominees.filter(
       (ele: Nominee) => ele.post == post
     );
     return nominees;
@@ -47,23 +57,22 @@ const ShowResults = (props) => {
   maxNomineePerpost();
   return (
     <>
-      <Box p="5">
+      <Box mt="3">
         <Box mb="2">
           <Center>
             <Text
-              fontSize={{ base: "20px", md: "25px", lg: "35px" }}
+              fontSize={{ base: "20px", md: "25px", lg: "25px" }}
               fontFamily="cursive"
               fontWeight="700"
             >
-              Election Results
+              Results
             </Text>
           </Center>
         </Box>
 
-      <Box>
-        <Center>
-            <TableContainer w={{ md: "90%" }} mt="3" display={{ lg: "flex" }}>
-            
+        <Box>
+          <Center>
+            <TableContainer w={{ md: "100%" }} mt="3" display={{ lg: "flex" }}>
               <Table variant="striped" colorScheme="gray" size="sm" width="70%">
                 <Thead>
                   <Tr>
@@ -99,28 +108,25 @@ const ShowResults = (props) => {
                   })}
                 </Tbody>
               </Table>
-              
             </TableContainer>
-            </Center>
+          </Center>
+          {!electionStatus && (
             <Box>
               <Center>
-              <Button
-              mt="4"
-              fontSize="20px"
-              fontFamily="cursive"
-              fontWeight="600"
-              _hover={{ transform: "scale(1.15)", cursor: "pointer" }}
-              onClick={() => window.print()}
-            >
-              Download PDF
-            </Button>
+                <Button
+                  mt="4"
+                  fontSize="20px"
+                  fontFamily="cursive"
+                  fontWeight="600"
+                  _hover={{ transform: "scale(1.15)", cursor: "pointer" }}
+                  onClick={() => window.print()}
+                >
+                  Download PDF
+                </Button>
               </Center>
-           
             </Box>
-            
-          
-            </Box>
-         
+          )}
+        </Box>
       </Box>
     </>
   );

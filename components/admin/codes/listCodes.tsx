@@ -14,25 +14,19 @@ import {
 } from "@chakra-ui/react";
 import Code from "../../../models/election/Codes";
 
-const CodeList = (props) => {
+interface Props {
+  codes: Code[];
+  user: string;
+}
+
+const CodeList : React.FC<Props> = ({codes, user}) => {
   return (
     <>
-      <Box p="5">
-        <Box mb="2">
-          <Center>
-            <Text
-              fontSize={{ base: "20px", md: "25px", lg: "35px" }}
-              fontFamily="cursive"
-              fontWeight="700"
-            >
-              Election Codes
-            </Text>
-          </Center>
-        </Box>
+      <Box>
+        
+     
 
-        <Box>
-          <Center>
-            <TableContainer w={{ md: "50%" }} mt="3">
+            <TableContainer w={{ md: "100%" }} mt="3" >
               <Table variant="striped" colorScheme="gray" size="sm">
                 <Thead>
                   <Tr>
@@ -41,34 +35,31 @@ const CodeList = (props) => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {props.codes.map((ele: Code) => {
+                  {codes.map((ele: Code) => {
                     return (
-                      <Tr key={props.codes.indexOf(ele)} p="4">
-                        <Td>{props.codes.indexOf(ele) + 1}</Td>
+                      <Tr key={codes.indexOf(ele)} p="4">
+                        <Td>{codes.indexOf(ele) + 1}</Td>
                         <Td fontSize="20px">{ele.codes}</Td>
                       </Tr>
                     );
                   })}
                 </Tbody>
-                <Tfoot>
-                  <Center>
+                <Tfoot display="flex" w="100%" pb="3">
+                 
                     <Button
                       mt="4"
                       fontSize="20px"
                       fontFamily="cursive"
                       fontWeight="600"
-                      _hover={{ transform: "scale(1.15)", cursor: "pointer" }}
+                      _hover={{ transform: "scale(1.05)", cursor: "pointer" }}
                       onClick={() => window.print()}
                     >
                       Download PDF
                     </Button>
-                  </Center>
                 </Tfoot>
               </Table>
             </TableContainer>
-          </Center>
         </Box>
-      </Box>
     </>
   );
 };

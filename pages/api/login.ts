@@ -29,7 +29,7 @@ export default async function handler(
     });
   } else {
     const token = jwt.sign({ user_id: user.id, email }, process.env.TOKEN_KEY, {
-      expiresIn: "2h",
+      expiresIn: "4h",
     });
     return res.status(200).send({ token: token, user: user });
   }
