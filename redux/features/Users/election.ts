@@ -8,10 +8,13 @@ import ElectionService from "../../../Utils/axios/apis/election";
 import { ErrorHandler } from "../../../Utils/Error";
 import { ErrorTypes } from "../../../models/auth/stateModel";
 import { UpdateNomineeData } from "../../../models/election/Nominee";
+import { CreateCodesData } from "../../../models/election/Codes";
 
 const initialState: ElectionState = {
   positions: [],
-  nominees : []
+  nominees: [],
+  codes : [],
+  electionStatus : false
 };
 
 export const addPosition = (data: Position) => async () => {
@@ -68,11 +71,13 @@ export const DeletePosition = (data: string) => async () => {
   try {
     const res = await ElectionService.DeletePosition(data);
     dispatch(GetPositions(res.data.user));
-    dispatch(createResponse({
-      type: ErrorTypes.Success,
-      title: "Success",
-      message: "Position was deleted successfully",
-    }));
+    dispatch(
+      createResponse({
+        type: ErrorTypes.Success,
+        title: "Success",
+        message: "Position was deleted successfully",
+      })
+    );
   } catch (err) {
     dispatch(createResponse(ErrorHandler(err)));
     dispatch(setLoading(false));
@@ -114,11 +119,13 @@ export const DeleteNominee = (data: string) => async () => {
   try {
     const res = await ElectionService.DeleteNominee(data);
     dispatch(GetNominees(res.data.user));
-    dispatch(createResponse({
-      type: ErrorTypes.Success,
-      title: "Success",
-      message: "Nominee was deleted successfully",
-    }));
+    dispatch(
+      createResponse({
+        type: ErrorTypes.Success,
+        title: "Success",
+        message: "Nominee was deleted successfully",
+      })
+    );
   } catch (err) {
     dispatch(createResponse(ErrorHandler(err)));
     dispatch(setLoading(false));
@@ -130,11 +137,92 @@ export const ClearAllNominees = (data: string) => async () => {
   try {
     await ElectionService.ClearAllNominees(data);
     dispatch(GetNominees(data));
-    dispatch(createResponse({
-      type: ErrorTypes.Success,
-      title: "Success",
-      message: "Nominees deleted successfully",
-    }));
+    dispatch(
+      createResponse({
+        type: ErrorTypes.Success,
+        title: "Success",
+        message: "Nominees deleted successfully",
+      })
+    );
+  } catch (err) {
+    dispatch(createResponse(ErrorHandler(err)));
+    dispatch(setLoading(false));
+  }
+};
+
+export const GenerateCodes = (data: CreateCodesData) => async () => {
+  dispatch(setLoading(true));
+  try {
+    await ElectionService.GenerateCodes(data);
+    dispatch(GetCodes({user: data.user}));
+    dispatch(
+      createResponse({
+        type: ErrorTypes.Success,
+        title: "Success",
+        message: "Codes generated successfully",
+      })
+    );
+  } catch (err) {
+    dispatch(createResponse(ErrorHandler(err)));
+    dispatch(setLoading(false));
+  }
+};
+
+export const GetCodes = (data: { user: string }) => async () => {
+  dispatch(setLoading(true));
+  try {
+    const res = await ElectionService.GetCodes(data);
+    dispatch(setCodes(res.data));
+    dispatch(setLoading(false));
+  } catch (err) {
+    dispatch(createResponse(ErrorHandler(err)));
+    dispatch(setLoading(false));
+  }
+};
+
+export const GetElectionStatus = (data: { user: string }) => async () => {
+  dispatch(setLoading(true));
+  try {
+    const res = await ElectionService.GetElectionState(data);
+    dispatch(setElectionStatus(res.data));
+    dispatch(setLoading(false));
+  } catch (err) {
+    dispatch(createResponse(ErrorHandler(err)));
+    dispatch(setLoading(false));
+  }
+};
+
+export const UpdateElectionStatus = (data: { user: string }) => async () => {
+  dispatch(setLoading(true));
+  try {
+    const res = await ElectionService.UpdateElectionState(data);
+    dispatch(GetElectionStatus(data));
+    dispatch(setLoading(false));
+    dispatch(
+      createResponse({
+        type: ErrorTypes.Success,
+        title: "Success",
+        message: `Election Link has been ${res.data ? "enabled" : "disabled"} `,
+      })
+    );
+  } catch (err) {
+    dispatch(createResponse(ErrorHandler(err)));
+    dispatch(setLoading(false));
+  }
+};
+
+export const ResetVotes = (data: { user: string }) => async () => {
+  dispatch(setLoading(true));
+  try {
+    const res = await ElectionService.ResetVotes(data);
+    dispatch(setLoading(false));
+    dispatch(
+      createResponse({
+        type: ErrorTypes.Success,
+        title: "Success",
+        message: `Votes has been reset`,
+      })
+    );
   } catch (err) {
     dispatch(createResponse(ErrorHandler(err)));
     dispatch(setLoading(false));
@@ -150,7 +238,14 @@ const ElectSlice = createSlice({
     },
     setNominees: (state, action) => {
       state.nominees = action.payload;
-    }, 
+    },
+    setCodes: (state, action) => {
+      state.codes = action.payload;
+    },
+    setElectionStatus : (state, action) => {
+      state.electionStatus = action.payload;
+    },
+
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -162,7 +257,7 @@ const ElectSlice = createSlice({
   },
 });
 
-export const { setPositions, setNominees } = ElectSlice.actions;
+export const { setPositions, setNominees, setCodes, setElectionStatus } = ElectSlice.actions;
 
 export const selectElectState = (state: RootState) => state.elect;
 

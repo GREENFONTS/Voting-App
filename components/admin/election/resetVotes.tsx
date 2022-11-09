@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import {
   Flex,
   Button,
@@ -13,48 +13,31 @@ import {
   HStack,
   Center,
 } from "@chakra-ui/react";
-import AlertComponent from "../../alert";
+import { dispatch } from "../../../redux/store";
+import { ResetVotes } from "../../../redux/features/Users/election";
 
-const ResetVotes = (props) => {
-  const { onOpen, onClose } = useDisclosure();
-  const [isAlertError, setAlertError] = useState<boolean>(false);
-  const [isAlertSuccess, setAlertSuccess] = useState<boolean>(false);
-  const [response, setResponse] = useState<string>("");
+type Props = {
+  email: string;
+  isOpen: boolean;
+  setModalState: Dispatch<SetStateAction<Boolean>>;
+};
+
+const ResetVotesModal : React.FC<Props> = ({ isOpen, email, setModalState }) => {
+  const {onClose } = useDisclosure();
 
   const submitHandler = async () => {
-    const res = await fetch("/api/voting/resetVotes", {
-      method: "POST",
-      body: props.user.email,
-    });
-    if (res.status == 200) {
-      setResponse(`Election votes has been cleared`);
-      props.isClose(false);
-      setAlertSuccess(true);
-    } else {
-      setResponse("Reset Votes request failed");
-      props.refreshDrawer(true);
-      props.isClose(false);
-      setAlertError(true);
-    }
+    dispatch(ResetVotes({user : email}));
   };
 
   return (
     <>
-      <AlertComponent
-        isAlertError={isAlertError}
-        isAlertSuccess={isAlertSuccess}
-        setAlertError={setAlertError}
-        setAlertSuccess={setAlertSuccess}
-        response={response}
-      />
-
       <Flex p="5">
-        <Modal isOpen={props.isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose}>
           <ModalContent>
             <ModalHeader>
               <Center>Reset votes</Center>
             </ModalHeader>
-            <ModalCloseButton onClick={(e) => props.isClose(false)} />
+            <ModalCloseButton onClick={(e) => setModalState(false)} />
             <ModalBody>
               <Text fontSize="15px" fontFamily="cursive" fontWeight="600">
                 This will clear the election votes
@@ -64,8 +47,8 @@ const ResetVotes = (props) => {
                 Do you want to reset the elections?
               </Text>
               <HStack mt="3">
-                <Button onClick={(e) => submitHandler()}>Yes</Button>
-                <Button onClick={(e) => props.isClose(false)}>No</Button>
+                <Button onClick={() => submitHandler()}>Yes</Button>
+                <Button onClick={() => setModalState(false)}>No</Button>
               </HStack>
             </ModalBody>
 
@@ -74,7 +57,7 @@ const ResetVotes = (props) => {
                 bg="#e8e8e8"
                 mr={3}
                 onClick={() => {
-                  props.isClose(false);
+                  setModalState(false);
                 }}
               >
                 Close
@@ -87,4 +70,4 @@ const ResetVotes = (props) => {
   );
 };
 
-export default ResetVotes;
+export default ResetVotesModal;

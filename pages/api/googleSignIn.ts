@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       { user_id: user.id, email },
       process.env.TOKEN_KEY,
       {
-        expiresIn: "2h"
+        expiresIn: "4h"
       }
     )
     return res.status(200).send({user, token})

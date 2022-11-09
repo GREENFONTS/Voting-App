@@ -2,12 +2,12 @@ import { prisma } from "../../../services/Prisma";
 import { NextApiResponse, NextApiRequest } from "next";
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
-    let email : string = req.body
-    console.log(email)
+    let {user} = JSON.parse(req.body)
+    console.log(user)
     try{
         await prisma.nominee.updateMany({
             where: {
-                user: email
+                user: user
             },
             data:{
                 votes: 0

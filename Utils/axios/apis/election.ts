@@ -1,4 +1,5 @@
 import { AxiosInstance } from "axios";
+import { CreateCodesData } from "../../../models/election/Codes";
 import { UpdateNomineeData } from "../../../models/election/Nominee";
 import Position from "../../../models/election/positions";
 
@@ -37,6 +38,26 @@ class Election  {
 
   async ClearAllNominees(data: string) {
     return this.request.get(`/admin/nominees/deleteAll?user=${data}`);
+  }
+
+  async GenerateCodes(data: CreateCodesData) {
+    return this.request.post(`/admin/codes/generate`, data);
+  }
+
+  async GetCodes(data: {user: string}) {
+    return this.request.post(`/admin/codes/find`, data);
+  }
+
+  async GetElectionState(data: {user: string}) {
+    return this.request.post(`/voting/state`, data);
+  }
+
+  async UpdateElectionState(data: {user: string}) {
+    return this.request.post(`/voting/updateState`, data);
+  }
+
+  async ResetVotes(data: {user: string}) {
+    return this.request.post(`/voting/resetVotes`, data);
   }
   
 }

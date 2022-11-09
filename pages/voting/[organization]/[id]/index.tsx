@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { withRouter } from "next/router";
-import { useCounter } from "../../../../services/state";
+import router from "next/router";
 import {
   Box,
   Text,
@@ -16,9 +15,19 @@ import {
   AlertIcon,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/react";
+import { dispatch } from "../../../../redux/store";
+import { setPositions, VerifyCode } from "../../../../redux/features/Users/voting";
+import {
+  GetVotingData,
+  selectVoteState,
+} from "../../../../redux/features/Users/voting";
+import { useSelector } from "react-redux";
+import { ErrorTypes } from "../../../../models/auth/stateModel";
+import { createResponse } from "../../../../redux/features/Users/auth";
 
-const Voting = ({ router }) => {
-  const [state, actions] = useCounter();
+const Voting = () => {
+  const { electionStatus, nominees, positions, user, token } =
+    useSelector(selectVoteState);
   const [isLargerThan900] = useMediaQuery("(min-width: 800px)");
   const [isLesserThan900] = useMediaQuery("(max-width: 800px)");
   const bgColor = useColorModeValue("themeLight.bg", "themeDark.bgBody");
@@ -28,40 +37,15 @@ const Voting = ({ router }) => {
   const [organization, setOrganization] = useState<string>("");
   const [id, setId] = useState<string>("");
 
-  const GetData = async (userId : string) => {
-    let positions : string[] = [];
-    const res = await fetch(`/api/voting?id=${userId}`);
-    const data = await res.json();
-    let email = data.user;
-
-    const electionRes = await fetch("/api/voting/state", {
-      method: "POST",
-      body: email,
-    });
-    const electionState = await electionRes.json();
-    actions.electionState(electionState.state);
-
-    if (res.status == 404) {
-      router.push("/404.js");
-    }
-    if (res.status == 200) {
-      localStorage.setItem("admin", email);
-
-      const nomineesRes = await fetch("/api/admin/nominees/find", {
-        method: "POST",
-        body: email,
+  useEffect(() => {
+    let positions = [];
+    if (nominees.length !== 0) {
+      nominees.forEach((ele) => {
+        positions.push(ele.post);
       });
-      const nomineesData = await nomineesRes.json();
-
-      nomineesData.forEach((e) => {
-        positions.push(e.post);
-      });
-
-      positions = [...new Set(positions)];
-      actions.getPositions(positions);
-      localStorage.setItem("nominees", JSON.stringify(nomineesData));
+      dispatch(setPositions(positions));
     }
-  };
+  }, [nominees]);
 
   useEffect(() => {
     const queryValue = window.location.pathname.split("/").slice(2);
@@ -69,7 +53,7 @@ const Voting = ({ router }) => {
     setId(queryValue[1]);
     setOrganization(queryValue[0]);
 
-    GetData(userId);
+    dispatch(GetVotingData(userId));
   }, []);
 
   //code validation
@@ -81,32 +65,32 @@ const Voting = ({ router }) => {
 
   //to voting route
   const submitHandler = async () => {
-    let positions = [];
-    state.positions.forEach((ele) => {
-      positions.push(ele);
-    });
-
-    if (state.electionState == false) {
-      setAlertMessage("Voting has ended");
+    if (electionStatus === false) {
+      dispatch(
+        createResponse({
+          type: ErrorTypes.Error,
+          title: "Error",
+          message: `Voting has ended`,
+        })
+      );
       setCode("");
       setIsRequired(true);
     } else {
-      let email = localStorage.getItem("admin");
-      const res = await fetch(`/api/voting/code/?code=${code}&user=${email}`);
-      const data = await res.json();
-
-      if (res.status == 404) {
-        setAlertMessage(data.msg);
-        setCode("");
-      }
-      if (res.status == 200) {
-        localStorage.setItem("codeToken", data.token);
-        router.push(`/voting/${organization}/${id}/${positions[0]}`);
-        positions.shift();
-        actions.getPositions(positions);
-      }
+      dispatch(VerifyCode(code, user))
     }
   };
+
+  useEffect(() => {
+    if(token !== null){
+      localStorage.setItem('token', token)
+      if (positions.length >= 1) {
+        router.push(`/voting/${organization}/${id}/${positions[0]}`);
+      }
+      let updatedPositions = [...positions].filter(ele => ele !== positions[0]);
+      dispatch(setPositions(updatedPositions));
+    }
+    
+  }, [token])
 
   return (
     <>
@@ -165,22 +149,6 @@ const Voting = ({ router }) => {
                         right="8px"
                         top="8px"
                         onClick={(e) => setAlertMessage(null)}
-                      />
-                    </Alert>
-                  ) : (
-                    <></>
-                  )}
-
-                  {state.votingEnd ? (
-                    <Alert status="success">
-                      {" "}
-                      <AlertIcon />
-                      Thanks for Voting
-                      <CloseButton
-                        position="absolute"
-                        right="8px"
-                        top="8px"
-                        onClick={(e) => actions.votingEnd(false)}
                       />
                     </Alert>
                   ) : (
@@ -251,22 +219,6 @@ const Voting = ({ router }) => {
                   <></>
                 )}
 
-                {state.votingEnd ? (
-                  <Alert status="success">
-                    {" "}
-                    <AlertIcon />
-                    Thanks for Voting
-                    <CloseButton
-                      position="absolute"
-                      right="8px"
-                      top="8px"
-                      onClick={(e) => actions.votingEnd(false)}
-                    />
-                  </Alert>
-                ) : (
-                  <></>
-                )}
-
                 <FormControl isRequired>
                   <FormLabel htmlFor="code">Enter code to Vote: </FormLabel>
                   <Input
@@ -296,4 +248,4 @@ const Voting = ({ router }) => {
   );
 };
 
-export default withRouter(Voting);
+export default Voting;

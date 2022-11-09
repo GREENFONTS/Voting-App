@@ -1,19 +1,20 @@
 import { prisma } from "../../../services/Prisma";
-import Nominee from "../../../models/election/Nominee";
+import {  NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req, res) {
-    let nominee : Nominee = JSON.parse(req.query.nominee)
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    let id = req.query.id as string
+    let votes = req.query.votes as string
     try{
-        await prisma.nominee.update({
+        let nominee = await prisma.nominee.update({
             where: {
-                id: nominee.id
+                id: id
             },
             data:{
-                votes: nominee.votes + 1
+                votes: parseInt(votes) + 1
             }
         })
         await prisma.$disconnect()
-        res.status(200).send({nominee})
+        res.status(201).send(nominee)
     }
     catch(err){
         console.log(err)
