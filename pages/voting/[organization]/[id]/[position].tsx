@@ -41,6 +41,7 @@ const Posts = () => {
       (ele: Nominee) => ele.post === queryValue[2].split("%20").join(" ")
     );
     dispatch(setFilteredNominees(nomineesData));
+
     if (token === null) {
 
       router.push(`/voting/${queryValue[0]}/${queryValue[1]}`);

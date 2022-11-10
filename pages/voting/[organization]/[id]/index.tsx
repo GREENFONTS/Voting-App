@@ -10,7 +10,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Flex
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/react";
 import { dispatch } from "../../../../redux/store";
@@ -101,8 +100,8 @@ const Voting = () => {
         h="100vh"
         bgGradient="linear(to-r, gray.200, white, gray.200)"
       >
-        {/* {isLargerThan900 && ( */}
-          <Flex h="90vh" w="100%">
+        {isLargerThan900 && (
+          <Center h="90vh" w="100%">
             <Box
               height={{ base: "230px", md: "300px", lg: "80vh" }}
               w="95%"
@@ -168,9 +167,9 @@ const Voting = () => {
                 </Box>
               </Box>
             </Box>
-            </Flex>
-        {/* )} */}
-        {/* {isLesserThan900 && (
+          </Center>
+        )}
+        {isLesserThan900 && (
           <Center h="100vh" w="100%">
             <Box height="100vh" w="95%" bg={bgColor} alignSelf="center">
               <Center mb="3" p="3">
@@ -212,7 +211,7 @@ const Voting = () => {
               </Box>
             </Box>
           </Center>
-        )} */}
+        )}
       </Box>
     </>
   );
