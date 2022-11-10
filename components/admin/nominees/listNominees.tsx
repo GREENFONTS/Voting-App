@@ -71,7 +71,7 @@ const NomineesList: React.FC<Props> = ({ nominees, positions, user }) => {
 
   return (
     <>
-      <Box p="5">
+      <Box>
         <Flex display={{ base: "block" }}>
           {nominees.map((ele: Nominee) => {
             return (
@@ -81,8 +81,8 @@ const NomineesList: React.FC<Props> = ({ nominees, positions, user }) => {
                 display={{ md: "inline-block" }}
                 p="1"
                 w={{ base: "100%", md: "47%", lg: "32%" }}
-                mr={{ lg: "3" }}
-                h={{ base: "45vh", md: "30vh", lg: "40vh" }}
+                mr={{ md: "4" }}
+                h={{ base: "45vh", md: "33vh", lg: "40vh" }}
                 border="1px"
                 borderColor="gray.200"
                 boxShadow="base"

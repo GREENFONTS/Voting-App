@@ -200,28 +200,45 @@ const DrawerComponent = ({ user }) => {
 
             <DrawerBody pt="5" pb="0">
               <Box animation="bounceFromBottom 0.7s">
-                <Link passHref href="/admin/position/">
-                  <Text
-                    onClick={() => dispatch(setDrawerState(false))}
-                    _hover={{
-                      transform: "scale(1.02)",
-                      cursor: "pointer",
-                    }}
-                    fontWeight="700"
-                    fontSize={{ base: "15px", md: "18px", lg: "20px" }}
-                    color="gray.500"
-                  >
-                    Positions
-                  </Text>
-                </Link>
+                <Flex
+                  onClick={() => dispatch(setDrawerState(false))}
+                  justifyContent="center"
+                  _hover={{
+                    transform: "scale(1.05)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Link passHref href="/admin/position/">
+                    <Text
+                      p="3"
+                      _hover={{
+                        borderBottom: "2px solid #0f0d8d",
+                        borderRadius: "12px",
+                      }}
+                      fontWeight="700"
+                      fontSize={{ base: "15px", md: "18px", lg: "20px" }}
+                      color="gray.500"
+                    >
+                      Positions
+                    </Text>
+                  </Link>
+                </Flex>
 
-                <Link passHref href="/admin/nominee">
+                <Flex
+                  onClick={() => dispatch(setDrawerState(false))}
+                  justifyContent="center"
+                  _hover={{
+                    transform: "scale(1.05)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Link passHref href="/admin/nominee">
                   <Text
-                    onClick={() => dispatch(setDrawerState(false))}
-                    _hover={{
-                      transform: "scale(1.02)",
-                      cursor: "pointer",
-                    }}
+                     p="3"
+                     _hover={{
+                       borderBottom: "2px solid #0f0d8d",
+                       borderRadius: "12px",
+                     }}
                     fontWeight="700"
                     fontSize={{ base: "15px", md: "18px", lg: "20px" }}
                     color="gray.500"
@@ -229,14 +246,25 @@ const DrawerComponent = ({ user }) => {
                     Nominees
                   </Text>
                 </Link>
+                </Flex>
+
+                <Flex
+                  onClick={() => dispatch(setDrawerState(false))}
+                  justifyContent="center"
+                  _hover={{
+                    transform: "scale(1.05)",
+                    cursor: "pointer",
+                  }}
+                >
+                
 
                 <Link passHref href="/admin/codes">
                   <Text
-                    onClick={() => dispatch(setDrawerState(false))}
-                    _hover={{
-                      transform: "scale(1.02)",
-                      cursor: "pointer",
-                    }}
+                     p="3"
+                     _hover={{
+                       borderBottom: "2px solid #0f0d8d",
+                       borderRadius: "12px",
+                     }}
                     fontWeight="700"
                     fontSize={{ base: "15px", md: "18px", lg: "20px" }}
                     color="gray.500"
@@ -244,13 +272,22 @@ const DrawerComponent = ({ user }) => {
                     Codes
                   </Text>
                 </Link>
+                </Flex>
 
-                <Link passHref href="/admin/election">
+                <Flex
+                  onClick={() => dispatch(setDrawerState(false))}
+                  justifyContent="center"
+                  _hover={{
+                    transform: "scale(1.05)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <Link passHref href="/admin/election">
                   <Text
-                    onClick={() => dispatch(setDrawerState(false))}
+                    p="3"
                     _hover={{
-                      transform: "scale(1.02)",
-                      cursor: "pointer",
+                      borderBottom: "2px solid #0f0d8d",
+                      borderRadius: "12px",
                     }}
                     fontWeight="700"
                     fontSize={{ base: "15px", md: "18px", lg: "20px" }}
@@ -259,6 +296,9 @@ const DrawerComponent = ({ user }) => {
                     Election
                   </Text>
                 </Link>
+                </Flex>
+
+                
               </Box>
             </DrawerBody>
           </>

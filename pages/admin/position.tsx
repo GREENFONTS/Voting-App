@@ -22,7 +22,7 @@ const PositionPage = () => {
   }, []);
 
   return (
-    <Box padding="20px" width="50%" margin="auto">
+    <Box padding="20px" width={{base:"95%", md: "75%", lg:"50%"}} margin="auto">
       <Flex alignItems="center" justifyContent="center" mb="5">
         <Text textAlign="center" fontSize="30px">
           Election Positions

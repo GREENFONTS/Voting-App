@@ -44,7 +44,7 @@ const GenerateLink = ({ user }) => {
                 p="3"
                 _hover={{ transform: "scale(1.15)", cursor: "pointer" }}
               >
-                {user ? <Link passHref href={link} target="_blank"><Text>Voting Link : {link}</Text></Link> : <></>}
+                {user ? <Link passHref href={link} target="_blank"><Text fontSize={{base:"12px", md:"15px"}} fontWeight="500">Voting Link : {link}</Text></Link> : <></>}
               </Box>
               <Box boxShadow="base" borderRadius="2" p="2">
                 {!copy ? (
