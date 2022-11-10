@@ -75,7 +75,7 @@ const ShowResults: React.FC<Props> = ({
             <TableContainer w={{ md: "100%" }} mt="3" display={{ lg: "flex" }}>
               <Table variant="striped" colorScheme="gray" size="sm" width="70%">
                 <Thead>
-                  <Tr>
+                  <Tr >
                     <Th fontSize="17px">Post</Th>
                     {list.map((ele) => {
                       return (

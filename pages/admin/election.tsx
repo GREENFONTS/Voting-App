@@ -27,7 +27,7 @@ const ElectionPage = () => {
   }, [user]);
 
   return (
-    <Box padding="20px" width="80%" margin="auto">
+    <Box padding="20px" width={{base:"95%", md: "90%", lg:"80%"}} margin="auto">
       <Flex alignItems="center" justifyContent="center" mb="5">
         <Text textAlign="center" fontSize="30px">
           Election DashBoard
