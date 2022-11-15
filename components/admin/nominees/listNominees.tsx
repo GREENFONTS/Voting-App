@@ -21,6 +21,7 @@ import {
   VStack,
   HStack,
   Select,
+  Grid
 } from "@chakra-ui/react";
 import { MdArrowDropDown } from "react-icons/md";
 import Nominee, { UpdateNomineeData } from "../../../models/election/Nominee";
@@ -73,15 +74,20 @@ const NomineesList: React.FC<Props> = ({ nominees, positions, user }) => {
     <>
       <Box>
         <Flex display={{ base: "block" }}>
+        <Grid
+          templateColumns={{
+            base: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(4, 1fr)',
+          }}
+          gap={{  base: '8px', lg: '20px', xl: '24px' }}
+        >
           {nominees.map((ele: Nominee) => {
             return (
               <Box
                 key={nominees.indexOf(ele)}
                 mb="2"
-                display={{ md: "inline-block" }}
                 p="1"
-                w={{ base: "100%", md: "47%", lg: "32%" }}
-                mr={{ md: "4" }}
                 h={{ base: "45vh", md: "33vh", lg: "40vh" }}
                 border="1px"
                 borderColor="gray.200"
@@ -128,6 +134,8 @@ const NomineesList: React.FC<Props> = ({ nominees, positions, user }) => {
               </Box>
             );
           })}
+        </Grid>
+          
         </Flex>
       </Box>
 
