@@ -8,6 +8,7 @@ import {
   Image,
   Button,
   Center,
+  Grid
 } from "@chakra-ui/react";
 import Nominee from "../../../../models/election/Nominee";
 import { useSelector } from "react-redux";
@@ -93,17 +94,23 @@ const Posts = () => {
             {post}
           </Text>
         </Center>
-        <Flex display={{ base: "block" }} mt="5" p="4">
+        <Grid
+          templateColumns={{
+            base: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(4, 1fr)',
+          }}
+          gap={{  base: '8px', lg: '20px', xl: '24px' }}
+          w="90%"
+          m="30px auto"
+        >
           {filteredNominees.length > 0 ? (
             filteredNominees.map((ele) => {
               return (
                 <Box
                   mb="2"
-                  display={{ md: "inline-block" }}
                   key={ele.id}
                   p="2"
-                  w={{ base: "100%", md: "47%", lg: "32%" }}
-                  mr={{ lg: "3" }}
                   h={{ base: "40vh", md: "35vh", lg: "40vh" }}
                   borderLeft="1px"
                   borderBottom="1px"
@@ -136,7 +143,7 @@ const Posts = () => {
           ) : (
             <></>
           )}
-        </Flex>
+        </Grid>
       </Box>
     </>
   );
