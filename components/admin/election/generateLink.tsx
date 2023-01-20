@@ -1,12 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import {
-  Flex,
-  Icon,
-  Box,
-  Center,
-  Text
-} from "@chakra-ui/react";
+import { Flex, Icon, Box, Center, Text } from "@chakra-ui/react";
 import { MdFileCopy } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 
@@ -15,7 +9,7 @@ const GenerateLink = ({ user }) => {
   if (process.env.NODE_ENV == "development") {
     url = "http://localhost:3000/voting";
   } else {
-    url = "https://vote-fast.herokuapp.com/voting";
+    url = "https://voting-app-virid.vercel.app/voting";
   }
   const [copy, setCopy] = useState<boolean>(false);
   let link = null;
@@ -33,7 +27,7 @@ const GenerateLink = ({ user }) => {
 
   return (
     <>
-      <Flex >
+      <Flex>
         <Center>
           <Box>
             <Flex>
@@ -44,7 +38,13 @@ const GenerateLink = ({ user }) => {
                 p="3"
                 _hover={{ transform: "scale(1.15)", cursor: "pointer" }}
               >
-                {user ? <Link passHref href={link} target="_blank"><Text>Voting Link : {link}</Text></Link> : <></>}
+                {user ? (
+                  <Link passHref href={link} target="_blank">
+                    <Text>Voting Link : {link}</Text>
+                  </Link>
+                ) : (
+                  <></>
+                )}
               </Box>
               <Box boxShadow="base" borderRadius="2" p="2">
                 {!copy ? (
