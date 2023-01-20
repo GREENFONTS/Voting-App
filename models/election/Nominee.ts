@@ -10,7 +10,7 @@ type Nominee = {
 
 export type UpdateNomineeData = {
   name: string;
-  position: string;
+  post: string;
   user: string;
   id: string
 }
