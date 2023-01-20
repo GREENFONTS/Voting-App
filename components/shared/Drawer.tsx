@@ -11,31 +11,24 @@ import {
   Box,
   LinkBox,
   HStack,
-  Accordion,
   useDisclosure,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
   Icon,
   Button,
   Flex,
   Image,
   useColorModeValue,
 } from "@chakra-ui/react";
+import router from "next/router";
 import { VscGithub } from "react-icons/vsc";
-import { FaInstagram, FaEdit, FaList, FaDoorClosed } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
 import { BsLinkedin, BsTwitter } from "react-icons/bs";
-import { BiReset } from "react-icons/bi";
 import { FaVoteYea } from "react-icons/fa";
-import { AiOutlineClear } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import {
   selectUtilState,
   setDrawerState,
 } from "../../redux/features/Utils/utils";
 import { dispatch } from "../../redux/store";
-import { useCounter } from "../../services/state";
 
 const DrawerComponent = ({ user }) => {
   const { drawerState } = useSelector(selectUtilState);
@@ -47,7 +40,6 @@ const DrawerComponent = ({ user }) => {
   const bgTwitter = useColorModeValue("#1DA1F2", "white");
   const iconColor = useColorModeValue("themeLight.icon", "themeLight.icon");
   const { onClose } = useDisclosure();
-  const [state, actions] = useCounter();
 
   return (
     <Drawer
@@ -63,31 +55,28 @@ const DrawerComponent = ({ user }) => {
             <DrawerHeader>
               <Flex w="100%" align="center" justify="space-between">
                 <Box alignItems="center">
-                  <LinkBox>
-                    <HStack _hover={{ cursor: "pointer" }}>
-                      <Link href="/" passHref>
-                        <Icon
-                          _focus={{ outline: "none" }}
-                          as={FaVoteYea}
-                          w={{ base: "25px", md: "30px", lg: "40px" }}
-                          h={{ base: "18px", md: "20px", lg: "35px" }}
-                          color={iconColor}
-                          _hover={{
-                            transform: "scale(1.15)",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </Link>
-                      <Text
-                        fontWeight="bold"
-                        fontSize={{ base: "20px", md: "25px", lg: "30px" }}
-                        fontFamily="cursive"
-                        color={textColor}
-                      >
-                        easy-vote
-                      </Text>
-                    </HStack>
-                  </LinkBox>
+                  <HStack _hover={{ cursor: "pointer" }}>
+                    <Icon
+                      _focus={{ outline: "none" }}
+                      as={FaVoteYea}
+                      w={{ base: "25px", md: "30px", lg: "40px" }}
+                      h={{ base: "18px", md: "20px", lg: "35px" }}
+                      color={iconColor}
+                      _hover={{
+                        transform: "scale(1.15)",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => router.push("/")}
+                    />
+                    <Text
+                      fontWeight="bold"
+                      fontSize={{ base: "20px", md: "25px", lg: "30px" }}
+                      fontFamily="cursive"
+                      color={textColor}
+                    >
+                      easy-vote
+                    </Text>
+                  </HStack>
                 </Box>
                 <Button
                   h={10}
@@ -109,14 +98,9 @@ const DrawerComponent = ({ user }) => {
                     _hover={{ transform: "scale(1.2)", cursor: "pointer" }}
                     fontSize="17px"
                     fontWeight="400"
+                    onClick={() => dispatch(setDrawerState(false))}
                   >
-                    <Link
-                      onClick={() => dispatch(setDrawerState(false))}
-                      href="/"
-                    >
-                      {" "}
-                      Home
-                    </Link>
+                    <Link href="/">Home</Link>
                   </Button>
                 </Box>
 
@@ -126,14 +110,9 @@ const DrawerComponent = ({ user }) => {
                     _hover={{ transform: "scale(1.2)", cursor: "pointer" }}
                     fontSize="17px"
                     fontWeight="400"
+                    onClick={() => dispatch(setDrawerState(false))}
                   >
-                    <Link
-                      onClick={() => dispatch(setDrawerState(false))}
-                      href="/register"
-                    >
-                      {" "}
-                      Sign Up
-                    </Link>
+                    <Link href="/register">Sign Up</Link>
                   </Button>
                 </Box>
                 <Box>
@@ -142,14 +121,9 @@ const DrawerComponent = ({ user }) => {
                     _hover={{ transform: "scale(1.2)", cursor: "pointer" }}
                     fontSize="17px"
                     fontWeight="400"
+                    onClick={() => dispatch(setDrawerState(false))}
                   >
-                    <Link
-                      onClick={() => dispatch(setDrawerState(false))}
-                      href="/login"
-                    >
-                      {" "}
-                      Sign In
-                    </Link>
+                    <Link href="/login">Sign In</Link>
                   </Button>
                 </Box>
               </Box>
@@ -162,19 +136,18 @@ const DrawerComponent = ({ user }) => {
                 <Box alignItems="center">
                   <LinkBox>
                     <HStack _hover={{ cursor: "pointer" }}>
-                      <Link href="/" passHref>
-                        <Icon
-                          _focus={{ outline: "none" }}
-                          as={FaVoteYea}
-                          w={{ base: "18px", md: "20px", lg: "35px" }}
-                          h={{ base: "18px", md: "20px", lg: "35px" }}
-                          color={iconColor}
-                          _hover={{
-                            transform: "scale(1.15)",
-                            cursor: "pointer",
-                          }}
-                        />
-                      </Link>
+                      <Icon
+                        _focus={{ outline: "none" }}
+                        as={FaVoteYea}
+                        w={{ base: "18px", md: "20px", lg: "35px" }}
+                        h={{ base: "18px", md: "20px", lg: "35px" }}
+                        color={iconColor}
+                        _hover={{
+                          transform: "scale(1.15)",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => router.push("/")}
+                      />
                       <Text
                         fontWeight="bold"
                         fontSize={{ base: "14px", md: "16px", lg: "20px" }}
@@ -200,65 +173,101 @@ const DrawerComponent = ({ user }) => {
 
             <DrawerBody pt="5" pb="0">
               <Box animation="bounceFromBottom 0.7s">
-                <Link passHref href="/admin/position/">
+                <Flex
+                  onClick={() => dispatch(setDrawerState(false))}
+                  justifyContent="center"
+                  _hover={{
+                    transform: "scale(1.05)",
+                    cursor: "pointer",
+                  }}
+                >
                   <Text
-                    onClick={() => dispatch(setDrawerState(false))}
+                    p="3"
                     _hover={{
-                      transform: "scale(1.02)",
-                      cursor: "pointer",
+                      borderBottom: "2px solid #0f0d8d",
+                      borderRadius: "12px",
                     }}
                     fontWeight="700"
                     fontSize={{ base: "15px", md: "18px", lg: "20px" }}
                     color="gray.500"
                   >
-                    Positions
+                    <Link passHref href="/admin/position/">
+                      Positions
+                    </Link>
                   </Text>
-                </Link>
+                </Flex>
 
-                <Link passHref href="/admin/nominee">
+                <Flex
+                  onClick={() => dispatch(setDrawerState(false))}
+                  justifyContent="center"
+                  _hover={{
+                    transform: "scale(1.05)",
+                    cursor: "pointer",
+                  }}
+                >
                   <Text
-                    onClick={() => dispatch(setDrawerState(false))}
+                    p="3"
                     _hover={{
-                      transform: "scale(1.02)",
-                      cursor: "pointer",
+                      borderBottom: "2px solid #0f0d8d",
+                      borderRadius: "12px",
                     }}
                     fontWeight="700"
                     fontSize={{ base: "15px", md: "18px", lg: "20px" }}
                     color="gray.500"
                   >
-                    Nominees
+                    <Link passHref href="/admin/nominee">
+                      Nominees
+                    </Link>
                   </Text>
-                </Link>
+                </Flex>
 
-                <Link passHref href="/admin/codes">
+                <Flex
+                  onClick={() => dispatch(setDrawerState(false))}
+                  justifyContent="center"
+                  _hover={{
+                    transform: "scale(1.05)",
+                    cursor: "pointer",
+                  }}
+                >
                   <Text
-                    onClick={() => dispatch(setDrawerState(false))}
+                    p="3"
                     _hover={{
-                      transform: "scale(1.02)",
-                      cursor: "pointer",
+                      borderBottom: "2px solid #0f0d8d",
+                      borderRadius: "12px",
                     }}
                     fontWeight="700"
                     fontSize={{ base: "15px", md: "18px", lg: "20px" }}
                     color="gray.500"
                   >
-                    Codes
+                    <Link passHref href="/admin/codes">
+                      Codes
+                    </Link>
                   </Text>
-                </Link>
+                </Flex>
 
-                <Link passHref href="/admin/election">
+                <Flex
+                  onClick={() => dispatch(setDrawerState(false))}
+                  justifyContent="center"
+                  _hover={{
+                    transform: "scale(1.05)",
+                    cursor: "pointer",
+                  }}
+                >
                   <Text
-                    onClick={() => dispatch(setDrawerState(false))}
+                    p="3"
                     _hover={{
-                      transform: "scale(1.02)",
-                      cursor: "pointer",
+                      borderBottom: "2px solid #0f0d8d",
+                      borderRadius: "12px",
                     }}
                     fontWeight="700"
                     fontSize={{ base: "15px", md: "18px", lg: "20px" }}
                     color="gray.500"
                   >
-                    Election
+                    <Link passHref href="/admin/election">
+                      Election
+                    </Link>
                   </Text>
-                </Link>
+                </Flex>
               </Box>
             </DrawerBody>
           </>

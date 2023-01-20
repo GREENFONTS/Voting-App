@@ -56,7 +56,7 @@ const PositionList : React.FC<Props> = ({ positions, user }) => {
     dispatch(DeletePosition(Id))
   };
   return (
-    <Box p="5" mt="5">
+    <Box mt="5">
       {positions.map((ele: Position) => {
         return (
           <Flex p="1" borderRadius="2px" mb="2" key={ele.id}>

@@ -36,7 +36,7 @@ const Loading = ({ loading }) => {
           bg="white"
           w="100%"
           h="100vh"
-          opacity="0.9"
+          opacity="1"
         >
           <Stack justifyContent="center" h="inherit" alignItems="center">
             <Spinner size="xl" color="primary-1" />

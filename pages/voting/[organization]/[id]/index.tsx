@@ -10,13 +10,13 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Alert,
-  CloseButton,
-  AlertIcon,
 } from "@chakra-ui/react";
 import { useColorModeValue } from "@chakra-ui/react";
 import { dispatch } from "../../../../redux/store";
-import { setPositions, VerifyCode } from "../../../../redux/features/Users/voting";
+import {
+  setPositions,
+  VerifyCode,
+} from "../../../../redux/features/Users/voting";
 import {
   GetVotingData,
   selectVoteState,
@@ -76,21 +76,22 @@ const Voting = () => {
       setCode("");
       setIsRequired(true);
     } else {
-      dispatch(VerifyCode(code, user))
+      dispatch(VerifyCode(code, user));
     }
   };
 
   useEffect(() => {
-    if(token !== null){
-      localStorage.setItem('token', token)
+    if (token !== null) {
+      localStorage.setItem("token", token);
       if (positions.length >= 1) {
         router.push(`/voting/${organization}/${id}/${positions[0]}`);
       }
-      let updatedPositions = [...positions].filter(ele => ele !== positions[0]);
+      let updatedPositions = [...positions].filter(
+        (ele) => ele !== positions[0]
+      );
       dispatch(setPositions(updatedPositions));
     }
-    
-  }, [token])
+  }, [token]);
 
   return (
     <>
@@ -126,35 +127,21 @@ const Voting = () => {
               <Box
                 w={{ base: "100%", md: "5%" }}
                 h={{ base: "200px", md: "250px", lg: "60vh" }}
+                display={{ base: "none", md: "block" }}
               ></Box>
               <Box
-                w={{ base: "100%", md: "45%" }}
+                w={{ base: "100%", md: "75%", lg: "45%" }}
                 h={{ base: "200px", md: "250px", lg: "50vh" }}
                 mt={{ lg: "12" }}
               >
-                <Center>
-                  <Text fontSize={{ md: "40px", lg: "50px" }} color="black">
-                    Welcome To <br /> {organization} <br /> Elections
-                  </Text>
-                </Center>
+                <Text
+                  fontSize={{ base: "30px",  lg: "50px" }}
+                  color="black"
+                >
+                  Welcome To <br /> {organization} Elections
+                </Text>
 
                 <Box mt="5">
-                  {alertMessage !== null ? (
-                    <Alert status="error">
-                      {" "}
-                      <AlertIcon />
-                      {alertMessage}
-                      <CloseButton
-                        position="absolute"
-                        right="8px"
-                        top="8px"
-                        onClick={(e) => setAlertMessage(null)}
-                      />
-                    </Alert>
-                  ) : (
-                    <></>
-                  )}
-
                   <FormControl isRequired>
                     <FormLabel htmlFor="code" color="black">
                       Enter code to Vote:{" "}
@@ -185,10 +172,8 @@ const Voting = () => {
         {isLesserThan900 && (
           <Center h="100vh" w="100%">
             <Box height="100vh" w="95%" bg={bgColor} alignSelf="center">
-              <Center mb="3">
-                <Text fontSize="35px">
-                  Welcome To <br /> {organization} <br /> Elections
-                </Text>
+              <Center mb="3" p="3">
+                <Text>Welcome To {organization} Elections</Text>
               </Center>
 
               <Box h="35vh">
@@ -203,22 +188,6 @@ const Voting = () => {
               <Box h="2vh"></Box>
 
               <Box mt="5">
-                {alertMessage !== null ? (
-                  <Alert status="error">
-                    {" "}
-                    <AlertIcon />
-                    {alertMessage}
-                    <CloseButton
-                      position="absolute"
-                      right="8px"
-                      top="8px"
-                      onClick={(e) => setAlertMessage(null)}
-                    />
-                  </Alert>
-                ) : (
-                  <></>
-                )}
-
                 <FormControl isRequired>
                   <FormLabel htmlFor="code">Enter code to Vote: </FormLabel>
                   <Input

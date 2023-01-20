@@ -22,7 +22,7 @@ const CodesPage = () => {
   }, [user]);
 
   return (
-    <Box padding="20px" width="70%" margin="auto">
+    <Box padding="20px" width={{base:"95%", md: "85%", lg:"70%"}} margin="auto">
       <Flex alignItems="center" justifyContent="center" mb="5">
         <Text textAlign="center" fontSize="30px">
           Election Codes

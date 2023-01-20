@@ -8,6 +8,7 @@ import {
   Image,
   Button,
   Center,
+  Grid
 } from "@chakra-ui/react";
 import Nominee from "../../../../models/election/Nominee";
 import { useSelector } from "react-redux";
@@ -23,13 +24,14 @@ import { ErrorTypes } from "../../../../models/auth/stateModel";
 import { createResponse } from "../../../../redux/features/Users/auth";
 
 const Posts = () => {
-  const { nominees, positions, token, filteredNominees } =
+  const { nominees, positions, filteredNominees } =
     useSelector(selectVoteState);
   const [post, setPost] = useState<string>("");
   const [organization, setOrganization] = useState<string>("");
   const [id, setId] = useState<string>("");
 
   useEffect(() => {
+    let token = localStorage.getItem("token")
     const queryValue = window.location.pathname.split("/").slice(2);
 
     setOrganization(queryValue[0]);
@@ -42,6 +44,7 @@ const Posts = () => {
     dispatch(setFilteredNominees(nomineesData));
 
     if (token === null) {
+
       router.push(`/voting/${queryValue[0]}/${queryValue[1]}`);
     } else {
       dispatch(VerifyToken(token));
@@ -54,7 +57,6 @@ const Posts = () => {
     );
     dispatch(setFilteredNominees(nomineesData));
   }, [post]);
-  console.log(positions)
 
   const submitHandler = async (ele: Nominee) => {
     dispatch(VoteNominee(ele.id, ele.votes.toString()));
@@ -88,21 +90,27 @@ const Posts = () => {
         bgGradient="linear(to-r, gray.200, white, gray.100)"
       >
         <Center>
-          <Text fontFamily="cursive" fontSize="50px">
+          <Text fontFamily="cursive" fontSize={{ base: "25px", md: "30px", lg: "50px" }}>
             {post}
           </Text>
         </Center>
-        <Flex display={{ base: "block" }} mt="5" p="4">
+        <Grid
+          templateColumns={{
+            base: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(4, 1fr)',
+          }}
+          gap={{  base: '8px', lg: '20px', xl: '24px' }}
+          w="90%"
+          m="30px auto"
+        >
           {filteredNominees.length > 0 ? (
             filteredNominees.map((ele) => {
               return (
                 <Box
                   mb="2"
-                  display={{ md: "inline-block" }}
                   key={ele.id}
-                  p="1"
-                  w={{ base: "100%", md: "47%", lg: "32%" }}
-                  mr={{ lg: "3" }}
+                  p="2"
                   h={{ base: "40vh", md: "35vh", lg: "40vh" }}
                   borderLeft="1px"
                   borderBottom="1px"
@@ -114,7 +122,8 @@ const Posts = () => {
                       src={ele.image}
                       alt="Nominee Image"
                       objectFit="cover"
-                      boxSize={{ base: "27vh", md: "20vh", lg: "25vh" }}
+                      m="2"
+                      boxSize={{ base: "30vh", md: "20vh", lg: "25vh" }}
                     />
                     <Flex p="1" justify="space-between">
                       <VStack align="start" spacing="2">
@@ -134,7 +143,7 @@ const Posts = () => {
           ) : (
             <></>
           )}
-        </Flex>
+        </Grid>
       </Box>
     </>
   );

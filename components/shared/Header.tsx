@@ -45,7 +45,6 @@ const Header = ({ user }) => {
         px={{ base: "15px", md: "20px", lg: "25px" }}
         py={1}
         h="50px"
-        w="full"
         bg={bgColor}
         align="center"
         justify="space-between"
