@@ -5,14 +5,14 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(req.body.user);
+  const user = JSON.parse(req.body) as { user: string };
   const codes = await prisma.coupons.findMany({
     where: {
-      user: req.body.user,
+      user: user.user,
       used: false,
     },
   });
-  //console.log(codes)
+  // console.log(codes)
   await prisma.$disconnect();
   res.status(200).json(codes);
 }
