@@ -13,8 +13,8 @@ import { CreateCodesData } from "../../../models/election/Codes";
 const initialState: ElectionState = {
   positions: [],
   nominees: [],
-  codes : [],
-  electionStatus : false
+  codes: [],
+  electionStatus: false,
 };
 
 export const addPosition = (data: Position) => async () => {
@@ -154,7 +154,7 @@ export const GenerateCodes = (data: CreateCodesData) => async () => {
   dispatch(setLoading(true));
   try {
     await ElectionService.GenerateCodes(data);
-    dispatch(GetCodes({user: data.user}));
+    dispatch(GetCodes({ user: data.user }));
     dispatch(
       createResponse({
         type: ErrorTypes.Success,
@@ -202,7 +202,7 @@ export const UpdateElectionStatus = (data: { user: string }) => async () => {
       createResponse({
         type: ErrorTypes.Success,
         title: "Success",
-        message: `Election Link has been ${res.data ? "enabled" : "disabled"} `,
+        message: `Election Link has been ${!res.data ? "enabled" : "disabled"} `,
       })
     );
   } catch (err) {
@@ -242,10 +242,9 @@ const ElectSlice = createSlice({
     setCodes: (state, action) => {
       state.codes = action.payload;
     },
-    setElectionStatus : (state, action) => {
+    setElectionStatus: (state, action) => {
       state.electionStatus = action.payload;
     },
-
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -257,7 +256,8 @@ const ElectSlice = createSlice({
   },
 });
 
-export const { setPositions, setNominees, setCodes, setElectionStatus } = ElectSlice.actions;
+export const { setPositions, setNominees, setCodes, setElectionStatus } =
+  ElectSlice.actions;
 
 export const selectElectState = (state: RootState) => state.elect;
 
