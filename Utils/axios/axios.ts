@@ -15,15 +15,12 @@ const axiosInstance = axios.create({
   withCredentials: false,
 });
 
-axiosInstance.interceptors.request.use(  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${token}`,
-      };
-    }
-    return config;
+axiosInstance.interceptors.request.use((request) => {
+  
+    request.headers!["Authorization"] = `Bearer ${sessionStorage.getItem(
+      "access_token",
+    )}`;
+    return request;
   },
   (err) => Promise.reject(err),
 );
