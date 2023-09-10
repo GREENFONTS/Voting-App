@@ -11,6 +11,7 @@
     "build": "next build",
     "start": "next start -p 3000",
     "heroku-postbuild": "npm run build",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "lint": "next lint",
     "cypress": "cypress open",
     "test": "start-server-and-test start http://localhost:3000 cypress"
