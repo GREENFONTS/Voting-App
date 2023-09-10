@@ -6,10 +6,10 @@ import { setLoading, verifyToken } from "../../redux/features/Users/auth";
 
 const Loading = ({ loading }) => {
   useEffect(() => {
-    let token: string = localStorage.getItem("token")!;
+    let token: string = sessionStorage.getItem("token")!;
     const { pathname } = window.location;
     if (token === "null" || token === null || token === undefined) {
-      localStorage.clear();
+      sessionStorage.clear();
       if (pathname.includes("/admin")) {
         router.push("/login");
         dispatch(setLoading(false));

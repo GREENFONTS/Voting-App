@@ -31,7 +31,14 @@ export default async function handler(
       },
     });
 
+    let positions: Position[] = await prisma.position.findMany({
+      where: {
+        user: user.email,
+      },
+    });
+
+
     await prisma.$disconnect();
-    res.status(200).json({ user: user.email, state: state.state, nominees });
+    res.status(200).json({ user: user.email, state: state.state, nominees, positions });
   }
 }

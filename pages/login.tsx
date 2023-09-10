@@ -20,12 +20,14 @@ import { FaUserLock } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { dispatch } from "../redux/store";
 import {
+  AddUserData,
   createResponse,
   selectAuthState,
-  UserGoogleLogin,
-  UserLogin,
+  setLoading,
 } from "../redux/features/Users/auth";
 import { ErrorTypes } from "../models/auth/stateModel";
+import UserService from "../Utils/axios/apis/auth";
+import { ErrorHandler } from "../Utils/Error";
 
 const Login = () => {
   const { token } = useSelector(selectAuthState);
@@ -47,7 +49,6 @@ const Login = () => {
 
   useEffect(() => {
     if (token !== null) {
-      localStorage.setItem("token", token);
       router.push("/admin");
     }
   }, [token]);
@@ -56,18 +57,29 @@ const Login = () => {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const email: string = result.user.email;
-
-        if (email !== null) {
-          dispatch(UserGoogleLogin(email));
+        try {
+          if (email !== null) {
+            dispatch(setLoading(true));
+            const res = await UserService.GoogleLogin(email);
+            sessionStorage.setItem("token", res.data.token)
+            console.log(res.data.user)
+            sessionStorage.setItem("user", JSON.stringify(res.data.user))
+            dispatch(AddUserData(res.data));
+            dispatch(setLoading(false));
+          }
+        } catch (err: any) {
+          dispatch(setLoading(false));
+          dispatch(createResponse(ErrorHandler(err)));
         }
       })
-      .catch((err) => {
-        console.log(err)
-        dispatch(createResponse({
-          type: ErrorTypes.Error,
-          title: "Error",
-          message: "Something went wrong, Check your network",
-        }));
+      .catch(() => {
+        dispatch(
+          createResponse({
+            type: ErrorTypes.Error,
+            title: "Error",
+            message: "Something went wrong, Check your network",
+          })
+        );
       });
   };
 
@@ -77,7 +89,18 @@ const Login = () => {
       password,
     };
 
-    dispatch(UserLogin(formBody));
+    try {
+        dispatch(setLoading(true));
+        const res = await UserService.Login(formBody);
+        sessionStorage.setItem("token", res.data.token)
+        sessionStorage.setItem("user", JSON.stringify(res.data.user))
+        dispatch(AddUserData(res.data));
+        dispatch(setLoading(false));
+      
+    } catch (err: any) {
+      dispatch(setLoading(false));
+      dispatch(createResponse(ErrorHandler(err)));
+    }
   };
 
   return (

@@ -3,7 +3,6 @@ import { NextApiResponse, NextApiRequest } from "next";
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     let {user} = JSON.parse(req.body)
-    console.log(user)
     try{
         await prisma.nominee.updateMany({
             where: {

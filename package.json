@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "16.x",
-    "npm": "8.x"
+    "node": "18.x",
+    "npm": "10.x"
   },
   "scripts": {
     "dev": "next dev",
@@ -20,7 +20,7 @@
     "@emotion/cache": "^11.10.5",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
-    "@prisma/client": "^4.4.0",
+    "@prisma/client": "^5.2.0",
     "@reduxjs/toolkit": "^1.9.0",
     "@types/node": "^18.0.0",
     "@types/react": "^17.0.47",
@@ -51,6 +51,6 @@
     "cypress": "^9.5.4",
     "eslint": "8.9.0",
     "eslint-config-next": "12.1.0",
-    "prisma": "^4.4.0"
+    "prisma": "^5.2.0"
   }
 }

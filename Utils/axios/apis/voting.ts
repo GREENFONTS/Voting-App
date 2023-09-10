@@ -1,7 +1,4 @@
 import { AxiosInstance } from "axios";
-import { CreateCodesData } from "../../../models/election/Codes";
-import { UpdateNomineeData } from "../../../models/election/Nominee";
-import Position from "../../../models/election/positions";
 
 import api from "../axios";
 
@@ -21,6 +18,7 @@ class Voting {
   }
 
   async VoteNominee(id: string, votes: string) {
+    console.log(id, votes)
     return this.request.get(`/voting/updateNominee/?id=${id}&&votes=${votes}`);
   }
   

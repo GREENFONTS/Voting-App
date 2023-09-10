@@ -21,6 +21,7 @@ const PositionPage = () => {
     }
   }, []);
 
+
   return (
     <Box padding="20px" width={{base:"95%", md: "75%", lg:"50%"}} margin="auto">
       <Flex alignItems="center" justifyContent="center" mb="5">

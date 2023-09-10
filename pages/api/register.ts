@@ -21,29 +21,41 @@ export default async function handler(
       msg: "Admin already exists found",
     });
   } else {
+    let transaction;
+    let result;
+    let token;
     try {
-      await prisma.admin.create({
-        data: userData,
-      });
+     
+      transaction = await prisma.$transaction(async (prisma) => {
+        result = await prisma.admin.create({
+          data: userData,
+        });
 
-      await prisma.election.create({
-        data: {
-          user: userData.email,
-          state: true,
-        },
+        await prisma.election.create({
+          data: {
+            user: userData.email,
+            state: true,
+          },
+        });
+        token = jwt.sign(
+          { user_id: userData.id, email: userData.email },
+          process.env.TOKEN_KEY,
+          {
+            expiresIn: "2h",
+          }
+        );
       });
-
-      const token = jwt.sign(
-        { user_id: userData.id, email: userData.email },
-        process.env.TOKEN_KEY,
-        {
-          expiresIn: "2h",
-        }
-      );
       await prisma.$disconnect();
-      return res.status(200).send({ token: token, user: req.body });
+      return res.status(200).send({ token: token, user: result });
     } catch (err) {
-      throw err;
+      console.log(err)
+      if (transaction) {
+        console.log("Transaction rolled back due to an error.");
+        await prisma.$queryRaw`ROLLBACK;`;
+      }
+    } finally {
+      await prisma.$disconnect();
+      return res.status(400).send({msg:"Error occur"});
     }
   }
 }

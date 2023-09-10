@@ -10,7 +10,7 @@ export interface ElectionState {
 }
 
 export interface VotingState {
-  positions: string[];
+  positions: Position[];
   nominees: Nominee[];
   electionStatus: Boolean;
   user: string | null;

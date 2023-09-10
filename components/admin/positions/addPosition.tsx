@@ -43,6 +43,7 @@ const AddPosition: React.FC<Props> = ({ email, isOpen, setModalState }) => {
       name: position,
       user: email,
     };
+    console.log(email)
     dispatch(addPosition(formBody));
   };
 

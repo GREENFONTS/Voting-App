@@ -17,6 +17,7 @@ const CodesPage = () => {
 
   useEffect(() => {
     if (user !== null) {
+      
       dispatch(GetCodes({user: user.email}));
     }
   }, [user]);

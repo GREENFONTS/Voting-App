@@ -13,13 +13,13 @@ model admin {
   userName     String
   tel          String
   organization String
-  email        String @id
+  email        String @unique
   password     String
-  id           String
+  id           String @id @default(uuid())
 }
 
 model position {
-  id String @id
+  id String @id @default(uuid())
   name String 
   user String
 }
@@ -28,7 +28,7 @@ model Nominee {
   name   String
   post   String
   votes  Int
-  id     String @id
+  id     String @id @default(uuid())
   postNo Int
   user   String
   image String

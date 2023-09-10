@@ -19,11 +19,19 @@ import {
 import { useColorModeValue } from "@chakra-ui/react";
 import User from "../models/auth/User";
 import { dispatch } from "../redux/store";
-import { selectAuthState, UserRegister } from "../redux/features/Users/auth";
+import {
+  AddUserData,
+  createResponse,
+  selectAuthState,
+  setLoading,
+  UserRegister,
+} from "../redux/features/Users/auth";
 import { useSelector } from "react-redux";
+import UserService from "../Utils/axios/apis/auth";
+import { ErrorHandler } from "../Utils/Error";
 
 const Register = () => {
-  const {token} = useSelector(selectAuthState)
+  const { token } = useSelector(selectAuthState);
   const [isLesserThan900] = useMediaQuery("(max-width: 900px)");
   const [isLargerThan900] = useMediaQuery("(min-width: 900px)");
   const [firstName, setFirstName] = useState<string>("");
@@ -80,13 +88,12 @@ const Register = () => {
 
   useEffect(() => {
     if (token !== null) {
-      localStorage.setItem("token", token)
       router.push("/admin");
     }
   }, [token]);
 
   const submitHandler = async () => {
-    const formBody : User = {
+    const formBody: User = {
       firstName,
       lastName,
       organization,
@@ -94,11 +101,23 @@ const Register = () => {
       userName,
       email,
       password,
-      id: ""
+      id: "",
     };
-    console.log(formBody)
 
-    dispatch(UserRegister(formBody));
+    try {
+      dispatch(setLoading(true));
+      const res = await UserService.CreateUser(formBody);
+      if (res.data) {
+        sessionStorage.setItem("token", res.data.token);
+        sessionStorage.setItem("user", JSON.stringify(res.data.user));
+        dispatch(AddUserData(res.data));
+        dispatch(setLoading(false));
+      }
+    } catch (err: any) {
+      console.log(err);
+      dispatch(setLoading(false));
+      dispatch(createResponse(ErrorHandler(err)));
+    }
   };
 
   return (

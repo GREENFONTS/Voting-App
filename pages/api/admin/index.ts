@@ -11,7 +11,6 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const token = req.query.token;
-
   const response = await ensureAuthenticated(token);
   if (response === undefined || null) {
     res.status(403).send({ msg: "Token is invalid or expired" });

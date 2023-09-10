@@ -8,48 +8,74 @@ import {
   Image,
   Button,
   Center,
-  Grid
+  Grid,
 } from "@chakra-ui/react";
 import Nominee from "../../../../models/election/Nominee";
 import { useSelector } from "react-redux";
 import {
   selectVoteState,
   setFilteredNominees,
-  setPositions,
+  setVotingPositions,
   VerifyToken,
   VoteNominee,
 } from "../../../../redux/features/Users/voting";
 import { dispatch } from "../../../../redux/store";
 import { ErrorTypes } from "../../../../models/auth/stateModel";
-import { createResponse } from "../../../../redux/features/Users/auth";
+import {
+  createResponse,
+  setLoading,
+} from "../../../../redux/features/Users/auth";
+import VotingService from "../../../../Utils/axios/apis/voting";
+import { ErrorHandler } from "../../../../Utils/Error";
+import {
+  GetNominees,
+  GetPositions,
+} from "../../../../redux/features/Users/election";
+import Position from "../../../../models/election/positions";
 
 const Posts = () => {
   const { nominees, positions, filteredNominees } =
     useSelector(selectVoteState);
-  const [post, setPost] = useState<string>("");
+  const [post, setPost] = useState<string>(null);
   const [organization, setOrganization] = useState<string>("");
   const [id, setId] = useState<string>("");
 
   useEffect(() => {
-    let token = localStorage.getItem("token")
+    if (nominees.length < 1 || positions.length < 1) {
+      const user = sessionStorage.getItem("user");
+      if (user) {
+        dispatch(setLoading(true));
+        dispatch(GetNominees(user));
+        dispatch(GetPositions(user));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    let token = sessionStorage.getItem("token");
     const queryValue = window.location.pathname.split("/").slice(2);
 
     setOrganization(queryValue[0]);
     setId(queryValue[1]);
     setPost(queryValue[2].split("%20").join(" "));
 
-    let nomineesData = nominees.filter(
-      (ele: Nominee) => ele.post === queryValue[2].split("%20").join(" ")
-    );
-    dispatch(setFilteredNominees(nomineesData));
-
     if (token === null) {
-
       router.push(`/voting/${queryValue[0]}/${queryValue[1]}`);
     } else {
       dispatch(VerifyToken(token));
     }
   }, []);
+
+  useEffect(() => {
+    const queryValue = window.location.pathname.split("/").slice(2);
+
+    if (nominees) {
+      let nomineesData = nominees.filter(
+        (ele: Nominee) => ele.post === queryValue[2].split("%20").join(" ")
+      );
+      dispatch(setFilteredNominees(nomineesData));
+    }
+  }, [nominees]);
 
   useEffect(() => {
     let nomineesData: Nominee[] = nominees.filter(
@@ -59,26 +85,47 @@ const Posts = () => {
   }, [post]);
 
   const submitHandler = async (ele: Nominee) => {
-    dispatch(VoteNominee(ele.id, ele.votes.toString()));
+    dispatch(setLoading(true));
+    try {
+      const res = await VotingService.VoteNominee(ele.id, ele.votes.toString());
+      if (res.data) {
+        dispatch(setLoading(false));
+        if (positions.length > 0) {
+          const Positions = JSON.parse(sessionStorage.getItem("positions"));
 
-    
-    if (positions.length > 0) {
-      let nextPost = positions[0];
-      setPost(nextPost);
-      router.push(`/voting/${organization}/${id}/${nextPost}`);
-
-      let updatedPositions = [...positions].filter(ele => ele !== nextPost);
-      dispatch(setPositions(updatedPositions));
-    } else {
-      localStorage.clear();
-      router.push(`/voting/${organization}/${id}`);
-      dispatch(
-        createResponse({
-          type: ErrorTypes.Success,
-          title: "Completed",
-          message: `Thanks for Voting`,
-        })
-      );
+          let nextPostName = Positions[Positions.indexOf(post) + 1];
+          let nextPost = positions.find((x) => x.name === nextPostName);
+          console.log(nextPost, positions, nextPostName, positions.indexOf(nextPost));
+          let updatedPositions = [];
+          if (positions.length >= 1) {
+            updatedPositions = [...positions].slice(
+              positions.indexOf(nextPost) + 1, 
+            );
+            setPost(nextPost.name);
+            dispatch(setVotingPositions(updatedPositions));
+            router.push(`/voting/${organization}/${id}/${nextPost.name}`);
+          } else {
+            dispatch(setVotingPositions(updatedPositions));
+            router.push(`/voting/${organization}/${id}`);
+          }
+        } else {
+          sessionStorage.clear();
+          router.push(`/voting/${organization}/${id}`);
+          dispatch(
+            createResponse({
+              type: ErrorTypes.Success,
+              title: "Completed",
+              message: `Thanks for Voting`,
+            })
+          );
+        }
+      } else {
+        dispatch(setLoading(false));
+      }
+    } catch (err) {
+      console.log(err);
+      dispatch(createResponse(ErrorHandler(err)));
+      dispatch(setLoading(false));
     }
   };
 
@@ -90,24 +137,28 @@ const Posts = () => {
         bgGradient="linear(to-r, gray.200, white, gray.100)"
       >
         <Center>
-          <Text fontFamily="cursive" fontSize={{ base: "25px", md: "30px", lg: "50px" }}>
+          <Text
+            fontFamily="cursive"
+            fontSize={{ base: "25px", md: "30px", lg: "50px" }}
+          >
             {post}
           </Text>
         </Center>
         <Grid
           templateColumns={{
-            base: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(4, 1fr)',
+            base: "repeat(1, 1fr)",
+            sm: "repeat(2, 1fr)",
+            md: "repeat(4, 1fr)",
           }}
-          gap={{  base: '8px', lg: '20px', xl: '24px' }}
+          gap={{ base: "8px", lg: "20px", xl: "24px" }}
           w="90%"
           m="30px auto"
         >
           {filteredNominees.length > 0 ? (
             filteredNominees.map((ele) => {
               return (
-                <Box
+                <Flex
+                  flexDirection="column"
                   mb="2"
                   key={ele.id}
                   p="2"
@@ -116,28 +167,27 @@ const Posts = () => {
                   borderBottom="1px"
                   borderColor="gray.200"
                   boxShadow="base"
+                  alignItems="center"
+                  justifyContent="center"
                 >
-                  <Center>
-                    <Image
-                      src={ele.image}
-                      alt="Nominee Image"
-                      objectFit="cover"
-                      m="2"
-                      boxSize={{ base: "30vh", md: "20vh", lg: "25vh" }}
-                    />
-                    <Flex p="1" justify="space-between">
-                      <VStack align="start" spacing="2">
-                        <Text>Name: {ele.name}</Text>
-                        <Button
-                          color="blackAlpha.800"
-                          onClick={() => submitHandler(ele)}
-                        >
-                          Vote
-                        </Button>
-                      </VStack>
-                    </Flex>
-                  </Center>
-                </Box>
+                  <Image
+                    src={ele.image}
+                    alt="Nominee Image"
+                    objectFit="cover"
+                    m="2"
+                  />
+                  <Flex p="1" justify="space-between">
+                    <VStack align="start" spacing="2">
+                      <Text>Name: {ele.name}</Text>
+                      <Button
+                        color="blackAlpha.800"
+                        onClick={() => submitHandler(ele)}
+                      >
+                        Vote
+                      </Button>
+                    </VStack>
+                  </Flex>
+                </Flex>
               );
             })
           ) : (

@@ -9,6 +9,7 @@ import { ErrorHandler } from "../../../Utils/Error";
 import { ErrorTypes } from "../../../models/auth/stateModel";
 import { UpdateNomineeData } from "../../../models/election/Nominee";
 import { CreateCodesData } from "../../../models/election/Codes";
+import { setVotingNominees, setVotingPositions } from "./voting";
 
 const initialState: ElectionState = {
   positions: [],
@@ -40,8 +41,12 @@ export const GetPositions = (data: string) => async () => {
   dispatch(setLoading(true));
   try {
     const res = await ElectionService.GetPositions(data);
-    dispatch(setPositions(res.data));
-    dispatch(setLoading(false));
+    if(res.data){
+      dispatch(setPositions(res.data));
+      dispatch(setVotingPositions(res.data))
+      dispatch(setLoading(false));
+    }
+ 
   } catch (err) {
     dispatch(createResponse(ErrorHandler(err)));
     dispatch(setLoading(false));
@@ -88,8 +93,11 @@ export const GetNominees = (data: string) => async () => {
   dispatch(setLoading(true));
   try {
     const res = await ElectionService.GetNominees(data);
-    dispatch(setNominees(res.data));
-    dispatch(setLoading(false));
+    if(res.data){
+      dispatch(setNominees(res.data));
+      dispatch(setVotingNominees(res.data))
+      dispatch(setLoading(false));
+    }   
   } catch (err) {
     dispatch(createResponse(ErrorHandler(err)));
     dispatch(setLoading(false));

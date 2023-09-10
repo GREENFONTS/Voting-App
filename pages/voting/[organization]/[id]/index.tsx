@@ -14,16 +14,23 @@ import {
 import { useColorModeValue } from "@chakra-ui/react";
 import { dispatch } from "../../../../redux/store";
 import {
-  setPositions,
-  VerifyCode,
-} from "../../../../redux/features/Users/voting";
-import {
+  setAuthenticated,
+  setElectionUser,
   GetVotingData,
   selectVoteState,
+  setElectionStatus,
+  setVotingNominees,
+  setVotingPositions
 } from "../../../../redux/features/Users/voting";
 import { useSelector } from "react-redux";
 import { ErrorTypes } from "../../../../models/auth/stateModel";
-import { createResponse } from "../../../../redux/features/Users/auth";
+import {
+  AddUserData,
+  createResponse,
+  setLoading,
+} from "../../../../redux/features/Users/auth";
+import VotingService from "../../../../Utils/axios/apis/voting";
+import { ErrorHandler } from "../../../../Utils/Error";
 
 const Voting = () => {
   const { electionStatus, nominees, positions, user, token } =
@@ -37,15 +44,20 @@ const Voting = () => {
   const [organization, setOrganization] = useState<string>("");
   const [id, setId] = useState<string>("");
 
-  useEffect(() => {
-    let positions = [];
-    if (nominees.length !== 0) {
-      nominees.forEach((ele) => {
-        positions.push(ele.post);
-      });
-      dispatch(setPositions(positions));
+  const InitRequests = async (userId) => {
+    try {
+      const res = await VotingService.GetUser(userId);
+      dispatch(setElectionUser(res.data.user));
+      dispatch(setVotingNominees(res.data.nominees));
+      dispatch(setVotingPositions(res.data.positions));
+      dispatch(setElectionStatus(res.data.state));
+  
+      dispatch(setLoading(false));
+    } catch (err) {
+      dispatch(createResponse(ErrorHandler(err)));
+      dispatch(setLoading(false));
     }
-  }, [nominees]);
+  }
 
   useEffect(() => {
     const queryValue = window.location.pathname.split("/").slice(2);
@@ -53,7 +65,8 @@ const Voting = () => {
     setId(queryValue[1]);
     setOrganization(queryValue[0]);
 
-    dispatch(GetVotingData(userId));
+    InitRequests(userId)
+   
   }, []);
 
   //code validation
@@ -62,6 +75,18 @@ const Voting = () => {
       setIsRequired(false);
     }
   }, [code]);
+
+  useEffect(() => {
+    let Positions  = []
+    if(positions.length > 0){
+      Positions = positions.map(x => x.name)
+      let position = JSON.parse(sessionStorage.getItem("positions"));
+      if(!position){
+        sessionStorage.setItem("positions", JSON.stringify(Positions))
+      }
+      
+    }
+  }, [positions])
 
   //to voting route
   const submitHandler = async () => {
@@ -76,7 +101,20 @@ const Voting = () => {
       setCode("");
       setIsRequired(true);
     } else {
-      dispatch(VerifyCode(code, user));
+      try {
+        dispatch(setLoading(true));
+        const res = await VotingService.VerifyCode(code, user);
+        if (res.data) {
+          dispatch(setAuthenticated(res.data));
+          sessionStorage.setItem("token", res.data.token);
+          sessionStorage.setItem("user", res.data.user);
+          dispatch(setLoading(false));
+        }
+      } catch (err: any) {
+        console.log(err);
+        dispatch(setLoading(false));
+        dispatch(createResponse(ErrorHandler(err)));
+      }
     }
   };
 
@@ -84,12 +122,13 @@ const Voting = () => {
     if (token !== null) {
       localStorage.setItem("token", token);
       if (positions.length >= 1) {
-        router.push(`/voting/${organization}/${id}/${positions[0]}`);
+        router.push(`/voting/${organization}/${id}/${positions[0].name}`);
       }
+      sessionStorage.setItem("currentPost", JSON.stringify(positions[0]))
       let updatedPositions = [...positions].filter(
         (ele) => ele !== positions[0]
       );
-      dispatch(setPositions(updatedPositions));
+      dispatch(setVotingPositions(updatedPositions));
     }
   }, [token]);
 
@@ -134,10 +173,7 @@ const Voting = () => {
                 h={{ base: "200px", md: "250px", lg: "50vh" }}
                 mt={{ lg: "12" }}
               >
-                <Text
-                  fontSize={{ base: "30px",  lg: "50px" }}
-                  color="black"
-                >
+                <Text fontSize={{ base: "30px", lg: "50px" }} color="black">
                   Welcome To <br /> {organization} Elections
                 </Text>
 

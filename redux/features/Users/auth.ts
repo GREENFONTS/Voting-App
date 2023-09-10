@@ -20,30 +20,6 @@ const initialState: Auth = {
   authenticated: false,
 };
 
-export const UserLogin = (data: LoginData) => async () => {
-  dispatch(setLoading(true));
-  try {
-    const res = await UserService.Login(data);
-    dispatch(AddUserData(res.data));
-    dispatch(setLoading(false));
-  } catch (err: any) {
-    dispatch(createResponse(ErrorHandler(err)));
-    dispatch(setLoading(false));
-  }
-};
-
-export const UserGoogleLogin = (data: string) => async () => {
-  dispatch(setLoading(true));
-  try {
-    const res = await UserService.GoogleLogin(data);
-    dispatch(AddUserData(res.data));
-    dispatch(setLoading(false));
-  } catch (err: any) {
-    dispatch(setLoading(false));
-    dispatch(createResponse(ErrorHandler(err)));
-  }
-};
-
 export const UserRegister = (data: User) => async () => {
   try {
     const res = await UserService.CreateUser(data);
@@ -86,6 +62,12 @@ const AuthSlice = createSlice({
       state.user = action.payload.user;
       state.authenticated = true;
     },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+    setToken: (state, action) => {
+      state.token = action.payload;
+    },
     createResponse: (
       state,
       action: {
@@ -117,7 +99,7 @@ const AuthSlice = createSlice({
   },
 });
 
-export const { setLoading, createResponse, setAuthenticated, AddUserData, reset } =
+export const { setLoading, createResponse, setAuthenticated, AddUserData, reset, setUser, setToken } =
   AuthSlice.actions;
 
 export const selectAuthState = (state: RootState) => state.auth;
