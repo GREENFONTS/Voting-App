@@ -1,4 +1,3 @@
-import { useCounter } from "../../services/state";
 import { Box, Container, Text, Image, Center } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import { selectAuthState, setToken, setUser } from "../../redux/features/Users/auth";
@@ -6,18 +5,7 @@ import { useEffect } from "react";
 import { dispatch } from "../../redux/store";
 
 const Admin = () => {
-  const [state, actions] = useCounter();
   const { user, token } = useSelector(selectAuthState);
-
-  if (
-    state.listNomineeModal ||
-    state.listCodesModal ||
-    state.showResultsModal
-  ) {
-    actions.landingPage(false);
-  } else {
-    actions.landingPage(true);
-  }
 
   useEffect(() => {
     if(!user){
