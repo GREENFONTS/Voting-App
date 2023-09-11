@@ -8,9 +8,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start -p 3000",
-    "heroku-postbuild": "npm run build",
     "lint": "next lint",
     "cypress": "cypress open",
     "test": "start-server-and-test start http://localhost:3000 cypress"
