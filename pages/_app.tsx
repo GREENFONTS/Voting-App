@@ -24,7 +24,7 @@ const MyApp: NextPage<RootProps> = ({
       <CacheProvider value={emotionCache}>
         <ChakraProvider>
           <Layout>
-            <Component {...(pageProps || {})} />
+            <Component {...pageProps} />
           </Layout>
         </ChakraProvider>
       </CacheProvider>
