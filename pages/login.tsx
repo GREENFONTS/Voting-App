@@ -62,7 +62,6 @@ const Login = () => {
             dispatch(setLoading(true));
             const res = await UserService.GoogleLogin(email);
             sessionStorage.setItem("token", res.data.token)
-            console.log(res.data.user)
             sessionStorage.setItem("user", JSON.stringify(res.data.user))
             dispatch(AddUserData(res.data));
             dispatch(setLoading(false));
