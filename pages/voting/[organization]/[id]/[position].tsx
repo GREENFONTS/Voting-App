@@ -85,14 +85,6 @@ const Posts = () => {
           let nextPostName = Positions[Positions.indexOf(post) + 1];
           let nextPost = positions.find((x) => x.name.trimEnd().trimStart() === nextPostName);
 
-          console.log(
-            positions,
-            nextPostName,
-            nextPost,
-            post,
-            Positions.indexOf(post),
-            Positions
-          );
           let updatedPositions = [];
           if (positions.length >= 1) {
             updatedPositions = [...positions].slice(
