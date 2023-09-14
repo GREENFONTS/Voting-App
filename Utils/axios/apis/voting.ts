@@ -18,7 +18,6 @@ class Voting {
   }
 
   async VoteNominee(id: string, votes: string) {
-    console.log(id, votes)
     return this.request.get(`/voting/updateNominee/?id=${id}&&votes=${votes}`);
   }
   

@@ -67,22 +67,11 @@ const Posts = () => {
   }, []);
 
   useEffect(() => {
-    const queryValue = window.location.pathname.split("/").slice(2);
-
-    if (nominees) {
-      let nomineesData = nominees.filter(
-        (ele: Nominee) => ele.post === queryValue[2].split("%20").join(" ")
-      );
-      dispatch(setFilteredNominees(nomineesData));
-    }
-  }, [nominees]);
-
-  useEffect(() => {
     let nomineesData: Nominee[] = nominees.filter(
-      (ele: Nominee) => ele.post === post
+      (ele: Nominee) => ele.post.trimEnd().trimStart() === post
     );
     dispatch(setFilteredNominees(nomineesData));
-  }, [post]);
+  }, [post, nominees]);
 
   const submitHandler = async (ele: Nominee) => {
     dispatch(setLoading(true));
@@ -94,14 +83,22 @@ const Posts = () => {
           const Positions = JSON.parse(sessionStorage.getItem("positions"));
 
           let nextPostName = Positions[Positions.indexOf(post) + 1];
-          let nextPost = positions.find((x) => x.name === nextPostName);
-          console.log(nextPost, positions, nextPostName, positions.indexOf(nextPost));
+          let nextPost = positions.find((x) => x.name.trimEnd().trimStart() === nextPostName);
+
+          console.log(
+            positions,
+            nextPostName,
+            nextPost,
+            post,
+            Positions.indexOf(post),
+            Positions
+          );
           let updatedPositions = [];
           if (positions.length >= 1) {
             updatedPositions = [...positions].slice(
-              positions.indexOf(nextPost) + 1, 
+              positions.indexOf(nextPost) + 1
             );
-            setPost(nextPost.name);
+            setPost(nextPostName);
             dispatch(setVotingPositions(updatedPositions));
             router.push(`/voting/${organization}/${id}/${nextPost.name}`);
           } else {
@@ -128,6 +125,8 @@ const Posts = () => {
       dispatch(setLoading(false));
     }
   };
+
+  console.log();
 
   return (
     <>
@@ -158,6 +157,7 @@ const Posts = () => {
             filteredNominees.map((ele) => {
               return (
                 <Flex
+                  w="100%"
                   flexDirection="column"
                   mb="2"
                   key={ele.id}

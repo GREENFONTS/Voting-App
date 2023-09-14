@@ -63,7 +63,7 @@ const Voting = () => {
     const queryValue = window.location.pathname.split("/").slice(2);
     const userId = queryValue[1];
     setId(queryValue[1]);
-    setOrganization(queryValue[0]);
+    setOrganization(queryValue[0].replace("%20", " "));
 
     InitRequests(userId)
    
@@ -79,7 +79,7 @@ const Voting = () => {
   useEffect(() => {
     let Positions  = []
     if(positions.length > 0){
-      Positions = positions.map(x => x.name)
+      Positions = positions.map(x => x.name.trimEnd().trimStart())
       let position = JSON.parse(sessionStorage.getItem("positions"));
       if(!position){
         sessionStorage.setItem("positions", JSON.stringify(Positions))
