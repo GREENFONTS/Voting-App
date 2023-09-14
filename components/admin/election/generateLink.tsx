@@ -9,7 +9,7 @@ const GenerateLink = ({ user }) => {
   if (process.env.NODE_ENV == "development") {
     url = "http://localhost:3000/voting";
   } else {
-    url = "https://voting-app-virid.vercel.app/voting";
+    url = "https://voting-app-pied.vercel.app/voting";
   }
   const [copy, setCopy] = useState<boolean>(false);
   let link = null;
